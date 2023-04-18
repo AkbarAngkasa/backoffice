@@ -1,8 +1,15 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
+import Root from './pages/Root';
+
 function App() {
   return (
-    <div className="App">
-      Hello World
-    </div>
+    <Router>
+      <div className="content select-none font-sans">
+        <Routes>
+          <Route path="/" element={<Root />}/>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
