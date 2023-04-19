@@ -1,5 +1,9 @@
+import SidenavBlock from "../components/blocks/SidenavBlock"
+
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>
+      <SidenavBlock />
+    </div>
   )
 }

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import useDate from '../../costumHooks/useDate';
 import useGenerateGreet from '../../costumHooks/useGenerateGreet';
 
-export default function Login() {
+export default function LoginBlock() {
     useEffect(() => {
         initFlowbite();
     });
