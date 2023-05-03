@@ -7,6 +7,9 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import PrimeReact from 'primereact/api';
 import 'primeicons/primeicons.css';
+import { Button as ButtonFlowbite } from 'flowbite-react';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faBurger } from '@fortawesome/free-solid-svg-icons';
 
 export default function TableBlock() {
     PrimeReact.appendTo = 'self';
@@ -16,37 +19,55 @@ export default function TableBlock() {
 
     const ProductService = [
       {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
+        register_time: '19/05/22 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Siswanto Nugroho',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
       },
       {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
+        register_time: '19/05/22 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Siswanto Nugroho',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+        // action: `<ButtonFlowbite>
+        //             Hello
+        //         </ButtonFlowbite>`
       },
     ]
 
     const cols = [
-        { field: 'code', header: 'Code' },
-        { field: 'name', header: 'Name' },
-        { field: 'category', header: 'Category' },
-        { field: 'quantity', header: 'Quantity' },
-        { field: 'rating', header: 'Rating' }
+        { field: 'register_time', header: 'Register Time' },
+        { field: 'account_no', header: 'Account No' },
+        { field: 'phone_no', header: 'Phone No' },
+        { field: 'full_name', header: 'Full Name' },
+        { field: 'nik', header: 'NIK' },
+        { field: 'user_status', header: 'User Status' },
+        { field: 'user_kyc', header: 'User KYC' },
+        { field: 'action', header: 'Action' },
     ];
 
     const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
@@ -109,10 +130,9 @@ export default function TableBlock() {
     return (
         <div className="card">
             <Tooltip target=".export-buttons>button" position="bottom" />
-
             <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }}>
                 {cols.map((col, index) => (
-                    <Column key={index} field={col.field} header={col.header} />
+                        <Column key={index} field={col.field} header={col.header} />
                 ))}
             </DataTable>
         </div>
