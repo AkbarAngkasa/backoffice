@@ -1,15 +1,23 @@
-import NavbarBlock from "../components/blocks/NavbarBlock"
-import SidenavBlock from "../components/blocks/SidenavBlock"
+import { initFlowbite } from 'flowbite';
+import { useEffect } from 'react';
+import SidenavBlock from '../components/blocks/SidenavBlock';
+import NavbarBlock from '../components/blocks/NavbarBlock';
 
-export default function Dashboard() {
-  return (
-    <div>
-      <div className="bg-red-400">
-        <NavbarBlock />
-      </div>
-      <div className="bg-red-500">
-        <SidenavBlock />
-      </div>
-    </div>
-  )
+export default function DashboardLayout() {
+    useEffect(() => {
+        initFlowbite();
+    });
+
+    return (
+        <div className="w-full flex">
+            {/* Sidenav */}
+            <div className="w-0 sm:w-[20%] bg-transparent">
+                <SidenavBlock />
+            </div>
+            {/* Content */}
+            <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
+                <NavbarBlock />
+            </div>
+        </div>
+    )
 }

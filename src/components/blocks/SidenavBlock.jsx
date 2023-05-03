@@ -12,8 +12,9 @@ export default function SidenavBlock() {
 
     return (
         <>
-            {/* Content */}
+            {/* Wrapper */}
             <aside id="default-sidebar" className="flex flex-row fixed top-0 left-0 z-40 w-full h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
+                {/* Content */}
                 <div className="overflow-y-auto py-5 px-3 w-[70%] sm:w-[20%] h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                     <ul className="space-y-2">
                         <li>
