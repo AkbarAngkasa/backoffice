@@ -1,7 +1,8 @@
-import { initFlowbite } from 'flowbite';
-import { useEffect } from 'react';
-import SidenavBlock from '../components/blocks/SidenavBlock';
-import NavbarBlock from '../components/blocks/NavbarBlock';
+import { initFlowbite } from "flowbite";
+import { useEffect } from "react";
+import SidenavBlock from "../components/blocks/SidenavBlock";
+import NavbarBlock from "../components/blocks/NavbarBlock";
+import ResTableBlock from "../components/blocks/TableBlock";
 
 export default function DashboardLayout() {
     useEffect(() => {
@@ -17,6 +18,9 @@ export default function DashboardLayout() {
             {/* Content */}
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
                 <NavbarBlock />
+                <div className="p-5">
+                    <ResTableBlock />
+                </div>
             </div>
         </div>
     )

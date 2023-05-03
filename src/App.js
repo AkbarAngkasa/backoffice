@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 function App() {
   return (
     <Router>
-      <div className="content select-none font-sans">
+      <div className="content font-sans">
         <Routes>
           <Route path="/" element={<Root />}/>
           <Route path="/login" element={<Login />}/>
