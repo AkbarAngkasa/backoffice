@@ -8,7 +8,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import PrimeReact from 'primereact/api';
 import 'primeicons/primeicons.css';
 
-export default function ResTableBlock() {
+export default function TableBlock() {
     PrimeReact.appendTo = 'self';
 
     const [products, setProducts] = useState([]);
