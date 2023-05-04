@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Button as ButtonFlowbite } from 'flowbite-react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
+import { InputText } from 'primereact/inputtext';
+import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";                                       
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import PrimeReact from 'primereact/api';
-import 'primeicons/primeicons.css';
-import { Button as ButtonFlowbite } from 'flowbite-react';
+import { FilterMatchMode } from 'primereact/api';
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faBurger } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,10 +40,10 @@ export default function TableBlock() {
         </div>
       },
       {
-        register_time: '19/05/22 10:43',
+        register_time: '12/12/23 10:43',
         account_no: 'EA-1-2345-6789-9',
         phone_no: 8123456789012,
-        full_name: 'Siswanto Nugroho',
+        full_name: 'Angkasa',
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
@@ -53,9 +56,186 @@ export default function TableBlock() {
                 Block
             </ButtonFlowbite>
         </div>
-        // action: `<ButtonFlowbite>
-        //             Hello
-        //         </ButtonFlowbite>`
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
+      },
+      {
+        register_time: '12/12/23 10:43',
+        account_no: 'EA-1-2345-6789-9',
+        phone_no: 8123456789012,
+        full_name: 'Angkasa',
+        nik: 3508105425938207,
+        user_status: 'Active',
+        user_kyc: 'Pending KYC-1',
+        action: 
+        <div className='flex flex-row'>
+            <ButtonFlowbite size="sm" className="mr-2">
+                Review
+            </ButtonFlowbite>
+            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                Block
+            </ButtonFlowbite>
+        </div>
       },
     ]
 
@@ -119,20 +299,45 @@ export default function TableBlock() {
         });
     };
 
+    // Search
+    const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [filters, setFilters] = useState({
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        representative: { value: null, matchMode: FilterMatchMode.IN },
+        status: { value: null, matchMode: FilterMatchMode.EQUALS },
+        verified: { value: null, matchMode: FilterMatchMode.EQUALS }
+    });
+    
+    const onGlobalFilterChange = (e) => {
+        const value = e.target.value;
+        let _filters = { ...filters };
+
+        _filters['global'].value = value;
+
+        setFilters(_filters);
+        setGlobalFilterValue(value);
+    };
+
     const header = (
         <div className="flex justify-end gap-2">
             <Button type="button" icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" className='bg-blue-400 hover:bg-red-800' />
-            <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-            <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+            <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS"/>
+            <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF"/>
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search" className='w-32'/>
+            </span>
         </div>
     );
 
     return (
         <div className="card">
             <Tooltip target=".export-buttons>button" position="bottom" />
-            <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }}>
+            <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={4} filters={filters}  globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'user_kyc', 'action']} emptyMessage="Query not found.">
                 {cols.map((col, index) => (
-                        <Column key={index} field={col.field} header={col.header} />
+                    <Column key={index} field={col.field} header={col.header} />
                 ))}
             </DataTable>
         </div>
