@@ -29,15 +29,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -47,15 +38,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -65,15 +47,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -83,15 +56,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -101,15 +65,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -119,15 +74,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -137,15 +83,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -155,15 +92,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -173,15 +101,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -191,15 +110,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -209,15 +119,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
       {
         register_time: '12/12/23 10:43',
@@ -227,15 +128,6 @@ export default function TableBlock() {
         nik: 3508105425938207,
         user_status: 'Active',
         user_kyc: 'Pending KYC-1',
-        action: 
-        <div className='flex flex-row'>
-            <ButtonFlowbite size="sm" className="mr-2">
-                Review
-            </ButtonFlowbite>
-            <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
-                Block
-            </ButtonFlowbite>
-        </div>
       },
     ]
 
@@ -339,6 +231,16 @@ export default function TableBlock() {
                 {cols.map((col, index) => (
                     <Column key={index} field={col.field} header={col.header} />
                 ))}
+                <Column body={
+                    <div className='flex flex-row'>
+                        <ButtonFlowbite size="sm" className="mr-2">
+                            Review
+                        </ButtonFlowbite>
+                        <ButtonFlowbite size="sm" className="bg-red-700 mr-2">
+                            Block
+                        </ButtonFlowbite>
+                    </div>
+                }/>
             </DataTable>
         </div>
     );
