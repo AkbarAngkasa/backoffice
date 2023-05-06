@@ -34,10 +34,10 @@ export default function TableBlock() {
         },
         {
             register_time: '12/12/23 10:43',
-            account_no: 'EA-1-2345-6789-9',
+            account_no: 'EA-1-2345-6789-12',
             phone_no: 8123456789012,
             full_name: 'Angkasa',
-            nik: 3508105425938207,
+            nik: 3508105425938212,
             user_status: 'Blocked',
             user_kyc: 'Pending KYC-1',
         },
