@@ -159,7 +159,7 @@ export default function TableBlock() {
                     <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='bg-red-700'>
                         Block
                     </ButtonFlowbite>
-                    <div className='absolute hidden justify-center place-items-center z-[100] top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
+                    <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
                         <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
                             <div className='absolute top-3 right-3'>
                                 <FontAwesomeIcon icon={faXmark} className='cursor-pointer text-white sm:text-slate-500' onClick={() => closeModal(product.phone_no)}/>
