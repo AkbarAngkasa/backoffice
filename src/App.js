@@ -13,6 +13,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}/>
           <Route path="/dashboard/customer/find-customer" element={<Dashboard />}/>
           <Route path="/dashboard/customer/pending-kyc" element={<Dashboard />}/>
+          <Route path="/dashboard/community/find-community" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>

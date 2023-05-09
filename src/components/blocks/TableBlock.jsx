@@ -11,7 +11,6 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import PrimeReact from 'primereact/api';
 import { FilterMatchMode } from 'primereact/api';
 import user_id_card_1 from '../../assets/images/user_id_card/user_id_card_1.jpg';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -26,19 +25,28 @@ export default function TableBlock() {
         {
             register_time: '19/05/22 10:43',
             account_no: 'EA-1-2345-6789-9',
-            phone_no: 8229799327698,
+            phone_no: 8123456789012,
             full_name: 'Siswanto Nugroho',
             nik: 3508105425938207,
-            user_status: 'Active',
+            user_status: 'active',
             kyc_level: 'Pre-1',
         },
         {
-            register_time: '12/12/23 10:43',
-            account_no: 'EA-1-2345-6789-12',
-            phone_no: 8123456789012,
-            full_name: 'Angkasa',
-            nik: 3508105425938212,
-            user_status: 'Blocked',
+            register_time: '19/05/15 09:23',
+            account_no: 'EA-1-2345-5452-1',
+            phone_no: 8562637533017,
+            full_name: 'Ira Kusmaya',
+            nik: 3674045534628203,
+            user_status: 'blocked',
+            kyc_level: 'Pre-1',
+        },
+        {
+            register_time: '17/05/22 07:22',
+            account_no: 'EA-1-3333-4444-1',
+            phone_no: 8562637533017,
+            full_name: 'Doni Septian Unggara',
+            nik: 3657798218398298,
+            user_status: 'active',
             kyc_level: 'Pre-1',
         },
     ]
@@ -138,7 +146,8 @@ export default function TableBlock() {
     );
 
     const actionButtons = (product) => {
-        
+        console.log(product);
+
         const openModal = (user_phone_no) => {
             let elhModal = document.getElementById(`modal_${user_phone_no}`);
             elhModal.classList.toggle('hidden');
@@ -156,9 +165,16 @@ export default function TableBlock() {
                     <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2'>
                         Details
                     </ButtonFlowbite>
-                    <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='bg-red-700'>
-                        Block
-                    </ButtonFlowbite>
+                    {product.user_status === "active" ?
+                        <ButtonFlowbite className='bg-red-700'>
+                            Block
+                        </ButtonFlowbite>
+                        :
+                        <ButtonFlowbite className='bg-red-700'>
+                            Unblock
+                        </ButtonFlowbite>
+                    }
+                    
                     <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
                         <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
                             <div className='absolute top-3 right-3'>
@@ -250,17 +266,31 @@ export default function TableBlock() {
         )
     }
 
+    const userStatus = (product) => {
+        return (
+            <>
+                {product.user_status === "active" ? 
+                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
+                    :
+                    <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Blocked</span>
+                }
+            </>
+        )
+    }
+
     return (
         <>
             <div className="card">
                 <Tooltip target=".export-buttons>button" position="bottom" />
-                <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={10} filters={filters} globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'kyc_level', 'action']} emptyMessage="Query not found." className='h-fit'>
+                <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'kyc_level', 'action']} emptyMessage="Query not found." className='h-fit'>
                     <Column field="register_time" header="Register Time" />
                     <Column field="account_no" header="Account No" />
                     <Column field="phone_no" header="Phone No" />
                     <Column field="full_name" header="Full Name" />
                     <Column field="nik" header="NIK" />
-                    <Column field="user_status" header="User status" />
+
+                    <Column body={userStatus} header="User status"/>
+                    
                     <Column field="kyc_level" header="KYC Level" />
                     <Column body={actionButtons} header="Action"></Column>
                 </DataTable>
