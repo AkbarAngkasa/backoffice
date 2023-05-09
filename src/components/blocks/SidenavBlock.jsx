@@ -47,6 +47,18 @@ export default function SidenavBlock() {
                                 <li>
                                     <Link to="/dashboard/eod-batch" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">EOD Batch</Link>
                                 </li>
+                                <li>
+                                    <Link to="/dashboard/mtp-balance-top-up" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">MTP - Balance Top-Up</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/mtp-inter-banks-funds-transfer" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">MTP - Inter Banks Funds Transfer</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/mtp-p2p-funds-transfer" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">MTP - P2P Funds Transfer</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/mtp-membership-fee" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">MTP - Membership Fee</Link>
+                                </li>
                             </ul>
                         </li>
                     </ul>

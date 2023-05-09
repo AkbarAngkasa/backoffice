@@ -12,6 +12,10 @@ function App() {
           <Route path="/login" element={<Login />}/>
           <Route path="/dashboard" element={<Dashboard />}/>
           <Route path="/dashboard/eod-batch" element={<Dashboard />}/>
+          <Route path="/dashboard/mtp-balance-top-up" element={<Dashboard />}/>
+          <Route path="/dashboard/mtp-inter-banks-funds-transfer" element={<Dashboard />}/>
+          <Route path="/dashboard/mtp-p2p-funds-transfer" element={<Dashboard />}/>
+          <Route path="/dashboard/mtp-membership-fee" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>

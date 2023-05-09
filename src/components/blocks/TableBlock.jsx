@@ -28,14 +28,14 @@ export default function TableBlock() {
             batch_date: '23/05/17',
             batch_time: '23:45',
             finish_time: '--',
-            status: 'Running',
+            status: 'running',
         },
         {
             batch_id: '1293',
             batch_date: '23/05/16',
             batch_time: '23:45',
             finish_time: '00:18',
-            status: 'Success',
+            status: 'success',
         },
     ]
 
@@ -133,7 +133,7 @@ export default function TableBlock() {
     );
 
     const actionButtons = (product) => {
-        
+        console.log(product)
         const openModal = (user_phone_no) => {
             let elhModal = document.getElementById(`modal_${user_phone_no}`);
             elhModal.classList.toggle('hidden');
@@ -148,9 +148,15 @@ export default function TableBlock() {
         return (
             <>
                 <div className='flex flex-row'>
-                    <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2'>
-                        Details
-                    </ButtonFlowbite>
+                    {product.status === 'success' ?
+                        <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2'>
+                            Details
+                        </ButtonFlowbite>
+                        :
+                        <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2' disabled>
+                            Details
+                        </ButtonFlowbite>
+                    }
                     <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
                         <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
                             <div className='absolute top-3 right-3'>
