@@ -14,6 +14,8 @@ function App() {
           <Route path="/dashboard/customer/find-customer" element={<Dashboard />}/>
           <Route path="/dashboard/customer/pending-kyc" element={<Dashboard />}/>
           <Route path="/dashboard/community/find-community" element={<Dashboard />}/>
+          <Route path="/dashboard/backoffice-user/find-user" element={<Dashboard />}/>
+          <Route path="/dashboard/backoffice-user/role-and-permissions" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>

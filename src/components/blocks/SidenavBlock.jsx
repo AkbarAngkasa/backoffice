@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom"
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faHouse, faPeopleGroup, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faHouse, faPeopleGroup, faUserTie, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 export default function SidenavBlock() {
     useEffect(() => {
@@ -62,6 +62,22 @@ export default function SidenavBlock() {
                             <ul id="dropdown-community" className="hidden py-2 space-y-2">
                                 <li>
                                     <Link to="/dashboard/community/find-community" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">Find Community</Link>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <button type="button" className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-backoffice-user" data-collapse-toggle="dropdown-backoffice-user">
+                                <FontAwesomeIcon icon={faUserTie} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                <span className="flex-1 ml-3 text-left whitespace-nowrap">Backoffice User</span>
+                                <FontAwesomeIcon icon={faChevronDown}/>
+                            </button>
+                            <ul id="dropdown-backoffice-user" className="hidden py-2 space-y-2">
+                                <li>
+                                    <Link to="/dashboard/backoffice-user/find-user" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">Find User</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/backoffice-user/role-and-permissions" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">Role and Permissions</Link>
                                 </li>
                             </ul>
                         </li>
