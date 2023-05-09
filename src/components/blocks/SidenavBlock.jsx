@@ -31,7 +31,7 @@ export default function SidenavBlock() {
                         </li>
 
                         <li>
-                            <Link to="#" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <Link to="/dashboard" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <FontAwesomeIcon icon={faHouse} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                 <span className="flex-1 ml-3 whitespace-nowrap">Home</span>
                             </Link>
@@ -45,10 +45,10 @@ export default function SidenavBlock() {
                             </button>
                             <ul id="dropdown-customer" className="hidden py-2 space-y-2">
                                 <li>
-                                    <Link to="#" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pending KYC</Link>
+                                    <Link to="/dashboard/customer/find-customer" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Find Customer</Link>
                                 </li>
                                 <li>
-                                    <Link to="#" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Customer Search</Link>
+                                    <Link to="/dashboard/customer/pending-kyc" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pending KYC</Link>
                                 </li>
                             </ul>
                         </li>

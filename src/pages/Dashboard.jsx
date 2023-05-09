@@ -3,11 +3,16 @@ import { useEffect } from "react";
 import SidenavBlock from "../components/blocks/SidenavBlock";
 import NavbarBlock from "../components/blocks/NavbarBlock";
 import TableBlock from "../components/blocks/TableBlock";
+import useGetLastPath from "../costumHooks/useGetLastPath";
+import useGetFullPath from "../costumHooks/useGetFullPath";
 
 export default function DashboardLayout() {
     useEffect(() => {
         initFlowbite();
     });
+
+    let currentPage = useGetLastPath();
+    let currentPath = useGetFullPath();
 
     return (
         <div className="w-full flex">
@@ -17,9 +22,11 @@ export default function DashboardLayout() {
             </div>
             {/* Content */}
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
-                <NavbarBlock />
+                <NavbarBlock navTitle={currentPage} />
                 <div className="p-5">
-                    <TableBlock />
+                    {currentPath === "/dashboard/customer/pending-kyc" &&
+                        <TableBlock />
+                    }
                 </div>
             </div>
         </div>

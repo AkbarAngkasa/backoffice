@@ -4,7 +4,7 @@ import user1 from '../../assets/images/people/user-1.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBell, faGrip } from '@fortawesome/free-solid-svg-icons';
 
-export default function NavbarBlock() {
+export default function NavbarBlock(props) {
     useEffect(() => {
         initFlowbite();
     });
@@ -23,7 +23,7 @@ export default function NavbarBlock() {
 
                     <div className='flex flex-col'>
                         <span className="text-sm font-medium mb-2 text-slate-600 dark:text-white hidden sm:inline-block">Backoffice</span>
-                        <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block">Pending KYC</span>
+                        <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block capitalize">{props.navTitle}</span>
                     </div>
                 </div>
 
