@@ -146,7 +146,6 @@ export default function TableBlock() {
     );
 
     const actionButtons = (product) => {
-        console.log(product);
 
         const openModal = (user_phone_no) => {
             let elhModal = document.getElementById(`modal_${user_phone_no}`);
@@ -162,7 +161,7 @@ export default function TableBlock() {
         return (
             <>
                 <div className='flex flex-row'>
-                    <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2'>
+                    <ButtonFlowbite onClick={() => openModal(product.nik)} className='mr-2'>
                         Details
                     </ButtonFlowbite>
                     {product.user_status === "active" ?
@@ -175,10 +174,10 @@ export default function TableBlock() {
                         </ButtonFlowbite>
                     }
                     
-                    <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
+                    <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.nik}`}>
                         <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
                             <div className='absolute top-3 right-3'>
-                                <FontAwesomeIcon icon={faXmark} className='cursor-pointer text-white sm:text-slate-500' onClick={() => closeModal(product.phone_no)}/>
+                                <FontAwesomeIcon icon={faXmark} className='cursor-pointer text-white sm:text-slate-500' onClick={() => closeModal(product.nik)}/>
                             </div>
                             <div className='w-full flex justify-center place-items-center sm:w-[50%] bg-slate-900'>
                                 <img src={user_id_card_1} alt={user_id_card_1} className='w-full h-fit' />
@@ -188,15 +187,19 @@ export default function TableBlock() {
                                     <ul className='w-[75%]'>
                                         <li className='flex justify-between mb-1'>
                                             <span className='font-semibold text-sm'>Acc No.</span>
-                                            <span className='text-sm'>EA-1-2345-6789-9</span>
+                                            <span className='text-sm'>{product.account_no}</span>
                                         </li>
                                         <li className='flex justify-between mb-1'>
                                             <span className='font-semibold text-sm'>Username</span>
-                                            <span className='text-sm'>8123456789012</span>
+                                            <span className='text-sm'>{product.full_name}</span>
                                         </li>
                                     </ul>
                                     <div className='w-[25%] pl-2 flex justify-end place-items-end'>
-                                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
+                                        {product.user_status === "active" ?
+                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300 capitalize">{product.user_status}</span>
+                                            :    
+                                            <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300 capitalize">{product.user_status}</span>
+                                        }
                                     </div>
                                 </div>
                                 <div className='p-[5%]'>
@@ -206,8 +209,8 @@ export default function TableBlock() {
                                             <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder={product.full_name} />
                                         </li>
                                         <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Username</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='350810425938207' />
+                                            <span className='font-semibold text-sm'>NIK</span>
+                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder={product.nik} />
                                         </li>
                                         <li className='flex justify-between mb-1'>
                                             <span className='font-semibold text-sm'>Birthdate</span>
@@ -250,11 +253,11 @@ export default function TableBlock() {
                                         </li>
                                         <li className='flex justify-between mb-1'>
                                             <span className='font-semibold text-sm'>User Status</span>
-                                            <span className='text-sm'>Active</span>
+                                            <span className='text-sm'>{product.user_status}</span>
                                         </li>
                                     </ul>
-                                    <div className='w-[25%] pl-2 flex flex-wrap justify-end place-items-start'>
-                                        <button type="button" className="px-3 py-2 mb-2 mr-0 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Verify</button>
+                                    <div className='w-[25%] pl-2 flex flex-col justify-end place-items-end'>
+                                        <button type="button" className="px-3 py-2 mb-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Verify</button>
                                         <button type="button" className="px-3 py-2 mb-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Reject</button>
                                     </div>
                                 </div>
