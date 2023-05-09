@@ -22,8 +22,8 @@ export default function NavbarBlock() {
                     </button>
 
                     <div className='flex flex-col'>
-                        <span className="text-sm font-medium mb-2 text-slate-600 dark:text-white hidden sm:inline-block">Backoffice</span>
-                        <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block">Pending KYC</span>
+                        <span className="text-2xl font-medium mb-2 text-slate-600 dark:text-white hidden sm:inline-block">External Backoffice</span>
+                        {/* <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block">Pending KYC</span> */}
                     </div>
                 </div>
 
