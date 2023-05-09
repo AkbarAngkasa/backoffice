@@ -133,7 +133,6 @@ export default function TableBlock() {
     );
 
     const actionButtons = (product) => {
-        console.log(product)
         const openModal = (user_phone_no) => {
             let elhModal = document.getElementById(`modal_${user_phone_no}`);
             elhModal.classList.toggle('hidden');

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBell, faGrip } from '@fortawesome/free-solid-svg-icons';
 
 export default function NavbarBlock(props) {
+    console.log(props)
     useEffect(() => {
         initFlowbite();
     });
