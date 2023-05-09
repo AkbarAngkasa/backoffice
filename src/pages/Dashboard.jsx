@@ -15,7 +15,7 @@ export default function DashboardLayout() {
     let currentPath = useGetFullPath();
 
     return (
-        <div className="w-full flex">
+        <div className="w-full flex h-screen overflow-y-scroll">
             {/* Sidenav */}
             <div className="w-0 sm:w-[20%] bg-transparent">
                 <SidenavBlock />
@@ -25,7 +25,9 @@ export default function DashboardLayout() {
                 <NavbarBlock navTitle={currentPage} />
                 <div className="p-5">
                     {currentPath === "/dashboard/customer/pending-kyc" &&
-                        <TableBlock />
+                        <div>
+                            <TableBlock />
+                        </div>
                     }
                 </div>
             </div>
