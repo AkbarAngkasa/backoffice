@@ -24,7 +24,7 @@ export default function DashboardLayout() {
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
                 <NavbarBlock navTitle={currentPage} />
                 <div className="p-5">
-                    {currentPath === "/dashboard/customer/pending-kyc" &&
+                    {currentPath === "/dashboard/eod-batch" &&
                         <div>
                             <TableBlock />
                         </div>

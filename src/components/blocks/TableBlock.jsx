@@ -24,33 +24,28 @@ export default function TableBlock() {
 
     const ProductService = [
         {
-            register_time: '19/05/22 10:43',
-            account_no: 'EA-1-2345-6789-9',
-            phone_no: 8229799327698,
-            full_name: 'Siswanto Nugroho',
-            nik: 3508105425938207,
-            user_status: 'Active',
-            kyc_level: 'Pre-1',
+            batch_id: '1294',
+            batch_date: '23/05/17',
+            batch_time: '23:45',
+            finish_time: '--',
+            status: 'Running',
         },
         {
-            register_time: '12/12/23 10:43',
-            account_no: 'EA-1-2345-6789-12',
-            phone_no: 8123456789012,
-            full_name: 'Angkasa',
-            nik: 3508105425938212,
-            user_status: 'Blocked',
-            kyc_level: 'Pre-1',
+            batch_id: '1293',
+            batch_date: '23/05/16',
+            batch_time: '23:45',
+            finish_time: '00:18',
+            status: 'Success',
         },
     ]
 
     const cols = [
-        { field: 'register_time', header: 'Register Time' },
-        { field: 'account_no', header: 'Account No' },
-        { field: 'phone_no', header: 'Phone No' },
+        { field: 'batch_id', header: 'Batch ID' },
+        { field: 'batch_date', header: 'Batch Date' },
+        { field: 'batch_time', header: 'Batch Time' },
         { field: 'full_name', header: 'Full Name' },
-        { field: 'nik', header: 'NIK' },
-        { field: 'user_status', header: 'User Status' },
-        { field: 'kyc_level', header: 'KYC Level' },
+        { field: 'finish_time', header: 'Finish Time' },
+        { field: 'status', header: 'Status' },
     ];
 
     const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
@@ -156,9 +151,6 @@ export default function TableBlock() {
                     <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='mr-2'>
                         Details
                     </ButtonFlowbite>
-                    <ButtonFlowbite onClick={() => openModal(product.phone_no)} className='bg-red-700'>
-                        Block
-                    </ButtonFlowbite>
                     <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
                         <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
                             <div className='absolute top-3 right-3'>
@@ -254,14 +246,12 @@ export default function TableBlock() {
         <>
             <div className="card">
                 <Tooltip target=".export-buttons>button" position="bottom" />
-                <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={10} filters={filters} globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'kyc_level', 'action']} emptyMessage="Query not found." className='h-fit'>
-                    <Column field="register_time" header="Register Time" />
-                    <Column field="account_no" header="Account No" />
-                    <Column field="phone_no" header="Phone No" />
-                    <Column field="full_name" header="Full Name" />
-                    <Column field="nik" header="NIK" />
-                    <Column field="user_status" header="User status" />
-                    <Column field="kyc_level" header="KYC Level" />
+                <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={10} filters={filters} globalFilterFields={['batch_id', 'batch_date', 'batch_time', 'finish_time', 'status']} emptyMessage="Query not found." className='h-fit'>
+                    <Column field="batch_id" header="Batch ID" />
+                    <Column field="batch_date" header="Batch Date" />
+                    <Column field="batch_time" header="Batch Time" />
+                    <Column field="finish_time" header="Finish Time" />
+                    <Column field="status" header="Status" />
                     <Column body={actionButtons} header="Action"></Column>
                 </DataTable>
             </div>
