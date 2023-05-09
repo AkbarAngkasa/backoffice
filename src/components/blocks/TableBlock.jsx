@@ -247,6 +247,21 @@ export default function TableBlock() {
         )
     }
 
+    const statusField = (product) => {
+        console.log(product);
+
+        return (
+            <>
+                {product.status === 'success' ?
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300 capitalize">{product.status}</span>
+                    :
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 capitalize">{product.status}</span>
+                }
+            </>
+        )
+    }
+
+
     return (
         <>
             <div className="card">
@@ -256,7 +271,7 @@ export default function TableBlock() {
                     <Column field="batch_date" header="Batch Date" />
                     <Column field="batch_time" header="Batch Time" />
                     <Column field="finish_time" header="Finish Time" />
-                    <Column field="status" header="Status" />
+                    <Column body={statusField} header="Status" />
                     <Column body={actionButtons} header="Action"></Column>
                 </DataTable>
             </div>
