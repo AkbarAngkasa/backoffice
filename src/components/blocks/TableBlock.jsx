@@ -177,7 +177,6 @@ export default function PrimeTableEOD() {
             },
         ];
 
-        // Dummy data
         let accounts = [
             {
                 account_type: 'Costumer Savings',
