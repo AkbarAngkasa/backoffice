@@ -2,9 +2,11 @@ import { initFlowbite } from "flowbite";
 import { useEffect } from "react";
 import SidenavBlock from "../components/blocks/SidenavBlock";
 import NavbarBlock from "../components/blocks/NavbarBlock";
-import TableBlock from "../components/blocks/TableBlock";
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
+
+// Pages
+import PendingKYC from "./PendingKYC";
 
 export default function DashboardLayout() {
     useEffect(() => {
@@ -26,7 +28,7 @@ export default function DashboardLayout() {
                 <div className="p-5">
                     {currentPath === "/dashboard/customer/pending-kyc" &&
                         <div>
-                            <TableBlock />
+                            <PendingKYC />
                         </div>
                     }
                 </div>
