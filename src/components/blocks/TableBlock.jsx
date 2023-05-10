@@ -10,13 +10,13 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import PrimeReact from 'primereact/api';
 import { FilterMatchMode } from 'primereact/api';
-import user_id_card_1 from '../../assets/images/user_id_card/user_id_card_1.jpg';
+// import user_id_card_1 from '../../assets/images/user_id_card/user_id_card_1.jpg';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-export default function TableBlock() {
+export default function PrimeTableEOD() {
     PrimeReact.appendTo = 'self';
 
     const [products, setProducts] = useState([]);
@@ -144,6 +144,58 @@ export default function TableBlock() {
             elhModal.classList.toggle('hidden');
         }
 
+        // Data should be retrieve via fetch when user click the details button
+        // Dummy data
+        let transactions = [
+            {
+                tranx_type: 'Balance Top-Up (Indirect)',
+                tranx_counts: 1391,
+                total_volume: 575905000,
+                reconciled: 4,
+                unresolved: '-'
+            },
+            {
+                tranx_type: 'Inter-Banks Funds Transfer (IBFT)',
+                tranx_counts: 638,
+                total_volume: 381842350,
+                reconciled: '-',
+                unresolved: 2
+            },
+            {
+                tranx_type: 'P2P Funds Transfer',
+                tranx_counts: 742,
+                total_volume: 421748500,
+                reconciled: 1,
+                unresolved: '-'
+            },
+            {
+                tranx_type: 'Membership Fee',
+                tranx_counts: 1083,
+                total_volume: 21660000,
+                reconciled: '-',
+                unresolved: '-'
+            },
+        ];
+
+        // Dummy data
+        let accounts = [
+            {
+                account_type: 'Costumer Savings',
+                account_counts: 1083,
+                total_balance: 742871950
+            },
+            {
+                account_type: 'Partner Pools',
+                account_counts: 9,
+                total_balance: 1352520
+            },
+            {
+                account_type: 'Internal Pools',
+                account_counts: 2,
+                total_balance: 952520
+            },
+        ];
+
         return (
             <>
                 <div className='flex flex-row'>
@@ -156,89 +208,88 @@ export default function TableBlock() {
                             Details
                         </ButtonFlowbite>
                     }
-                    <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen' id={`modal_${product.phone_no}`}>
-                        <div className='relative flex flex-col sm:flex-row justify-around w-full overflow-auto sm:h-fit bg-white opacity-100'>
+                    <div className='absolute hidden justify-center place-items-center z-50 top-0 right-0 bottom-0 left-0 p-[5%] bg-[rgba(0,0,0,0.5)] h-screen overflow-x-scroll' id={`modal_${product.phone_no}`}>
+                        {/* Container */}
+                        <div className='relative flex flex-col bg-white'>
+                            {/* Close Button */}
                             <div className='absolute top-3 right-3'>
-                                <FontAwesomeIcon icon={faXmark} className='cursor-pointer text-white sm:text-slate-500' onClick={() => closeModal(product.phone_no)}/>
+                                <FontAwesomeIcon icon={faXmark} className='cursor-pointer text-slate-500' onClick={() => closeModal(product.phone_no)}/>
                             </div>
-                            <div className='w-full flex justify-center place-items-center sm:w-[50%] bg-slate-900'>
-                                <img src={user_id_card_1} alt={user_id_card_1} className='w-full h-fit' />
+                            {/* Header */}
+                            <div className='p-[2%]'>
+                                <h3 className='font-bold text-2xl text-slate-700'>EOD Batch</h3>
                             </div>
-                            <div className='flex flex-col w-full sm:w-[50%]'>
-                                <div className='flex flex-row p-[5%] bg-slate-50'>
-                                    <ul className='w-[75%]'>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Acc No.</span>
-                                            <span className='text-sm'>EA-1-2345-6789-9</span>
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Username</span>
-                                            <span className='text-sm'>8123456789012</span>
-                                        </li>
-                                    </ul>
-                                    <div className='w-[25%] pl-2 flex justify-end place-items-end'>
-                                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
-                                    </div>
-                                </div>
-                                <div className='p-[5%]'>
-                                    <form className='w-full'>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Full Name</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder={product.full_name} />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Username</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='350810425938207' />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Birthdate</span>
-                                            <input type="date" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Gender</span>
-                                            <select className="text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='350810425938207">
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Adress</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='Pulinombo No. A11' />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Village</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='Citrodiwangsan' />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>Subdistrict</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='Lumajang' />
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>City</span>
-                                            <input type="text" className='text-sm p-1 border-none text-end placeholder:text-end placeholder:text-slate-900 placeholder:text-sm' placeholder='Lumajang' />
-                                        </li>
-                                        <div className='flex justify-end'>
-                                            <button type="button" className="px-3 py-2 mt-1 mr-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
-                                            <button type="button" className="px-3 py-2 mt-1 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cancel</button>
+                            {/* Body */}
+                            <div className='flex flex-col justify-start'>
+                                
+                                {/* Container */}
+                                <div className='flex flex-col sm:flex-row justify-between p-[5%] sm:p-[2%] border-t-[1px] bg-gray-100 border-slate-400'>
+                                    <div className='flex flex-col w-full mb-4 sm:mr-4 sm:mb-0'>
+                                        <div className='flex flex-row justify-between'>
+                                            <span className='inline-block mb-2 text-sm font-medium text-slate-600'>Batch Date</span>
+                                            <span className='inline-block text-sm font-medium text-slate-800'>23/05/17</span>
                                         </div>
-                                    </form>
-                                </div>
-                                <div className='flex flex-row p-[5%] bg-slate-50'>
-                                    <ul className='w-[75%]'>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>KYC Status</span>
-                                            <span className='text-sm'>Pending KYC-1 </span>
-                                        </li>
-                                        <li className='flex justify-between mb-1'>
-                                            <span className='font-semibold text-sm'>User Status</span>
-                                            <span className='text-sm'>Active</span>
-                                        </li>
-                                    </ul>
-                                    <div className='w-[25%] pl-2 flex flex-wrap justify-end place-items-start'>
-                                        <button type="button" className="px-3 py-2 mb-2 mr-0 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Verify</button>
-                                        <button type="button" className="px-3 py-2 mb-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Reject</button>
+                                        <div className='flex flex-row justify-between'>
+                                            <span className='inline-block mb-2 text-sm font-medium text-slate-600'>No.</span>
+                                            <span className='inline-block text-sm font-medium text-slate-800'>1294</span>
+                                        </div>
                                     </div>
+
+                                    <div className='flex flex-col w-full mb-4 sm:mr-4 sm:mb-0'>
+                                        <div className='flex flex-row justify-between'>
+                                            <span className='inline-block mb-2 text-sm font-medium text-slate-600'>Batch Time</span>
+                                            <span className='inline-block text-sm font-medium text-slate-800'>23:45</span>
+                                        </div>
+                                        <div className='flex flex-row justify-between'>
+                                            <span className='inline-block mb-2 text-sm font-medium text-slate-600'>Finish Time</span>
+                                            <span className='inline-block text-sm font-medium text-slate-800'>-</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col w-full mb-4 sm:mr-4 sm:mb-0'>
+                                        <div className='flex flex-row justify-between'>
+                                            <span className='inline-block mb-2 text-sm font-medium text-slate-600'>Status</span>
+                                            <span className='inline-block text-sm font-medium text-slate-800'>Success</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='flex flex-col w-full mb-4 sm:mr-4 sm:mb-0'>
+                                        <div className='flex flex-row justify-end'>
+                                            <ButtonFlowbite size={"xs"}>
+                                                Retry
+                                            </ButtonFlowbite>
+                                            {/* <span className='inline-block mb-2 text-sm font-medium text-slate-600'>Retry</span> */}
+                                        </div>
+                                    </div>    
                                 </div>
+                                {/* End Of Container */}
+                                <div className='flex flex-col sm:flex-row justify-between p-[1%] border-t-[1px] bg-white border-slate-400'>
+                                    <DataTable value={transactions} className='w-full'>
+                                        <Column field="tranx_type" header="Tranx Type"></Column>
+                                        <Column field="tranx_counts" header="Tranx Counts"></Column>
+                                        <Column field="total_volume" header="Total Volume"></Column>
+                                        <Column field="reconciled" header="Reconciled"></Column>
+                                        <Column field="unresolved" header="Unresolved"></Column>
+                                        <Column body={
+                                            <ButtonFlowbite>
+                                                Download
+                                            </ButtonFlowbite>
+                                        } header="Report"></Column>
+                                    </DataTable>
+                                </div>
+                                <div className='flex flex-col sm:flex-row justify-between p-[1%] border-t-[1px] bg-white border-slate-400'>
+                                    <DataTable value={accounts} className='w-full'>
+                                        <Column field="account_type" header="Account Type"></Column>
+                                        <Column field="account_counts" header="Account Counts"></Column>
+                                        <Column field="total_balance" header="Total Balance"></Column>
+                                        <Column body={
+                                            <ButtonFlowbite>
+                                                Download
+                                            </ButtonFlowbite>
+                                        } header="Report"></Column>
+                                    </DataTable>
+                                </div>
+
                             </div>
                         </div>
                     </div>
