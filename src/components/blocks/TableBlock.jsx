@@ -21,6 +21,7 @@ export default function TableBlock() {
     const [products, setProducts] = useState([]);
     const dt = useRef(null);
 
+    // Dummy data
     const ProductService = [
         {
             register_time: '19/05/22 10:43',
