@@ -25,11 +25,7 @@ export default function DashboardLayout() {
             </div>
             {/* Content */}
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
-                {currentPath === "/dashboard/configuration/fee-management/add" ?
-                    <NavbarBlock navTitle={'Fee Management Add'} />
-                    :
-                    <NavbarBlock navTitle={currentPage} />
-                }
+                <NavbarBlock navTitle={currentPage} />
                 <div className="p-5">
                     {currentPath === "/dashboard/configuration/fee-management" &&
                         <div>

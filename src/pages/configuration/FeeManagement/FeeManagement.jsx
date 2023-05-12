@@ -148,7 +148,7 @@ export default function FeeManagement() {
 
     // Components
     const header = (
-        <div className="flex flex-row justify-between gap-2 py-2 px-1 w-full overflow-auto h-fit">            
+        <div className="flex flex-row justify-between sm:justify-end gap-2 py-2 px-1 w-full overflow-auto h-fit">            
             <Link to={"/dashboard/configuration/fee-management/add"} type="button" className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base py-4 px-[1.30rem] block dark:bg-blue-600 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-700">
                 <FontAwesomeIcon icon={faPlus} />
             </Link>
