@@ -6,8 +6,8 @@ import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
 
 // Pages
-import FeeManagement from "./FeeManagement/FeeManagement";
-import FeeManagementAdd from "./FeeManagement/FeeManagementAdd";
+import FeeManagement from "./configuration/FeeManagement/FeeManagement";
+import FeeManagementAdd from "./configuration/FeeManagement/FeeManagementAdd";
 
 export default function DashboardLayout() {
     useEffect(() => {
