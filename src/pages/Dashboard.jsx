@@ -2,9 +2,12 @@ import { initFlowbite } from "flowbite";
 import { useEffect } from "react";
 import SidenavBlock from "../components/blocks/SidenavBlock";
 import NavbarBlock from "../components/blocks/NavbarBlock";
-import TableBlock from "../components/blocks/TableBlock";
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
+
+// Pages
+import FeeManagement from "./FeeManagement/FeeManagement";
+import FeeManagementAdd from "./FeeManagement/FeeManagementAdd";
 
 export default function DashboardLayout() {
     useEffect(() => {
@@ -22,11 +25,20 @@ export default function DashboardLayout() {
             </div>
             {/* Content */}
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
-                <NavbarBlock navTitle={currentPage} />
+                {currentPath === "/dashboard/configuration/fee-management/add" ?
+                    <NavbarBlock navTitle={'Fee Management Add'} />
+                    :
+                    <NavbarBlock navTitle={currentPage} />
+                }
                 <div className="p-5">
-                    {currentPath === "/dashboard/customer/pending-kyc" &&
+                    {currentPath === "/dashboard/configuration/fee-management" &&
                         <div>
-                            <TableBlock />
+                            <FeeManagement />
+                        </div>
+                    }
+                    {currentPath === "/dashboard/configuration/fee-management/add" &&
+                        <div>
+                            <FeeManagementAdd />
                         </div>
                     }
                 </div>
