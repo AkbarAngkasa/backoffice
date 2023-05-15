@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button as ButtonFlowbite } from 'flowbite-react';
+// import { Button as ButtonFlowbite } from 'flowbite-react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import 'primeicons/primeicons.css';
@@ -19,6 +19,7 @@ export default function FeeManagement() {
 
     const ProductService = [
         {
+            id:1,
             fee_name: 'Bank Transfer Fee',
             transaction_type: 'IBFT',
             bank_issuer_sourceOfFund: 'All',
@@ -30,6 +31,7 @@ export default function FeeManagement() {
             status: 'Inactive',
         },
         {
+            id:2,
             fee_name: 'Fee Top Up mandiri',
             transaction_type: 'TOP UP VA',
             bank_issuer_sourceOfFund: 'Mandiri',
@@ -41,6 +43,7 @@ export default function FeeManagement() {
             status: 'Active',
         },
         {
+            id:3,
             fee_name: 'Fee Top Up CIMB',
             transaction_type: 'TOP UP VA',
             bank_issuer_sourceOfFund: 'CIMB',
@@ -52,6 +55,7 @@ export default function FeeManagement() {
             status: 'Active',
         },
         {
+            id:4,
             fee_name: 'Biaya Bulanan',
             transaction_type: 'Account Admin',
             bank_issuer_sourceOfFund: 'All',
@@ -170,16 +174,28 @@ export default function FeeManagement() {
         </div>
     );
 
-    const actionButtons = () => {
+    const status = (product) => {
+        return (
+            <>
+                {product.status === "Active"  ?
+                    <span className="font-medium text-green-700">{product.status}</span>
+                    :
+                    <span className="font-medium text-red-700">{product.status}</span>
+                }
+            </>
+        )
+    }
+
+    const actionButtons = (product) => {
         return (
             <>
                 <div className='flex flex-row'>
-                    <ButtonFlowbite className='mr-2'>
-                        Edit
-                    </ButtonFlowbite>
-                    <ButtonFlowbite className='bg-red-700'>
-                        Delete
-                    </ButtonFlowbite>
+                    <Link to={`/dashboard/configuration/fee-management/${product.id}/edit`}>
+                        <button type="button" class="px-3 py-2 mr-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Edit
+                        </button>
+                    </Link>
+                    <button type="button" class="px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
                 </div>
             </>
         )
@@ -196,8 +212,8 @@ export default function FeeManagement() {
                     <Column field="emkop_fee" header="Emkop Fee" />
                     <Column field="partner_fee" header="Partner Fee" />
                     <Column field="charging_type" header="Charging Type" />
-                    <Column field="charge_to_cust" header="Charge To Cust" />
-                    <Column field="status" header="Status" />
+                    <Column field="charge_to_cust" className="font-medium" header="Charge To Cust" />
+                    <Column body={status} header="Status" />
                     <Column body={actionButtons} header="Action"></Column>
                 </DataTable>
             </div>

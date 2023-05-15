@@ -8,6 +8,7 @@ import useGetFullPath from "../costumHooks/useGetFullPath";
 // Pages
 import FeeManagement from "./configuration/FeeManagement/FeeManagement";
 import FeeManagementAdd from "./configuration/FeeManagement/FeeManagementAdd";
+import FeeManagementEdit from "./configuration/FeeManagement/FeeManagementEdit";
 
 export default function DashboardLayout() {
     useEffect(() => {
@@ -35,6 +36,11 @@ export default function DashboardLayout() {
                     {currentPath === "/dashboard/configuration/fee-management/add" &&
                         <div>
                             <FeeManagementAdd />
+                        </div>
+                    }
+                    {currentPage === "edit" &&
+                        <div>
+                            <FeeManagementEdit />
                         </div>
                     }
                 </div>

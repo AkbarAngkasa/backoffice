@@ -13,6 +13,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}/>
           <Route path="/dashboard/configuration/fee-management" element={<Dashboard />}/>
           <Route path="/dashboard/configuration/fee-management/add" element={<Dashboard />}/>
+          <Route path="/dashboard/configuration/fee-management/:id/edit" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>
