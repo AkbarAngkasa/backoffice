@@ -10,6 +10,9 @@ import { FilterMatchMode } from 'primereact/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCsv, faFileExcel, faFilePdf, faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import formatRupiah from '../../../methods/formatRupiah';
+// import useFormatRupiah from '../../../costumHooks/useFormatRupiah';
+
 
 export default function FeeManagement() {
     PrimeReact.appendTo = 'self';
@@ -230,13 +233,21 @@ export default function FeeManagement() {
         )
     }
 
-    // TODO
-    // const emkopFee = () => {
-    //     return(
-    //         <>
-    //         </>
-    //     )
-    // }
+    const emkopFee = (product) => {
+        return(
+            <>
+                <span>{formatRupiah(product.emkop_fee)}</span>
+            </>
+        )
+    }
+    
+    const partnerFee = (product) => {
+        return(
+            <>
+                <span>{formatRupiah(product.partner_fee)}</span>
+            </>
+        )
+    }
 
     return (
         <>
@@ -246,8 +257,8 @@ export default function FeeManagement() {
                     <Column field="transaction_type" header="Transaction Type" />
                     <Column field="bank_issuer_sourceOfFund" header="Bank/Issuer/Source Of Fund" />
                     <Column field="channel_name" header="Channel Name" />
-                    <Column field="emkop_fee" header="Emkop Fee" />
-                    <Column field="partner_fee" header="Partner Fee" />
+                    <Column body={emkopFee} header="Emkop Fee" />
+                    <Column body={partnerFee} header="Partner Fee" />
                     <Column field="charging_type" header="Charging Type" />
                     <Column field="charge_to_cust" className="font-medium" header="Charge To Cust" />
                     <Column body={status} header="Status" />
