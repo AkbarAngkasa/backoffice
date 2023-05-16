@@ -26,13 +26,14 @@ export default function LoginBlock() {
 
     useEffect(() => {
         initFlowbite();
-        
+
         // #. Check is user have an active accessToken?
         let accessToken =  cookies.get('accessToken');
         console.log(accessToken)
         if(accessToken === undefined){
             // User Is Not Logged In.
             setUserAccessToken(undefined);
+            navigate("/login");
         } else {
             // User Already Logged In.
             setUserAccessToken(accessToken);
