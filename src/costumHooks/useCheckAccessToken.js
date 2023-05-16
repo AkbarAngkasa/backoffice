@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Cookies from 'universal-cookie';
-import useGetFullPath from './useGetFullPath';
 
 export default function useCheckAccessToken() {
     // === Hooks ===
     const navigate = useNavigate();
     const cookies = useMemo(() => new Cookies(), []);
-    const currentPath = useGetFullPath();
 
     const [ userAccessToken, setUserAccessToken ] = useState(null);
 
@@ -19,11 +17,10 @@ export default function useCheckAccessToken() {
             setUserAccessToken(undefined);
             navigate("/login");
         } else {
-            // User Already Logged In, redirect back to its current path.
-            setUserAccessToken(accessToken);
-            navigate(currentPath);
+            // User Already Logged In.
+            navigate("/dashboard");
         }
-    }, [userAccessToken, cookies, navigate, currentPath]);
+    }, [userAccessToken, cookies, navigate]);
 
     return { userAccessToken };
 }
