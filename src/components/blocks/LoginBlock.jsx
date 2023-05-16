@@ -1,5 +1,5 @@
 import { initFlowbite } from 'flowbite';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 import { useEffect, useState } from 'react';
 import useDate from '../../costumHooks/useDate';
@@ -7,11 +7,16 @@ import useGenerateGreet from '../../costumHooks/useGenerateGreet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'universal-cookie';
 
 export default function LoginBlock() {
     useEffect(() => {
         initFlowbite();
     });
+
+    // === Hooks ===
+    const navigate = useNavigate();
+    const cookies = new Cookies();
 
     // === UI States ===
     const [ fetching, setFetching ] = useState(false);
@@ -52,8 +57,17 @@ export default function LoginBlock() {
             setResCode(response.responseCode);
             setResMessage(response.responseMessage);
             
+            // Success
+            if(response.responseCode === 200){
+                // TODOS
+                // 1. Save AccessToken in cookies
+                cookies.set('accessToken', response.accessToken, { path: '/', maxAge: response.expiresIn });
+                // 2. Redirect user to /dashboard
+                navigate("/dashboard");
+            }
+
+            // Failed
             let uuid = uuidv4();
-            console.log('set: ', uuid)
             if((response.responseCode === 400)||(response.responseCode === 403)){
                 setAlertUuid(uuid);
             }
@@ -64,7 +78,6 @@ export default function LoginBlock() {
 
     const closeAlert = (e, alertUuid) => {
         e.preventDefault();
-        console.log(alertUuid);
         const elhAlert = document.getElementById(alertUuid);
         elhAlert.classList.add('hidden');
         setAlertUuid(false);
@@ -101,7 +114,7 @@ export default function LoginBlock() {
                                 </div>
                             </div>
 
-                            {/* Toast */}
+                            {/* === Toast === */}
                             {resCode === 400 && alertUuid &&
                                 <div id={alertUuid} className="flex p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
                                     <FontAwesomeIcon icon={faExclamationCircle} />
@@ -126,17 +139,6 @@ export default function LoginBlock() {
                                 </button>
                                 </div>
                             }
-                            {/* <div id="alert-5" className="flex p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-                                <FontAwesomeIcon icon={faExclamationCircle} />
-                                <span className="sr-only">Info</span>
-                                <div className="ml-3 text-sm font-medium capitalize">
-                                    password invalid
-                                </div>
-                                <button type="button" className="items-center justify-center ml-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-yellow-300 dark:hover:bg-gray-700" data-dismiss-target="#alert-5" aria-label="Close">
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </button>
-                            </div> */}
-
 
                             {/* ================== */}
                             {/* === Login Form === */}
