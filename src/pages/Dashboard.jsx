@@ -38,7 +38,8 @@ import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
 
 // Pages
-import TableBlock from "../components/blocks/TableBlock";
+// import TableBlock from "../components/blocks/TableBlock";
+import Table from "./menu/Table";
 
 export default function DashboardLayout() {
     useEffect(() => {
@@ -63,11 +64,16 @@ export default function DashboardLayout() {
                             Dashboard
                         </div>
                     }
-                    {currentPath === "/dashboard/menu/list" &&
+                    {currentPath === "/dashboard/menu" &&
                         <div>
-                            <TableBlock />
+                            <Table />
                         </div>
                     }
+                    {/* {currentPath === "/dashboard/menu/list" &&
+                        <div>
+                            <Table />
+                        </div>
+                    } */}
                 </div>
             </div>
         </div>
