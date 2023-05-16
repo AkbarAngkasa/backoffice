@@ -43,7 +43,7 @@ export default function SidenavBlock() {
                         </li>
 
                         <li>
-                            <Link to="#" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <Link to="/dashboard" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <FontAwesomeIcon icon={faHouse} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                 <span className="flex-1 ml-3 whitespace-nowrap">Home</span>
                             </Link>
@@ -52,12 +52,12 @@ export default function SidenavBlock() {
                         <li>
                             <button type="button" className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-customer" data-collapse-toggle="dropdown-customer">
                                 <FontAwesomeIcon icon={faUsers} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                <span className="flex-1 ml-3 text-left whitespace-nowrap">Customer</span>
+                                <span className="flex-1 ml-3 text-left whitespace-nowrap">Menu</span>
                                 <svg aria-hidden="true" className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             </button>
                             <ul id="dropdown-customer" className="hidden py-2 space-y-2">
                                 <li>
-                                    <Link to="#" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Customer Search</Link>
+                                    <Link to="/dashboard/menu/list" className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">List</Link>
                                 </li>
                             </ul>
                         </li>
