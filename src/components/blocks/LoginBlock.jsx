@@ -1,7 +1,7 @@
 import { initFlowbite } from 'flowbite';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useDate from '../../costumHooks/useDate';
 import useGenerateGreet from '../../costumHooks/useGenerateGreet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,21 +10,35 @@ import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'universal-cookie';
 
 export default function LoginBlock() {
-    useEffect(() => {
-        initFlowbite();
-    });
-
+    
     // === Hooks ===
     const navigate = useNavigate();
-    const cookies = new Cookies();
-
+    const cookies = useMemo(() => new Cookies(), []);
+    
     // === UI States ===
     const [ fetching, setFetching ] = useState(false);
     const [ resCode, setResCode ] = useState(false);
     const [ resMessage, setResMessage ] = useState(false);
-    const [ alertUuid, setAlertUuid ] = useState(null);
-
+    const [ alertUuid, setAlertUuid ] = useState(false);
+    
     // === Handlers ===
+    const [ userAccessToken, setUserAccessToken ] = useState(null);
+
+    useEffect(() => {
+        initFlowbite();
+        // #. Check is user have an active accessToken?
+        let accessToken =  cookies.get('accessToken');
+        console.log(accessToken)
+        if(accessToken === undefined){
+            // User Is Not Logged In.
+            setUserAccessToken(undefined);
+        } else {
+            // User Already Logged In.
+            setUserAccessToken(accessToken);
+            navigate("/dashboard");
+        }
+    }, [userAccessToken, cookies, navigate]);
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         // == Set State ==
