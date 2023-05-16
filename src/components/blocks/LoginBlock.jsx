@@ -63,7 +63,7 @@ export default function LoginBlock() {
             
             // Success
             if(response.responseCode === 200){
-                // TODOS
+                // Handle Login
                 // 1. Save AccessToken in cookies
                 cookies.set('accessToken', response.accessToken, { path: '/', maxAge: response.expiresIn });
                 // 2. Redirect user to /dashboard
