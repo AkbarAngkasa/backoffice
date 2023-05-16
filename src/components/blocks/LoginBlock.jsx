@@ -8,12 +8,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'universal-cookie';
+import useCheckAccessToken from '../../costumHooks/useCheckAccessToken';
 
-export default function LoginBlock() {
-    
+export default function LoginBlock() {    
+    useEffect(() => {
+        initFlowbite();
+    })
+
     // === Hooks ===
+    const { userAccessToken } = useCheckAccessToken();
     const navigate = useNavigate();
     const cookies = useMemo(() => new Cookies(), []);
+    const greet = useGenerateGreet();
+    const currentDate = useDate();
     
     // === UI States ===
     const [ fetching, setFetching ] = useState(false);
@@ -22,25 +29,6 @@ export default function LoginBlock() {
     const [ alertUuid, setAlertUuid ] = useState(false);
     
     // === Handlers ===
-    const [ userAccessToken, setUserAccessToken ] = useState(null);
-
-    useEffect(() => {
-        initFlowbite();
-
-        // #. Check is user have an active accessToken?
-        let accessToken =  cookies.get('accessToken');
-        console.log(accessToken)
-        if(accessToken === undefined){
-            // User Is Not Logged In.
-            setUserAccessToken(undefined);
-            navigate("/login");
-        } else {
-            // User Already Logged In.
-            setUserAccessToken(accessToken);
-            navigate("/dashboard");
-        }
-    }, [userAccessToken, cookies, navigate]);
-    
     const handleSubmit = (e) => {
         e.preventDefault();
         // == Set State ==
@@ -101,6 +89,7 @@ export default function LoginBlock() {
 
     return (
         <>
+            {!userAccessToken &&
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto my-auto h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -122,10 +111,10 @@ export default function LoginBlock() {
                                 <hr />
                                 <div className="flex flex-row justify-between">
                                     <h2 className="my-2 font-semibold text-sm w-[70%]">
-                                        {useGenerateGreet()}
+                                        {greet}
                                     </h2>
                                     <h2 className="my-2 font-semibold text-sm">
-                                        <span className="ml-1">{useDate()}</span>
+                                        <span className="ml-1">{currentDate}</span>
                                     </h2>
                                 </div>
                             </div>
@@ -188,6 +177,7 @@ export default function LoginBlock() {
                     </div>
                 </div>
             </section>
+            }
         </>
     )
 }
