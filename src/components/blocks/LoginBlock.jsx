@@ -26,6 +26,7 @@ export default function LoginBlock() {
 
     useEffect(() => {
         initFlowbite();
+        
         // #. Check is user have an active accessToken?
         let accessToken =  cookies.get('accessToken');
         console.log(accessToken)

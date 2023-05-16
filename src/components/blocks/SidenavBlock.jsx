@@ -1,14 +1,26 @@
 import { initFlowbite } from "flowbite";
-import { useEffect } from "react";
-import { Link } from "react-router-dom"
+import { useEffect, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUsers } from "@fortawesome/free-solid-svg-icons";
+import Cookies from 'universal-cookie';
 
 export default function SidenavBlock() {
+    // === Hooks ===
+    const cookies = useMemo(() => new Cookies(), []);
+    const navigate = useNavigate();
+
+    // === Handlers ===
     useEffect(() => {
         initFlowbite();
     });
+    
+    function logoutHandler(e){
+        e.preventDefault();
+        cookies.remove('accessToken', { path: '/' });
+        navigate('/login');
+    }
 
     return (
         <>
@@ -25,7 +37,7 @@ export default function SidenavBlock() {
                                 <span className="font-medium text-sm text-slate-700">You're logged as</span>
                                 <div className="flex flex-wrap justify-between">
                                     <span className="font-semibold text-xl py-0 mb-1 text-slate-700">User's name</span>
-                                    <Link to="/login" className="font-medium text-sm py-1 px-3 mb-1 rounded-full bg-blue-700 hover:bg-blue-900 text-white">Logout</Link>
+                                    <button onClick={(e) => logoutHandler(e)} className="font-medium text-sm py-1 px-3 mb-1 rounded-full bg-blue-700 hover:bg-blue-900 text-white">Logout</button>
                                 </div>
                             </div>
                         </li>
