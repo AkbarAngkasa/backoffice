@@ -39,13 +39,14 @@ export default function SidenavBlock() {
                 return res.json()
             }).then(response => {
                 if(response.status === 200){
+                    setFetchingListMenu(false);
                     // User Logged in.
                     setListMenu(response.data.menu);
                     setUser(response.data.user);
                     // Stop loading animation
-                    setFetchingListMenu(false);
                 } else if (response.status === 401){
                     // User is Not Logged in.
+                    setFetchingListMenu(false);
                     navigate("/login");
                 }
             }).catch(err => {
