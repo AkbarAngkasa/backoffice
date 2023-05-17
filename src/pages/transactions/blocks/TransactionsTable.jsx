@@ -14,7 +14,8 @@ import { initFlowbite } from 'flowbite';
 
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
-// import { useNavigate } from 'react-router';
+import formatRupiah from '../../../methods/formatRupiah';
+import moment from 'moment';
 
 export default function TransactionsTable() {
     PrimeReact.appendTo = 'self';
@@ -35,9 +36,11 @@ export default function TransactionsTable() {
         initFlowbite();
     });
 
+
     // == Fetch Transactions ==
     useEffect(() => {
         setFetchingTransactions(true);
+
         if(accessToken !== null){
             fetch(endpoint, {
                 method: 'GET',
@@ -203,6 +206,18 @@ export default function TransactionsTable() {
         </div>
     );
 
+    const amount = (item) => (
+        <span>
+            {formatRupiah(item.diamond, 'Rp.')}
+        </span>
+    )
+
+    const transaction_date = (item) => (
+        <span>
+            {moment(item.transaction_date).format('DD MMMM YY')}
+        </span>
+    )
+
     return (
         <>
             {fetchingTransactions &&
@@ -217,31 +232,15 @@ export default function TransactionsTable() {
                 </div>
             }
             {!fetchingTransactions && transactionsArr &&
-                // <div className="card">
-                //     <Tooltip target=".export-buttons>button" position="bottom" />
-                //     <DataTable ref={dt} value={products} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={10} filters={filters} globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'user_kyc', 'action']} emptyMessage="Query not found." className='h-screen'>
-                //         <Column field="number" header="#" />
-                //         <Column field="emkop_transaction_id" header="Emkop Transaction ID" />
-                //         <Column field="emkop_user_id" header="Emkop User ID" />
-                //         <Column field="customer_id" header="Customer ID" />
-                //         <Column field="nominal" header="Nominal" />
-                //         <Column field="transaction_time" header="Transaction Time" />
-                //         <Column field="product_value_1" header="Product Value 1" />
-                //         <Column field="product_value_2" header="Product Value 2" />
-                //         <Column field="billing_id" header="Billing ID" />
-                //         <Column field="reference_id" header="Reference ID" />
-                //         <Column field="status" header="Status" />
-                //     </DataTable>
-                // </div>
                 <div className="card">
                     <Tooltip target=".export-buttons>button" position="bottom" />
                     <DataTable ref={dt} value={transactionsArr} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'>
                         <Column field="id" header="#" />
                         <Column field="phone_number" header="Emkop User ID" />
                         <Column field="phone_number_destination" header="Phone Number Destination" />
-                        <Column field="amount" header="Amount" />
+                        <Column body={amount} header="Amount" />
                         <Column field="diamond" header="Diamond" />
-                        <Column field="transaction_date" header="Transaction Date" />
+                        <Column body={transaction_date} header="Transaction Date" />
                         <Column field="status" header="Status" />
                         <Column field="type" header="Type" />
                     </DataTable>
