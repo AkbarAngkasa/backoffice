@@ -235,7 +235,7 @@ export default function TransactionsTable() {
                 // </div>
                 <div className="card">
                     <Tooltip target=".export-buttons>button" position="bottom" />
-                    <DataTable ref={dt} value={transactionsArr} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['register_time', 'account_no', 'phone_no', 'full_name', 'nik', 'user_status', 'user_kyc', 'action']} emptyMessage="Query not found." className='h-screen'>
+                    <DataTable ref={dt} value={transactionsArr} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'>
                         <Column field="id" header="#" />
                         <Column field="phone_number" header="Emkop User ID" />
                         <Column field="phone_number_destination" header="Phone Number Destination" />
