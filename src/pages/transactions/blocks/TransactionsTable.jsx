@@ -10,10 +10,47 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import PrimeReact from 'primereact/api';
 import { FilterMatchMode } from 'primereact/api';
+import { initFlowbite } from 'flowbite';
+
+import Cookies from 'universal-cookie';
+// import { useNavigate } from 'react-router';
 
 export default function TransactionsTable() {
     PrimeReact.appendTo = 'self';
 
+    // == Hooks ==
+    const cookies = new Cookies();
+    // const navigate = useNavigate();
+
+    // == UI States ==
+
+    // == Datas ==
+    const endpoint = process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS;
+    const accessToken = cookies.get('accessToken');
+
+    useEffect(() => {
+        initFlowbite();
+    });
+
+    // == Fetch Transactions ==
+    useEffect(() => {
+        console.log(accessToken);
+        console.log(endpoint);
+        fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(res => {
+            return res.json()
+        }).then(response => {
+            console.log(response);
+        }).catch(err => {
+            console.log(err);
+        })
+    });
+
+    // Dummy Data
     const [products, setProducts] = useState([]);
     const dt = useRef(null);
 

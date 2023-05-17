@@ -3,9 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faMoneyBills } from "@fortawesome/free-solid-svg-icons";
-
 import Cookies from 'universal-cookie';
 import SkeletonLayout from "../layouts/SkeletonLayout";
 
@@ -54,6 +51,8 @@ export default function SidenavBlock() {
             }).catch(err => {
                 console.log(err)
             })
+        } else {
+            navigate("/login");
         }
         // == End Of List Menu Fetch
     }, [accessToken, endpoint, navigate]);
@@ -105,7 +104,7 @@ export default function SidenavBlock() {
                         {!fetchingListMenu && listMenu &&
                             <li>
                                 <Link to={'/dashboard'} id={'dashboard'} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <FontAwesomeIcon icon={faHouse} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    <i class={`fa-solid fa-house flex-shrink-0 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white`}></i>
                                     <span className="flex-1 ml-3 whitespace-nowrap">Dashboard</span>
                                 </Link>
                             </li>
@@ -115,7 +114,7 @@ export default function SidenavBlock() {
                             listMenu.map((item) => (
                                 <li key={item.navbar_order}>
                                     <Link to={item.navbar_path} id={item.navbar_page} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                        <FontAwesomeIcon icon={faMoneyBills} className="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                        <i class={`fa-solid ${item.navbar_icon} flex-shrink-0 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white`}></i>
                                         <span className="flex-1 ml-3 whitespace-nowrap">{item.navbar_label}</span>
                                     </Link>
                                 </li>
