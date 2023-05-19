@@ -1,14 +1,67 @@
 import { initFlowbite } from 'flowbite';
-import { useEffect } from 'react';
-import user1 from '../../assets/images/people/user-1.png';
+import { useEffect, useMemo, useState } from 'react';
+// import user1 from '../../assets/images/people/user-1.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBell, faGrip } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBars, /*faBell, faGrip*/ } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'universal-cookie';
+import { useNavigate } from 'react-router';
 
 export default function NavbarBlock(props) {
+    // === Hooks ===
+    const cookies = useMemo(() => new Cookies(), []);
+    const navigate = useNavigate();
+
+    // === UI States ===
+    const [fetchingListMenu, setFetchingListMenu] = useState(false);
+    const [user, setUser] = useState(null);
+
+    // Datas
+    const endpoint = process.env.REACT_APP_EMKOP_ENDPOINT_LIST_MENU;
+    const accessToken = cookies.get('accessToken');
+
     useEffect(() => {
         initFlowbite();
-    });
+    })
 
+    // =====================
+    // == Fetch List Menu ==
+    // =====================
+    useEffect(() => {
+        setFetchingListMenu(true);
+        if (accessToken !== null) {
+            fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }).then(res => {
+                return res.json()
+            }).then(response => {
+                if (response.status === 200) {
+                    setFetchingListMenu(false);
+                    // User Logged in.
+                    setUser(response.data.user);
+                    // Stop loading animation
+                } else if (response.status === 401) {
+                    // User is Not Logged in.
+                    setFetchingListMenu(false);
+                    navigate("/login");
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        } else {
+            navigate("/login");
+        }
+        // == End Of List Menu Fetch
+    }, [accessToken, endpoint, navigate]);
+    
+    // === Handlers ===
+    function logoutHandler(e){
+        e.preventDefault();
+        cookies.remove('accessToken', { path: '/' });
+        navigate('/login');
+    }
     return (
         <header>
             {/* Wrapper */}
@@ -30,10 +83,10 @@ export default function NavbarBlock(props) {
                 {/* Wrapper */}
                 <div className='flex flex-wrap justify-end align-middle'>
                     {/* Notifications Button */}
-                    <button type="button" data-dropdown-toggle="notification-dropdown" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
+                    {/* <button type="button" data-dropdown-toggle="notification-dropdown" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
                         <FontAwesomeIcon icon={faBell} />
-                    </button>
-                    <div className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700" id="notification-dropdown">
+                    </button> */}
+                    {/* <div className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700" id="notification-dropdown">
                         <div className="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             Notifications
                         </div>
@@ -105,14 +158,14 @@ export default function NavbarBlock(props) {
                                 View all
                             </div>
                         </button>
-                    </div>
+                    </div> */}
                     {/* End Of Notifications Button */}
 
                     {/* Apps Button */}
-                    <button type="button" data-dropdown-toggle="apps-dropdown" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600 rotate-90">
+                    {/* <button type="button" data-dropdown-toggle="apps-dropdown" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600 rotate-90">
                         <FontAwesomeIcon icon={faGrip} />
-                    </button>
-                    <div className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600" id="apps-dropdown">
+                    </button> */}
+                    {/* <div className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600" id="apps-dropdown">
                         <div className="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             Apps
                         </div>
@@ -154,42 +207,36 @@ export default function NavbarBlock(props) {
                                 <div className="text-sm text-gray-900 dark:text-white">Logout</div>
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                     {/* End of Apps Button */}
 
                     {/* User Button  */}
-                    <button type="button" data-dropdown-toggle="dropdown" aria-expanded="false" id="user-menu-button" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
-                        <img className="w-8 h-8 rounded-full" src={user1} alt={user1} />
-                    </button>
-                    <div className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
-                        <div className="py-3 px-4">
-                            <span className="block text-sm font-semibold text-gray-900 dark:text-white">Angkasa</span>
-                            <span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">akbar@emkop.co.id</span>
+                    {!user ?
+                        <button type="button" aria-expanded="false" id="user-menu-button" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
+                            <div className="w-8 h-8 rounded-full bg-gray-400 animate-pulse"></div>
+                        </button>
+                        :
+                        <button type="button" data-dropdown-toggle="dropdown" aria-expanded="false" id="user-menu-button" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
+                            <div className="w-8 h-8 rounded-full">
+                                <FontAwesomeIcon icon={faUser} />
+                            </div>
+                        </button>
+                    }
+                    {!fetchingListMenu && user &&
+                        <div className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+                            <div className="py-3 px-4">
+                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">{user.full_name}</span>
+                                <span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">{user.email}</span>
+                            </div>
+                            <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                                <li onClick={(e) => logoutHandler(e)}>
+                                    <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</button>
+                                </li>
+                            </ul>
                         </div>
-                        <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                            <li>
-                                <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My profile</button>
-                            </li>
-                            <li>
-                                <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</button>
-                            </li>
-                        </ul>
-                        <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                            <li>
-                                <button href="#" className="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><svg className="mr-2 w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg> Collections</button>
-                            </li>
-                            
-
-                        </ul>
-                        <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                            <li>
-                                <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</button>
-                            </li>
-                        </ul>
-                    </div>
+                    }
+                    {/* End Of User Button */}
                 </div>
-                {/* End Of User Button */}
-
             </nav>
         </header>
     )
