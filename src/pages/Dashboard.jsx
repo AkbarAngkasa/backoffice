@@ -7,7 +7,7 @@ import useGetFullPath from "../costumHooks/useGetFullPath";
 // import useCheckAccessToken from "../costumHooks/useCheckAccessToken";
 
 // Pages
-import Transactions from "./transactions/Transactions";
+import Transactions from "./transactions";
 // import TableBlock from "../components/blocks/TableBlock";
 export default function DashboardLayout() {
     // Hooks 
