@@ -104,7 +104,7 @@ export default function SidenavBlock() {
 
                         {!fetchingListMenu && listMenu &&
                             <li>
-                                <Link to={'/dashboard'} id={'dashboard'} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                <Link to={'/dashboard'} id={'dashboard'} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">
                                     <i className={`fa-solid fa-house flex-shrink-0 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white`}></i>
                                     <span className="flex-1 ml-3 whitespace-nowrap">Dashboard</span>
                                 </Link>
@@ -114,7 +114,7 @@ export default function SidenavBlock() {
                         {!fetchingListMenu && listMenu &&
                             listMenu.map((item) => (
                                 <li key={item.navbar_order}>
-                                    <Link to={item.navbar_path} id={item.navbar_page} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <Link to={item.navbar_path} id={item.navbar_page} className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar">
                                         <i className={`fa-solid ${item.navbar_icon} flex-shrink-0 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white`}></i>
                                         <span className="flex-1 ml-3 whitespace-nowrap">{item.navbar_label}</span>
                                     </Link>
