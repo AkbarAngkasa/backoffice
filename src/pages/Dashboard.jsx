@@ -4,11 +4,13 @@ import SidenavBlock from "../components/blocks/SidenavBlock";
 import NavbarBlock from "../components/blocks/NavbarBlock";
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
-// import useCheckAccessToken from "../costumHooks/useCheckAccessToken";
 
 // Pages
 import Transactions from "./transactions";
-// import TableBlock from "../components/blocks/TableBlock";
+
+// Assets
+import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
+
 export default function DashboardLayout() {
     // Hooks 
     // useCheckAccessToken();
@@ -32,7 +34,7 @@ export default function DashboardLayout() {
                 <div className="p-5">
                     {currentPath === "/dashboard" &&
                         <div>
-                            Dashboard
+                            <img src={whyempty} width={400} alt={whyempty}/>
                         </div>
                     }
                     {currentPath === "/transactions" &&
