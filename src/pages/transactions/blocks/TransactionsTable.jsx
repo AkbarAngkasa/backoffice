@@ -52,7 +52,6 @@ export default function TransactionsTable() {
             }).then(res => {
                 return res.json()
             }).then(response => {
-                console.log(response)
                 if (response.status === 200) {
                     // Stop loading animation
                     setFetchingTransactions(false);

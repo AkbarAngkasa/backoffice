@@ -55,7 +55,6 @@ export default function LoginBlock() {
         }).then(res => {
             return res.json()
         }).then(response => {
-            console.log(response)
             // == Set State ==
             setFetching(false);
             setResCode(response.responseCode);
