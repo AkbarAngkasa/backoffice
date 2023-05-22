@@ -14,7 +14,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faFileCsv, faFileExcel, faFilePdf, faRotateRight, faSearch, /* faSearch */ } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf,  /* faSearch */ } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -169,68 +169,68 @@ export default function TransactionsTable() {
     // === Sort And Search ===
     // =======================
 
-    // == Fetch Search ==
-    const [fetchSearch, setFetchSearch] = useState("");
+    // // == Fetch Search ==
+    // const [fetchSearch, setFetchSearch] = useState("");
     
-    const searchHandler = (e) => {
-        e.preventDefault();
-        let tableSearchInput = document.getElementById('table-search').value;
-        setFetchSearch(tableSearchInput);
-    }
+    // const searchHandler = (e) => {
+    //     e.preventDefault();
+    //     let tableSearchInput = document.getElementById('table-search').value;
+    //     setFetchSearch(tableSearchInput);
+    // }
 
-    // == Fetch Sort ==
-    const [selectedSort, setSelectedSort] = useState("transaction_date asc"); 
+    // // == Fetch Sort ==
+    // const [selectedSort, setSelectedSort] = useState("transaction_date asc"); 
 
-    const selectedSortHandler = (e, selected) => {
-        e.preventDefault();
-        if(selected === "transaction_date asc"){
-            setSelectedSort("transaction_date asc");
-        } else {
-            setSelectedSort("transaction_date desc");
-        }
-    }
+    // const selectedSortHandler = (e, selected) => {
+    //     e.preventDefault();
+    //     if(selected === "transaction_date asc"){
+    //         setSelectedSort("transaction_date asc");
+    //     } else {
+    //         setSelectedSort("transaction_date desc");
+    //     }
+    // }
 
-    // == Fetch PageTable ==
-    const [pageTable, setPageTable] = useState(1);
-    const totalPageTableHandler = (e) => {
-        e.preventDefault();
-        const pageTableTotal = document.getElementById('total-pageTable').value;
-        setPageTable(pageTableTotal)
-    }
+    // // == Fetch PageTable ==
+    // const [pageTable, setPageTable] = useState(1);
+    // const totalPageTableHandler = (e) => {
+    //     e.preventDefault();
+    //     const pageTableTotal = document.getElementById('total-pageTable').value;
+    //     setPageTable(pageTableTotal)
+    // }
 
-    // == Fetch PageTable ==
-    const [limitTable, setLimitTable] = useState(10);
-    const totalLimitTableHandler = (e) => {
-        e.preventDefault();
-        const limitTableTotal = document.getElementById('total-limitTable').value;
-        setLimitTable(limitTableTotal);
-    }
+    // // == Fetch PageTable ==
+    // const [limitTable, setLimitTable] = useState(10);
+    // const totalLimitTableHandler = (e) => {
+    //     e.preventDefault();
+    //     const limitTableTotal = document.getElementById('total-limitTable').value;
+    //     setLimitTable(limitTableTotal);
+    // }
 
-    // == Submit Endpoint ==
-    const fetchSubmitHandler = (e) => {
-        e.preventDefault();
-        // 1. Fetch
-        console.log(fetchSearch);
-        console.log(selectedSort);
-        console.log(pageTable);
-        console.log(limitTable);
+    // // == Submit Endpoint ==
+    // const fetchSubmitHandler = (e) => {
+    //     e.preventDefault();
+    //     // 1. Fetch
+    //     console.log(fetchSearch);
+    //     console.log(selectedSort);
+    //     console.log(pageTable);
+    //     console.log(limitTable);
         
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`);
-        console.log(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`)
-        // 2. Reset State to its default value.
-        setFetchSearch("");
-        document.getElementById('table-search').value = "";
-    }
+    //     setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`);
+    //     console.log(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`)
+    //     // 2. Reset State to its default value.
+    //     setFetchSearch("");
+    //     document.getElementById('table-search').value = "";
+    // }
 
-    // == Reset Fetch ==
-    const handleResetFetch = (e) => {
-        e.preventDefault();
-        console.log('Handle Reset Fetch');
-        setPageTable(1);
-        setLimitTable(10);
-        setEndpoint(process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS);
-        console.log(endpoint);
-    }
+    // // == Reset Fetch ==
+    // const handleResetFetch = (e) => {
+    //     e.preventDefault();
+    //     console.log('Handle Reset Fetch');
+    //     setPageTable(1);
+    //     setLimitTable(10);
+    //     setEndpoint(process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS);
+    //     console.log(endpoint);
+    // }
 
     // ==============================
     // === End Of Sort And Search ===
@@ -253,60 +253,7 @@ export default function TransactionsTable() {
                 <FontAwesomeIcon icon={faFilePdf} />
             </button>
 
-            {/* ==================== */}
-            {/* === Fetch Search === */}
-            {/* ==================== */}
-            <div className='flex flex-wrap gap-2 w-full justify-end'>
-                {/* Search */}
-                <div className='relative block'>
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
-                    </div>
-                    <input type="text" onInput={(e) => searchHandler(e)} id="table-search" className="block pr-4 pl-10 w-full py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search Emkop User Id, Amount, etc.."/>
-                </div>
-                
-                {/* Sort */}
-                <button id="selected_sort" data-dropdown-toggle="actionsDropdown" className="flex items-center justify-center py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="button">
-                    <FontAwesomeIcon icon={faChevronDown} className="-ml-1 mr-1.5 w-5 h-5 text-xs"/>
-                    {selectedSort === "transaction_date asc" ? 
-                        "Ascending"
-                        :
-                        "Descending"    
-                    }
-                </button>
-                <div id="actionsDropdown" className="z-[1000] hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                    <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="selected_sort">
-                        <li>
-                            <span id="sort-ascending" value="asc" onClick={(e) => selectedSortHandler(e, 'transaction_date asc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ascending</span>
-                        </li>
-                        <li>
-                            <span id="sort-descending" value="desc" onClick={(e) => selectedSortHandler(e, 'transaction_date desc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Descending</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                {/* PageTable */}
-                <div className='text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
-                    <label htmlFor="total-pageTable" className="font-medium rounded-l-lg text-sm py-4 px-[1.30rem] bg-gray-50">Page</label>
-                    <input onInput={(e) => totalPageTableHandler(e)} id="total-pageTable" type="number" className="w-20 font-medium rounded-r-lg text-sm py-4 px-[1.30rem]" value={pageTable}/>
-                </div>
-
-                {/* limitTable */}
-                <div className='text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
-                    <label htmlFor="total-limitTable" className="font-medium rounded-l-lg text-sm py-4 px-[1.30rem] bg-gray-50">Rows</label>
-                    <input onInput={(e) => totalLimitTableHandler(e)} id="total-limitTable" type="number" className="w-20 font-medium rounded-r-lg text-sm py-4 px-[1.30rem]" value={limitTable}/>
-                </div>
-
-                {/* Submit */}
-                <button type="button" onClick={(e) => fetchSubmitHandler(e)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Search</button>
-                
-                {/* Reset Fetch */}
-                <button type="button" onClick={(e) => handleResetFetch(e)} id='reset-fetch' className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><FontAwesomeIcon icon={faRotateRight} /></button>
-
-            </div>
-            {/* =========================== */}
-            {/* === End Of Fetch Search === */}
-            {/* =========================== */}
+            
         </div>
     );
 
@@ -340,7 +287,7 @@ export default function TransactionsTable() {
                     <Tooltip target=".export-buttons>button" position="bottom" />
                     {/* == w/ FrontEnd Search == */} 
                     {/* <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'> */}
-                    <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={limitTable} className='h-screen'>
+                    <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={5} className='h-screen'>
                         <Column field="id" header="#" />
                         <Column field="phone_number" header="Emkop User ID" />
                         <Column field="phone_number_destination" header="Phone Number Destination" />
