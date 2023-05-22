@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tooltip } from 'primereact/tooltip';
+import { Calendar } from 'primereact/calendar';
+
 import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -81,9 +83,9 @@ export default function TransactionsTable() {
     // == File Exports Handlers ==
     const dt = useRef(null);
     const cols = [
-        { field: 'id', header: '#' },
+        { field: 'id', header: 'Transaction ID' },
         { field: 'phone_number', header: 'Emkop User ID' },
-        { field: 'phone_number_destination', header: 'Phone Number Destination' },
+        { field: 'phone_number_destination', header: 'BIGO User ID' },
         { field: 'amount', header: 'Amount' },
         { field: 'diamond', header: 'Diamond' },
         { field: 'transaction_date', header: 'Transaction Date' },
@@ -165,76 +167,21 @@ export default function TransactionsTable() {
     // ===========================
     // == Start Of Fetch Search ==
     // ===========================
-    // =======================
-    // === Sort And Search ===
-    // =======================
 
-    // // == Fetch Search ==
-    const [fetchSearch, setFetchSearch] = useState("");
+    const [searchParam, setSearchParam] = useState(""); // Search by: Transaction ID, User ID
+    const [sortParam, setSortParam] = useState("transaction_date asc");
+    const [pageParam, setPageParam] = useState("");
+    const [limitParam, setLimitParam] = useState("");
+    const [transactionDateFromParam, settransactionDateFromParam] = useState("");
+    const [transactionDateToParam, settransactionDateToParam] = useState("");
+    
+    // Handlers
 
-    const searchHandler = (e) => {
-        e.preventDefault();
-        let tableSearchInput = document.getElementById('table-search').value;
-        setFetchSearch(tableSearchInput);
-    }
+    // Endpoint Setter
+    useEffect(() => {
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchParam}&sort=${sortParam}&page=${pageParam}&limit=${limitParam}&transactionDateFrom=${transactionDateFromParam}&transactionDateTo=${transactionDateToParam}`);
+    }, [endpoint]);
 
-    // == Fetch Sort ==
-    const [selectedSort, setSelectedSort] = useState("transaction_date asc"); 
-
-    const selectedSortHandler = (e, selected) => {
-        e.preventDefault();
-        if(selected === "transaction_date asc"){
-            setSelectedSort("transaction_date asc");
-        } else {
-            setSelectedSort("transaction_date desc");
-        }
-    }
-
-    // == Fetch PageTable ==
-    const [pageTable, setPageTable] = useState(1);
-    const totalPageTableHandler = (e) => {
-        e.preventDefault();
-        const pageTableTotal = document.getElementById('total-pageTable').value;
-        setPageTable(pageTableTotal)
-    }
-
-    // == Fetch PageTable ==
-    const [limitTable, setLimitTable] = useState(10);
-    const totalLimitTableHandler = (e) => {
-        e.preventDefault();
-        const limitTableTotal = document.getElementById('total-limitTable').value;
-        setLimitTable(limitTableTotal);
-    }
-
-    // == Submit Endpoint ==
-    const fetchSubmitHandler = (e) => {
-        e.preventDefault();
-        // 1. Fetch
-        console.log(fetchSearch);
-        console.log(selectedSort);
-        console.log(pageTable);
-        console.log(limitTable);
-
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`);
-        console.log(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`)
-        // 2. Reset State to its default value.
-        setFetchSearch("");
-        document.getElementById('table-search').value = "";
-    }
-
-    // == Reset Fetch ==
-    const handleResetFetch = (e) => {
-        e.preventDefault();
-        console.log('Handle Reset Fetch');
-        setPageTable(1);
-        setLimitTable(10);
-        setEndpoint(process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS);
-        console.log(endpoint);
-    }
-
-    // ==============================
-    // === End Of Sort And Search ===
-    // ==============================
     // =========================
     // == End Of Fetch Search ==
     // =========================
@@ -256,42 +203,14 @@ export default function TransactionsTable() {
             {/* ==================== */}
             {/* === Fetch Search === */}
             {/* ==================== */}
-            <div className='flex flex-wrap gap-2 w-full justify-end'>
+            <div className='flex flex-wrap gap-2 w-full bg-red-300 justify-end'>
                 {/* Search */}
-                <div className='relative block'>
+                <div className='relative block grow bg-green-200'>
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                     </div>
-                    <input type="text" onInput={(e) => searchHandler(e)} id="table-search" className="block pr-4 pl-10 w-full py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search Emkop User Id, Amount, etc.." />
+                    <input type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search Emkop User Id, Amount, etc.." />
                 </div>
-
-                {/* Sort */}
-                {/* <button id="selected_sort" data-dropdown-toggle="actionsDropdown" className="flex items-center justify-center py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="button">
-                    <FontAwesomeIcon icon={faChevronDown} className="-ml-1 mr-1.5 w-5 h-5 text-xs" />
-                    {selectedSort === "transaction_date asc" ?
-                        "Ascending"
-                        :
-                        "Descending"
-                    }
-                </button>
-                <div id="actionsDropdown" className="z-[1000] hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                    <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="selected_sort">
-                        <li>
-                            <span id="sort-ascending" value="asc" onClick={(e) => selectedSortHandler(e, 'transaction_date asc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ascending</span>
-                        </li>
-                        <li>
-                            <span id="sort-descending" value="desc" onClick={(e) => selectedSortHandler(e, 'transaction_date desc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Descending</span>
-                        </li>
-                    </ul>
-                </div> */}
-
-                {/* limitTable */}
-                <div className='text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
-                    <label htmlFor="total-limitTable" className="font-medium rounded-l-lg text-sm py-4 px-[1.30rem] bg-gray-50">Rows</label>
-                    <input onInput={(e) => totalLimitTableHandler(e)} id="total-limitTable" type="number" className="w-20 font-medium rounded-r-lg text-sm py-4 px-[1.30rem]" value={limitTable} />
-                </div>
-
-
             </div>
             {/* =========================== */}
             {/* === End Of Fetch Search === */}
@@ -305,11 +224,9 @@ export default function TransactionsTable() {
         </span>
     )
 
-    const transaction_date = (item) => (
-        <span>
-            {moment(item.transaction_date).format('DD MMMM YYYY')}
-        </span>
-    )
+    const dateBodyTemplate = (rowData) => {
+        return moment(rowData.transaction_date).format('DD MMMM YYYY')
+    };
 
     return (
         <>
@@ -330,17 +247,16 @@ export default function TransactionsTable() {
                     {/* == w/ FrontEnd Search == */}
                     {/* <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'> */}
                     <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={5} className='h-screen'>
-                        <Column field="id" header="#" />
+                        <Column field="id" header="Transaction ID" />
                         <Column field="phone_number" header="Emkop User ID" />
-                        <Column field="phone_number_destination" header="Phone Number Destination" />
+                        <Column field="phone_number_destination" header="BIGO User ID" />
 
                         <Column body={amount} header="Amount" />
                         <Column field="amount" header="Amount" className='hidden' />
 
                         <Column field="diamond" header="Diamond" />
 
-                        <Column body={transaction_date} header="Transaction Date" />
-                        <Column field="transaction_date" header="Transaction Date" className='hidden' />
+                        <Column field="transaction_date" header="Transaction Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={dateBodyTemplate}/>
 
                         <Column field="status" header="Status" />
                         <Column field="type" header="Type" />
