@@ -338,7 +338,7 @@ export default function TransactionsTable() {
             {!fetchingTransactions && transactionsTable &&
                 <div className="card">
                     <Tooltip target=".export-buttons>button" position="bottom" />
-                    {/* == w/ FrontEnd Search == */}
+                    {/* == w/ FrontEnd Search == */} 
                     {/* <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'> */}
                     <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={limitTable} className='h-screen'>
                         <Column field="id" header="#" />
