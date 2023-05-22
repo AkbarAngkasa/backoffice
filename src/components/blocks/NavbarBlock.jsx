@@ -12,7 +12,6 @@ export default function NavbarBlock(props) {
     const navigate = useNavigate();
 
     // === UI States ===
-    const [fetchingListMenu, setFetchingListMenu] = useState(false);
     const [user, setUser] = useState(null);
 
     // Datas
@@ -27,7 +26,6 @@ export default function NavbarBlock(props) {
     // == Fetch List Menu ==
     // =====================
     useEffect(() => {
-        setFetchingListMenu(true);
         if (accessToken !== null) {
             fetch(endpoint, {
                 method: 'GET',
@@ -38,13 +36,11 @@ export default function NavbarBlock(props) {
                 return res.json()
             }).then(response => {
                 if (response.status === 200) {
-                    setFetchingListMenu(false);
                     // User Logged in.
                     setUser(response.data.user);
                     // Stop loading animation
                 } else if (response.status === 401) {
                     // User is Not Logged in.
-                    setFetchingListMenu(false);
                     navigate("/login");
                 }
             }).catch(err => {
@@ -216,24 +212,24 @@ export default function NavbarBlock(props) {
                             <div className="w-8 h-8 rounded-full bg-gray-400 animate-pulse"></div>
                         </button>
                         :
-                        <button type="button" data-dropdown-toggle="dropdown" aria-expanded="false" id="user-menu-button" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
-                            <div className="w-8 h-8 rounded-full">
-                                <FontAwesomeIcon icon={faUser} />
+                        <>
+                            <button type="button" data-dropdown-toggle="dropdown" aria-expanded="false" id="user-menu-button" className="ml-4 text-xl rounded-lg text-gray-500 dark:text-gray-400 dark:focus:ring-gray-600">
+                                <div className="w-8 h-8 rounded-full">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </div>
+                            </button>
+                            <div className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+                                <div className="py-3 px-4">
+                                    <span className="block text-sm font-semibold text-gray-900 dark:text-white">{user.full_name}</span>
+                                    <span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">{user.email}</span>
+                                </div>
+                                <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
+                                    <li onClick={(e) => logoutHandler(e)}>
+                                        <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</button>
+                                    </li>
+                                </ul>
                             </div>
-                        </button>
-                    }
-                    {!fetchingListMenu && user &&
-                        <div className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
-                            <div className="py-3 px-4">
-                                <span className="block text-sm font-semibold text-gray-900 dark:text-white">{user.full_name}</span>
-                                <span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">{user.email}</span>
-                            </div>
-                            <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                                <li onClick={(e) => logoutHandler(e)}>
-                                    <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</button>
-                                </li>
-                            </ul>
-                        </div>
+                        </>
                     }
                     {/* End Of User Button */}
                 </div>

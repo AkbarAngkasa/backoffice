@@ -1,24 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { Button as ButtonFlowbite } from 'flowbite-react';
+
+// PrimeReact
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-// import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
-// import { InputText } from 'primereact/inputtext';
 import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import PrimeReact from 'primereact/api';
-// import { FilterMatchMode } from 'primereact/api';
+
+// Flowbite
 import { initFlowbite } from 'flowbite';
 
+// FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faFileCsv, faFileExcel, faFilePdf, faRotateRight, faSearch, /* faSearch */ } from '@fortawesome/free-solid-svg-icons';
+
+// Miscellaneous
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
+
+// Costum Hooks
 import formatRupiah from '../../../methods/formatRupiah';
 import moment from 'moment';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faFileCsv, faFileExcel, faFilePdf, faSearch, /* faSearch */ } from '@fortawesome/free-solid-svg-icons';
 
 export default function TransactionsTable() {
     PrimeReact.appendTo = 'self';
@@ -52,6 +57,7 @@ export default function TransactionsTable() {
             }).then(res => {
                 return res.json()
             }).then(response => {
+                console.log(response)
                 if (response.status === 200) {
                     // Stop loading animation
                     setFetchingTransactions(false);
@@ -159,24 +165,11 @@ export default function TransactionsTable() {
     // ===========================
     // == Start Of Fetch Search ==
     // ===========================
-    
-    // Fetch Sort.
-    const [fetchSort, setFetchSort] = useState("transaction_date desc"); // For Fetch Purpose.
+    // =======================
+    // === Sort And Search ===
+    // =======================
 
-    const [selectedSort, setSelectedSort] = useState("Ascending"); // For UI purpose.
-
-    const selectedSortHandler = (e, selected) => {
-        e.preventDefault();
-        if(selected === "transaction_date asc"){
-            setSelectedSort("Ascending");
-            setFetchSort("transaction_date asc");
-        } else {
-            setSelectedSort("Descending");
-            setFetchSort("transaction_date desc");
-        }
-    }
-
-    // Fetch Search.
+    // == Fetch Search ==
     const [fetchSearch, setFetchSearch] = useState("");
     
     const searchHandler = (e) => {
@@ -185,15 +178,63 @@ export default function TransactionsTable() {
         setFetchSearch(tableSearchInput);
     }
 
-    // Fetch Submit Handler.
+    // == Fetch Sort ==
+    const [selectedSort, setSelectedSort] = useState("transaction_date asc"); 
+
+    const selectedSortHandler = (e, selected) => {
+        e.preventDefault();
+        if(selected === "transaction_date asc"){
+            setSelectedSort("transaction_date asc");
+        } else {
+            setSelectedSort("transaction_date desc");
+        }
+    }
+
+    // == Fetch PageTable ==
+    const [pageTable, setPageTable] = useState(1);
+    const totalPageTableHandler = (e) => {
+        e.preventDefault();
+        const pageTableTotal = document.getElementById('total-pageTable').value;
+        setPageTable(pageTableTotal)
+    }
+
+    // == Fetch PageTable ==
+    const [limitTable, setLimitTable] = useState(10);
+    const totalLimitTableHandler = (e) => {
+        e.preventDefault();
+        const limitTableTotal = document.getElementById('total-limitTable').value;
+        setLimitTable(limitTableTotal);
+    }
+
+    // == Submit Endpoint ==
     const fetchSubmitHandler = (e) => {
         e.preventDefault();
         // 1. Fetch
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${fetchSort}&search=${fetchSearch}`);
+        console.log(fetchSearch);
+        console.log(selectedSort);
+        console.log(pageTable);
+        console.log(limitTable);
+        
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`);
+        console.log(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${fetchSearch}&sort=${selectedSort}&page=${pageTable}&limit=${limitTable}`)
         // 2. Reset State to its default value.
         setFetchSearch("");
-        document.getElementById('table-search').value = ""
+        document.getElementById('table-search').value = "";
     }
+
+    // == Reset Fetch ==
+    const handleResetFetch = (e) => {
+        e.preventDefault();
+        console.log('Handle Reset Fetch');
+        setPageTable(1);
+        setLimitTable(10);
+        setEndpoint(process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS);
+        console.log(endpoint);
+    }
+
+    // ==============================
+    // === End Of Sort And Search ===
+    // ==============================
     // =========================
     // == End Of Fetch Search ==
     // =========================
@@ -201,7 +242,7 @@ export default function TransactionsTable() {
 
     // Components
     const header = (
-        <div className="flex flex-row justify-between sm:justify-end gap-2 py-2 px-1 w-full overflow-x-scroll h-fit">
+        <div className="flex flex-wrap sm:flex-row justify-end sm:justify-end gap-2 py-2 px-1 w-full overflow-x-scroll h-fit">
             <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
                 <FontAwesomeIcon icon={faFileCsv} />
             </button>
@@ -223,28 +264,44 @@ export default function TransactionsTable() {
                     </div>
                     <input type="text" onInput={(e) => searchHandler(e)} id="table-search" className="block pr-4 pl-10 w-full py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search Emkop User Id, Amount, etc.."/>
                 </div>
+                
                 {/* Sort */}
-                <button id="selected_sort" data-dropdown-toggle="actionsDropdown" className="flex items-center justify-center py-4 px-[1.30rem] text-sm font-medium text-gray-900 bg-gray-50 border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                <button id="selected_sort" data-dropdown-toggle="actionsDropdown" className="flex items-center justify-center py-4 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="button">
                     <FontAwesomeIcon icon={faChevronDown} className="-ml-1 mr-1.5 w-5 h-5 text-xs"/>
-                    {selectedSort === "Ascending" ? 
-                        "Latest"
+                    {selectedSort === "transaction_date asc" ? 
+                        "Ascending"
                         :
-                        "Oldest"
+                        "Descending"    
                     }
                 </button>
-
                 <div id="actionsDropdown" className="z-[1000] hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                     <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="selected_sort">
                         <li>
-                            <span onClick={(e) => selectedSortHandler(e, 'transaction_date asc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Latest</span>
+                            <span id="sort-ascending" value="asc" onClick={(e) => selectedSortHandler(e, 'transaction_date asc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ascending</span>
                         </li>
                         <li>
-                            <span onClick={(e) => selectedSortHandler(e, 'transaction_date desc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Oldest</span>
+                            <span id="sort-descending" value="desc" onClick={(e) => selectedSortHandler(e, 'transaction_date desc')} className="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Descending</span>
                         </li>
                     </ul>
                 </div>
+                
+                {/* PageTable */}
+                <div className='text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
+                    <label htmlFor="total-pageTable" className="font-medium rounded-l-lg text-sm py-4 px-[1.30rem] bg-gray-50">Page</label>
+                    <input onInput={(e) => totalPageTableHandler(e)} id="total-pageTable" type="number" className="w-20 font-medium rounded-r-lg text-sm py-4 px-[1.30rem]" value={pageTable}/>
+                </div>
+
+                {/* limitTable */}
+                <div className='text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'>
+                    <label htmlFor="total-limitTable" className="font-medium rounded-l-lg text-sm py-4 px-[1.30rem] bg-gray-50">Rows</label>
+                    <input onInput={(e) => totalLimitTableHandler(e)} id="total-limitTable" type="number" className="w-20 font-medium rounded-r-lg text-sm py-4 px-[1.30rem]" value={limitTable}/>
+                </div>
+
                 {/* Submit */}
                 <button type="button" onClick={(e) => fetchSubmitHandler(e)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Search</button>
+                
+                {/* Reset Fetch */}
+                <button type="button" onClick={(e) => handleResetFetch(e)} id='reset-fetch' className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><FontAwesomeIcon icon={faRotateRight} /></button>
 
             </div>
             {/* =========================== */}
@@ -283,7 +340,7 @@ export default function TransactionsTable() {
                     <Tooltip target=".export-buttons>button" position="bottom" />
                     {/* == w/ FrontEnd Search == */}
                     {/* <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} filters={filters} globalFilterFields={['id', 'phone_number', 'phone_number_destination', 'amount', 'diamond', 'transaction_date', 'status', 'type']} emptyMessage="Query Not Found." className='h-screen'> */}
-                    <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={3} className='h-screen'>
+                    <DataTable ref={dt} value={transactionsTable} header={header} tableStyle={{ minWidth: '50rem' }} paginator rows={limitTable} className='h-screen'>
                         <Column field="id" header="#" />
                         <Column field="phone_number" header="Emkop User ID" />
                         <Column field="phone_number_destination" header="Phone Number Destination" />
