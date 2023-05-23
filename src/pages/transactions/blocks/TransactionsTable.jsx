@@ -56,7 +56,6 @@ export default function TransactionsTable() {
             }).then(res => {
                 return res.json()
             }).then(response => {
-                console.log(response)
                 if (response.status === 200) {
                     // Stop loading animation
                     setFetchingTransactions(false);
@@ -182,10 +181,8 @@ export default function TransactionsTable() {
 
         // Date Param Input.
         let fromDateRawInput = document.getElementById('from-date').value;
-        console.log(moment(fromDateRawInput).format('YYYY-MM-DD'));
 
         let toDateRawInput = document.getElementById('to-date').value;
-        console.log(moment(toDateRawInput).format('YYYY-MM-DD'));
 
         // Set Endpoint.
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);
