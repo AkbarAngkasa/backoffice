@@ -137,7 +137,7 @@ export default function TransactionsTable() {
     // == Start Of Fetch Search ==
     // ===========================
 
-    const [limitParam, setlimitParam] = useState("transaction_date asc");
+    const [sortParam, setSortParam] = useState("transaction_date asc");
 
     const transactionsParamsHandler = (param) => {
         console.log(param)
@@ -152,38 +152,38 @@ export default function TransactionsTable() {
 
             let toDateRawInput = document.getElementById('to-date').value;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${limitParam}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
         }
     }
 
-    const transactionLimitParamHandler = () => {
-        // Limit Param Input.
+    const transactionSortParamHandler = () => {
+        // Sort Param Input.
         // 1. To trigger the first time user click.
-        let limitParamInput = document.getElementById('limit-param');
+        let sortParamInput = document.getElementById('sort-param');
 
         let elhTransactionDateHeader = document.getElementById('transaction-date-header');
 
-        if(limitParamInput.value === "transaction_date desc"){
-            limitParamInput.setAttribute("value", "transaction_date asc")
-            limitParamInput.classList.add("hidden")
+        if(sortParamInput.value === "transaction_date desc"){
+            sortParamInput.setAttribute("value", "transaction_date asc")
+            sortParamInput.classList.add("hidden")
             elhTransactionDateHeader.classList.remove("hidden")
             // Remove The Trigger button
-        } else if (limitParamInput.value === "transaction_date asc") {
-            limitParamInput.setAttribute("value", "transaction_date desc")
-            limitParamInput.classList.add("hidden")
+        } else if (sortParamInput.value === "transaction_date asc") {
+            sortParamInput.setAttribute("value", "transaction_date desc")
+            sortParamInput.classList.add("hidden")
             elhTransactionDateHeader.classList.remove("hidden")
             // Remove The Trigger button
         }
 
         // 2. The rest of the user click.
         elhTransactionDateHeader.addEventListener('click', () => {
-            if(limitParamInput.value === "transaction_date desc"){
-                limitParamInput.setAttribute("value", "transaction_date asc")
-            } else if (limitParamInput.value === "transaction_date asc") {
-                limitParamInput.setAttribute("value", "transaction_date desc")
+            if(sortParamInput.value === "transaction_date desc"){
+                sortParamInput.setAttribute("value", "transaction_date asc")
+            } else if (sortParamInput.value === "transaction_date asc") {
+                sortParamInput.setAttribute("value", "transaction_date desc")
             }
-            setlimitParam(limitParamInput.value)
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${limitParamInput.value}`);
+            setSortParam(sortParamInput.value)
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${sortParamInput.value}`);
         })
     }
 
@@ -259,7 +259,7 @@ export default function TransactionsTable() {
                         </div>
                         <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
-                    <button className='mr-3'>
+                    <button className='sm:mr-3'>
                         <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)}/>
                     </button>
                 </div>
@@ -279,7 +279,7 @@ export default function TransactionsTable() {
                 Transaction Date Header
                 {/* Trigger Button */}
                 {/* Prevent re-rendering */}
-                <button id="limit-param" value={"transaction_date asc"} onClick={() => transactionLimitParamHandler()} className='p-1 ml-1' >
+                <button id="sort-param" value={"transaction_date asc"} onClick={() => transactionSortParamHandler()} className='p-1 ml-1' >
                     <FontAwesomeIcon icon={faSort} />
                 </button>
                 <button id="transaction-date-header" className='p-1 ml-1 hidden'>
@@ -315,8 +315,8 @@ export default function TransactionsTable() {
                     <Column field="status" header="Status" />
                     <Column field="type" header="Type" />
                 </DataTable>
-                {/* Row AKA Limit */}
-                <span id="transaction-date-limit" value="" className='hidden'></span>
+                {/* Row AKA Sort */}
+                <span id="transaction-date-sort" value="" className='hidden'></span>
             </div>
             {/* {fetchingTransactions &&
                 <div role="status" className="max-w-sm animate-pulse">
