@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -32,7 +32,7 @@ export default function TransactionsTable() {
     const navigate = useNavigate();
 
     // == UI States ==
-    const [fetchingTransactions, setFetchingTransactions] = useState(false);
+    // const [fetchingTransactions, setFetchingTransactions] = useState(false);
     const [transactionsTable, settransactionsTable] = useState(null);
 
     // == Datas n States ==
@@ -44,7 +44,7 @@ export default function TransactionsTable() {
     });
     // == Fetch Transactions ==
     useEffect(() => {
-        setFetchingTransactions(true);
+        // setFetchingTransactions(true);
 
         if (accessToken !== null) {
             fetch(endpoint, {
@@ -57,12 +57,12 @@ export default function TransactionsTable() {
             }).then(response => {
                 if (response.status === 200) {
                     // Stop loading animation
-                    setFetchingTransactions(false);
+                    // setFetchingTransactions(false);
                     // User Logged in.
                     settransactionsTable(response.data.rows);
                 } else if (response.status === 401) {
                     // User is Not Logged in.
-                    setFetchingTransactions(false);
+                    // setFetchingTransactions(false);
                     navigate("/login");
                 }
             }).catch(err => {
@@ -200,6 +200,19 @@ export default function TransactionsTable() {
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);        
     }
 
+    const clearDateParamHandler = (e) => {
+        e.preventDefault();
+        // Search Param Input.
+        let searchInput = document.getElementById(`table-search`).value;
+        
+        // Date Param Input.
+        let fromDateRawInput = document.getElementById('from-date').value = '';
+        
+        let toDateRawInput = document.getElementById('to-date').value = '';
+
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);        
+    }
+
     // =========================
     // == End Of Fetch Search ==
     // =========================
@@ -226,26 +239,29 @@ export default function TransactionsTable() {
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                     </div>
-                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by BIGO User Id, Transaction ID" />
+                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)}/>
                     </div>
                 </div>
                 {/* Date */}
-                <div className="flex flex-wrap justify-end gap-2 items-center">
+                <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-gray-300 sm:rounded-lg">
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-600' />
+                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
-                    <span className="mx-1 text-gray-500">to</span>
+                    <span className="mx-1 text-gray-500 font-medium">to</span>
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-600' />
+                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
+                    <button className='mr-3'>
+                        <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)}/>
+                    </button>
                 </div>
             </div>
         </div>
