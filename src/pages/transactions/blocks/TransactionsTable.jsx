@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -42,7 +42,6 @@ export default function TransactionsTable() {
     useEffect(() => {
         initFlowbite();
     });
-
     // == Fetch Transactions ==
     useEffect(() => {
         setFetchingTransactions(true);
@@ -80,7 +79,7 @@ export default function TransactionsTable() {
     const dt = useRef(null);
     const cols = [
         { field: 'id', header: 'Transaction ID' },
-        { field: 'phone_number', header: 'Emkop User ID' },
+        { field: 'phone_number', header: 'Phone Number User' },
         { field: 'phone_number_destination', header: 'BIGO User ID' },
         { field: 'amount', header: 'Amount' },
         { field: 'diamond', header: 'Diamond' },
@@ -134,75 +133,72 @@ export default function TransactionsTable() {
     };
     // == End Of Files Exports Handlers ==
 
-    // =====================
-    // == FrontEnd Search ==
-    // =====================
-    // const [globalFilterValue, setGlobalFilterValue] = useState('');
-    // const [filters, setFilters] = useState({
-    //     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    //     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    //     'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    //     representative: { value: null, matchMode: FilterMatchMode.IN },
-    //     status: { value: null, matchMode: FilterMatchMode.EQUALS },
-    //     verified: { value: null, matchMode: FilterMatchMode.EQUALS }
-    // });
-
-    // const onGlobalFilterChange = (e) => {
-    //     const value = e.target.value;
-    //     let _filters = { ...filters };
-
-    //     _filters['global'].value = value;
-
-    //     setFilters(_filters);
-    //     setGlobalFilterValue(value);
-    // };
-    // ============================
-    // == End Of FrontEnd Search ==
-    // ============================
-
     // ===========================
     // == Start Of Fetch Search ==
     // ===========================
 
-    // const [searchParam, setSearchParam] = useState(""); // Search by: Transaction ID, User ID
-    // const [sortParam, setSortParam] = useState("transaction_date asc");
-    // const [pageParam, setPageParam] = useState("");
-    // const [selectedLimitParam, setselectedLimitParam] = useState(5);
+    const [limitParam, setlimitParam] = useState("transaction_date asc");
 
-    // const [transactionDateFromParam, settransactionDateFromParam] = useState("");
-    // const [transactionDateToParam, settransactionDateToParam] = useState("");
+    const transactionsParamsHandler = (param) => {
+        console.log(param)
+        // e.preventDefault();
+        if(transactionsTable !== null){
+            
+            // Search Param Input.
+            let searchInput = document.getElementById(`table-search`).value;
 
-    // Handlers
-    const transactionsParamsHandler = (e) => {
-        e.preventDefault();
+            // Date Param Input.
+            let fromDateRawInput = document.getElementById('from-date').value;
 
-        // Search Param Input.
-        let searchInput = document.getElementById(`table-search`).value;
+            let toDateRawInput = document.getElementById('to-date').value;
 
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value;
-
-        let toDateRawInput = document.getElementById('to-date').value;
-
-        // Set Endpoint.
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);
-        // setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchParam}&sort=${sortParam}&page=${pageParam}&limit=${limitParam}&transactionDateFrom=${transactionDateFromParam}&transactionDateTo=${transactionDateToParam}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${limitParam}`);
+        }
     }
 
-    // Row Handlers
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         let selectedRowInput = parseInt(document.getElementsByClassName("p-inputtext")[0].innerHTML);
+    const transactionLimitParamHandler = () => {
+        // Limit Param Input.
+        // 1. To trigger the first time user click.
+        let limitParamInput = document.getElementById('limit-param');
 
-    //         // console.log(selectedRowInput)
-    //         // setselectedLimitParam(selectedRowInput)
-    //         // console.log(selectedLimitParam)
+        let elhTransactionDateHeader = document.getElementById('transaction-date-header');
 
-    //         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchParam}&sort=${sortParam}&page=${pageParam}&limit=${selectedRowInput}&transactionDateFrom=${transactionDateFromParam}&transactionDateTo=${transactionDateToParam}`);
-    //     }, 1000);
+        if(limitParamInput.value === "transaction_date desc"){
+            limitParamInput.setAttribute("value", "transaction_date asc")
+            limitParamInput.classList.add("hidden")
+            elhTransactionDateHeader.classList.remove("hidden")
+            // Remove The Trigger button
+        } else if (limitParamInput.value === "transaction_date asc") {
+            limitParamInput.setAttribute("value", "transaction_date desc")
+            limitParamInput.classList.add("hidden")
+            elhTransactionDateHeader.classList.remove("hidden")
+            // Remove The Trigger button
+        }
 
-    //     return () => clearInterval(interval);
-    // })
+        // 2. The rest of the user click.
+        elhTransactionDateHeader.addEventListener('click', () => {
+            if(limitParamInput.value === "transaction_date desc"){
+                limitParamInput.setAttribute("value", "transaction_date asc")
+            } else if (limitParamInput.value === "transaction_date asc") {
+                limitParamInput.setAttribute("value", "transaction_date desc")
+            }
+            setlimitParam(limitParamInput.value)
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${limitParamInput.value}`);
+        })
+    }
+
+    const clearSearchParamHandler = (e) => {
+        e.preventDefault();
+        // Search Param Input.
+        let searchInput = document.getElementById(`table-search`).value = '';
+        
+        // Date Param Input.
+        let fromDateRawInput = document.getElementById('from-date').value;
+        
+        let toDateRawInput = document.getElementById('to-date').value;
+
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);        
+    }
 
     // =========================
     // == End Of Fetch Search ==
@@ -211,8 +207,8 @@ export default function TransactionsTable() {
     // Components
     const header = (
         <div className="flex flex-wrap sm:flex-col justify-end sm:justify-end gap-2 p-4 rounded-t-lg w-full h-fit bg-gray-50">
+            {/* Export Buttons */}
             <div className='flex flex-wrap justify-end gap-2'>
-
                 <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
                     <FontAwesomeIcon icon={faFileCsv} />
                 </button>
@@ -230,28 +226,28 @@ export default function TransactionsTable() {
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                     </div>
-                    <input onChange={(e) => transactionsParamsHandler(e)} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by BIGO User Id, Transaction ID" />
+                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by BIGO User Id, Transaction ID" />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)}/>
+                    </div>
                 </div>
                 {/* Date */}
-                <div date-rangepicker className="flex flex-wrap justify-end gap-2 items-center">
+                <div className="flex flex-wrap justify-end gap-2 items-center">
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-600' />
                         </div>
-                        <input onChange={(e) => transactionsParamsHandler(e)} name="start" type="date" id="from-date" className="font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
                     <span className="mx-1 text-gray-500">to</span>
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-600' />
                         </div>
-                        <input onChange={(e) => transactionsParamsHandler(e)} name="end" type="date" id="to-date" className="font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
                 </div>
             </div>
-
-            
-
         </div>
     );
 
@@ -261,7 +257,23 @@ export default function TransactionsTable() {
         </span>
     )
 
-    const date = (rowData) => {
+    const transactionDateHeader = () => {
+        return (
+            <span>
+                Transaction Date Header
+                {/* Trigger Button */}
+                {/* Prevent re-rendering */}
+                <button id="limit-param" value={"transaction_date asc"} onClick={() => transactionLimitParamHandler()} className='p-1 ml-1' >
+                    <FontAwesomeIcon icon={faSort} />
+                </button>
+                <button id="transaction-date-header" className='p-1 ml-1 hidden'>
+                    <FontAwesomeIcon icon={faSort} />
+                </button>
+            </span>
+        )
+    }
+
+    const transactionDateBody = (rowData) => {
         return moment(rowData.transaction_date).format('DD MMMM YYYY')
     };
 
@@ -272,7 +284,25 @@ export default function TransactionsTable() {
     return (
         <>
             {header}
-            {fetchingTransactions &&
+            <div className="card">
+                <DataTable ref={dt} value={transactionsTable} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
+                    <Column field="id" header="Transaction ID"/>
+                    <Column field="phone_number" header="Phone Number User" />
+                    <Column field="phone_number_destination" header="BIGO User ID" />
+
+                    <Column body={amount} header="Amount"/>
+
+                    <Column field="diamond" header="Diamond" />
+                    
+                    <Column body={transactionDateBody} field="transaction_date" header={transactionDateHeader} filterField="date" dataType="date" style={{ minWidth: '12rem' }} />
+
+                    <Column field="status" header="Status" />
+                    <Column field="type" header="Type" />
+                </DataTable>
+                {/* Row AKA Limit */}
+                <span id="transaction-date-limit" value="" className='hidden'></span>
+            </div>
+            {/* {fetchingTransactions &&
                 <div role="status" className="max-w-sm animate-pulse">
                     <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
                     <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
@@ -286,22 +316,21 @@ export default function TransactionsTable() {
             {!fetchingTransactions && transactionsTable &&
                 <div className="card">
                     <DataTable ref={dt} value={transactionsTable} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
-                        <Column field="id" header="Transaction ID" />
-                        <Column field="phone_number" header="Emkop User ID" />
+                        <Column field="id"/>
+                        <Column field="phone_number" header="Phone Number User" />
                         <Column field="phone_number_destination" header="BIGO User ID" />
 
-                        <Column body={amount} header="Amount" />
-                        <Column field="amount" header="Amount" className='hidden' />
+                        <Column body={amount} header="Amount"/>
 
                         <Column field="diamond" header="Diamond" />
 
-                        <Column field="transaction_date" header="Transaction Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={date} />
+                        <Column field="transaction_date" header={() => transactionDateHeader()} sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={date} />
 
                         <Column field="status" header="Status" />
                         <Column field="type" header="Type" />
                     </DataTable>
                 </div>
-            }
+            } */}
         </>
     );
 }
