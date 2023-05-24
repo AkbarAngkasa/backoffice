@@ -32,7 +32,7 @@ export default function TransactionsTable() {
     const navigate = useNavigate();
 
     // == UI States ==
-    // const [fetchingTransactions, setFetchingTransactions] = useState(false);
+    const [fetchingTransactions, setFetchingTransactions] = useState(false);
     const [transactionsTable, settransactionsTable] = useState(null);
 
     // == Datas n States ==
@@ -44,7 +44,7 @@ export default function TransactionsTable() {
     });
     // == Fetch Transactions ==
     useEffect(() => {
-        // setFetchingTransactions(true);
+        setFetchingTransactions(true);
 
         if (accessToken !== null) {
             fetch(endpoint, {
@@ -57,12 +57,12 @@ export default function TransactionsTable() {
             }).then(response => {
                 if (response.status === 200) {
                     // Stop loading animation
-                    // setFetchingTransactions(false);
+                    setFetchingTransactions(false);
                     // User Logged in.
                     settransactionsTable(response.data.rows);
                 } else if (response.status === 401) {
                     // User is Not Logged in.
-                    // setFetchingTransactions(false);
+                    setFetchingTransactions(false);
                     navigate("/login");
                 }
             }).catch(err => {
@@ -139,8 +139,7 @@ export default function TransactionsTable() {
 
     const [sortParam, setSortParam] = useState("transaction_date asc");
 
-    const transactionsParamsHandler = (param) => {
-        console.log(param)
+    const transactionsParamsHandler = () => {
         // e.preventDefault();
         if(transactionsTable !== null){
             
@@ -158,7 +157,7 @@ export default function TransactionsTable() {
 
     const transactionSortParamHandler = () => {
         // Sort Param Input.
-        // 1. To trigger the first time user click.
+        // 1. To trigger the first time user click. (Prevent Re-rendering)
         let sortParamInput = document.getElementById('sort-param');
 
         let elhTransactionDateHeader = document.getElementById('transaction-date-header');
@@ -183,7 +182,17 @@ export default function TransactionsTable() {
                 sortParamInput.setAttribute("value", "transaction_date desc")
             }
             setSortParam(sortParamInput.value)
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${sortParamInput.value}`);
+            // setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${sortParamInput.value}`);
+
+            // Search Param Input.
+            let searchInput = document.getElementById(`table-search`).value;
+
+            // Date Param Input.
+            let fromDateRawInput = document.getElementById('from-date').value;
+            
+            let toDateRawInput = document.getElementById('to-date').value;
+            
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}`);
         })
     }
 
@@ -300,7 +309,7 @@ export default function TransactionsTable() {
     return (
         <>
             {header}
-            <div className="card">
+            <div className="card relative w-full">
                 <DataTable ref={dt} value={transactionsTable} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
                     <Column field="id" header="Transaction ID"/>
                     <Column field="phone_number" header="Phone Number User" />
@@ -315,8 +324,17 @@ export default function TransactionsTable() {
                     <Column field="status" header="Status" />
                     <Column field="type" header="Type" />
                 </DataTable>
-                {/* Row AKA Sort */}
-                <span id="transaction-date-sort" value="" className='hidden'></span>
+                {fetchingTransactions &&
+                    <div role="status" className="absolute z-50 top-[76px] left-0 right-0 bottom-0 bg-white w-full">
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4 animate-pulse"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5 animate-pulse"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 animate-pulse"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5 animate-pulse"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5 animate-pulse"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] animate-pulse"></div>
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                }
             </div>
             {/* {fetchingTransactions &&
                 <div role="status" className="max-w-sm animate-pulse">
