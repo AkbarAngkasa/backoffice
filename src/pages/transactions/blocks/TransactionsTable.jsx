@@ -276,7 +276,7 @@ export default function TransactionsTable() {
     const transactionDateHeader = () => {
         return (
             <span>
-                Transaction Date Header
+                Transaction Date
                 {/* Trigger Button */}
                 {/* Prevent re-rendering */}
                 <button id="sort-param" value={"transaction_date asc"} onClick={() => transactionSortParamHandler()} className='p-1 ml-1' >
