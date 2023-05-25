@@ -310,6 +310,10 @@ export default function TransactionsTable() {
     const clearStatusParamHandler = (e) => {
         e.preventDefault();
         setStatusParam("");
+        
+        let statusDropdown = document.getElementById('status-dropdown');
+        statusDropdown.setAttribute("value", "hidden");
+        statusDropdown.classList.add("hidden");
 
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
