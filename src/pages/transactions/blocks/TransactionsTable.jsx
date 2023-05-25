@@ -42,7 +42,10 @@ export default function TransactionsTable() {
     useEffect(() => {
         initFlowbite();
     });
+
+    // ========================
     // == Fetch Transactions ==
+    // ========================
     useEffect(() => {
         setFetchingTransactions(true);
 
@@ -73,7 +76,58 @@ export default function TransactionsTable() {
         }
         // == End Of List Menu Fetch
     }, [accessToken, endpoint, navigate]);
+    // ===============================
     // == End Of Fetch Transactions ==
+    // ===============================
+
+
+
+
+
+    // ===================================
+    // == Fetch Transaction list-status ==
+    // ===================================
+
+    // == Datas & States ==
+    const endpointListStatus = process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS_LIST_STATUS;
+
+    // == UI States ==
+    const [fetchingListStatus, setFetchingListStatus] = useState(false);
+    const [listStatus, setListStatus] = useState(false);
+
+    useEffect(() => {
+        setFetchingListStatus(true);
+
+        fetch(endpointListStatus, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        .then(res => {
+            return res.json()
+        }).then(response => {
+            
+            // == Success ==
+            if(response.status === 200){
+                setListStatus(response.data)
+
+                setFetchingListStatus(false);
+            } 
+            // == Failed ==
+            else if(response.status === 401){
+                navigate("/login");
+                setFetchingListStatus(false);
+            }
+
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [endpointListStatus, accessToken, navigate]);
+
+    // ===========================================
+    // == End Of Fetch Transaction list-status ==
+    // ===========================================
 
     // == File Exports Handlers ==
     const dt = useRef(null);
@@ -138,6 +192,8 @@ export default function TransactionsTable() {
     // ===========================
 
     const [sortParam, setSortParam] = useState("transaction_date asc");
+
+    const [statusParam, setStatusParam] = useState("");
 
     const transactionsParamsHandler = () => {
         // e.preventDefault();
@@ -236,7 +292,35 @@ export default function TransactionsTable() {
         }
     }
     
-    const [statusParam, setStatusParam] = useState("");
+    const statusParamHandler = (e, statusParam) => {
+        e.preventDefault();
+        setStatusParam(statusParam)
+
+        // Search Param Input.
+        let searchInput = document.getElementById(`table-search`).value;
+
+        // Date Param Input.
+        let fromDateRawInput = document.getElementById('from-date').value;
+
+        let toDateRawInput = document.getElementById('to-date').value;
+
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}`);
+    }
+
+    const clearStatusParamHandler = (e) => {
+        e.preventDefault();
+        setStatusParam("");
+
+        // Search Param Input.
+        let searchInput = document.getElementById(`table-search`).value;
+
+        // Date Param Input.
+        let fromDateRawInput = document.getElementById('from-date').value;
+
+        let toDateRawInput = document.getElementById('to-date').value;
+
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
+    }
 
     // =========================
     // == End Of Fetch Search ==
@@ -264,25 +348,25 @@ export default function TransactionsTable() {
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                     </div>
-                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
+                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)} />
                     </div>
                 </div>
                 {/* Date */}
-                <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-gray-300 sm:rounded-lg">
+                <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <span className="mx-1 text-gray-500 font-medium">to</span>
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <button className='sm:mr-3'>
                         <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
@@ -290,24 +374,35 @@ export default function TransactionsTable() {
                 </div>
                 {/* Status */}
                 <div className="relative flex flex-wrap justify-end gap-2 items-center">
-                    <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2'/></button>
-                    <div id="status-dropdown" className='hidden absolute top-10 z-10 w-full rounded-b-lg bg-white border border-gray-300' value="hidden">
-                        <ul>
-                            <li>
-                                <button onClick={() => {setStatusParam("SUCCESS")}} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
-                                    SUCCESS
+                    {fetchingListStatus &&
+                        <button type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-10 py-5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 animate-pulse cursor-progress"></button>
+                    }
+                    {!fetchingListStatus && listStatus &&
+                        <>
+                            <div>
+                                <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tl-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2'/></button>
+                                <button onClick={(e) => clearStatusParamHandler(e)} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tr-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                                    <FontAwesomeIcon icon={faDeleteLeft} />
                                 </button>
-                            </li>
-                            <hr />
-                            <li>
-                                <button onClick={() => {setStatusParam("FAILED")}} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
-                                    FAILED
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                            </div>
+                            
+                            <div id="status-dropdown" className='hidden absolute top-10 z-10 w-full rounded-b-lg bg-white border border-gray-300' value="hidden">
+                                <ul>
+                                    {listStatus.map((item, i) => (
+                                        <li key={i}>
+                                            <button id="status" value={item} onClick={(e) => {
+                                                statusParamHandler(e, item)
+                                                toggleStatusDropdownHandler(e)    
+                                            }} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
+                                            {item}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </>
+                    }
                 </div>
-
             </div>
         </div>
     );
