@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -141,8 +141,8 @@ export default function TransactionsTable() {
 
     const transactionsParamsHandler = () => {
         // e.preventDefault();
-        if(transactionsTable !== null){
-            
+        if (transactionsTable !== null) {
+
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
 
@@ -162,7 +162,7 @@ export default function TransactionsTable() {
 
         let elhTransactionDateHeader = document.getElementById('transaction-date-header');
 
-        if(sortParamInput.value === "transaction_date desc"){
+        if (sortParamInput.value === "transaction_date desc") {
             sortParamInput.setAttribute("value", "transaction_date asc")
             sortParamInput.classList.add("hidden")
             elhTransactionDateHeader.classList.remove("hidden")
@@ -176,7 +176,7 @@ export default function TransactionsTable() {
 
         // 2. The rest of the user click.
         elhTransactionDateHeader.addEventListener('click', () => {
-            if(sortParamInput.value === "transaction_date desc"){
+            if (sortParamInput.value === "transaction_date desc") {
                 sortParamInput.setAttribute("value", "transaction_date asc")
             } else if (sortParamInput.value === "transaction_date asc") {
                 sortParamInput.setAttribute("value", "transaction_date desc")
@@ -189,9 +189,9 @@ export default function TransactionsTable() {
 
             // Date Param Input.
             let fromDateRawInput = document.getElementById('from-date').value;
-            
+
             let toDateRawInput = document.getElementById('to-date').value;
-            
+
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}`);
         })
     }
@@ -200,27 +200,43 @@ export default function TransactionsTable() {
         e.preventDefault();
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value = '';
-        
+
         // Date Param Input.
         let fromDateRawInput = document.getElementById('from-date').value;
-        
+
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);        
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
     }
 
     const clearDateParamHandler = (e) => {
         e.preventDefault();
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
-        
+
         // Date Param Input.
         let fromDateRawInput = document.getElementById('from-date').value = '';
-        
+
         let toDateRawInput = document.getElementById('to-date').value = '';
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}`);        
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
     }
+
+    const toggleStatusDropdownHandler = (e) => {
+        e.preventDefault();
+        let statusDropdown = document.getElementById('status-dropdown');
+        
+        let dropDownValue = statusDropdown.getAttribute('value');
+        if(dropDownValue === "hidden"){
+            statusDropdown.setAttribute("value", "");
+            statusDropdown.classList.remove("hidden");
+        } else {
+            statusDropdown.setAttribute("value", "hidden");
+            statusDropdown.classList.add("hidden");
+        }
+    }
+    
+    const [statusParam, setStatusParam] = useState("");
 
     // =========================
     // == End Of Fetch Search ==
@@ -250,7 +266,7 @@ export default function TransactionsTable() {
                     </div>
                     <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)}/>
+                        <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)} />
                     </div>
                 </div>
                 {/* Date */}
@@ -259,19 +275,39 @@ export default function TransactionsTable() {
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <span className="mx-1 text-gray-500 font-medium">to</span>
                     <div className="relative">
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                             <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-300 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <button className='sm:mr-3'>
-                        <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)}/>
+                        <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
                     </button>
                 </div>
+                {/* Status */}
+                <div className="relative flex flex-wrap justify-end gap-2 items-center">
+                    <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2'/></button>
+                    <div id="status-dropdown" className='hidden absolute top-10 z-10 w-full rounded-b-lg bg-white border border-gray-300' value="hidden">
+                        <ul>
+                            <li>
+                                <button onClick={() => {setStatusParam("SUCCESS")}} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
+                                    SUCCESS
+                                </button>
+                            </li>
+                            <hr />
+                            <li>
+                                <button onClick={() => {setStatusParam("FAILED")}} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
+                                    FAILED
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
@@ -310,22 +346,22 @@ export default function TransactionsTable() {
         <>
             {header}
             <div className="card relative w-full">
-                <DataTable ref={dt} value={transactionsTable} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
-                    <Column field="id" header="Transaction ID"/>
+                <DataTable ref={dt} value={transactionsTable} size='small' tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
+                    <Column field="id" header="Transaction ID" />
                     <Column field="phone_number" header="Phone Number User" />
                     <Column field="phone_number_destination" header="BIGO User ID" />
 
-                    <Column body={amount} header="Amount"/>
+                    <Column body={amount} header="Amount" />
 
                     <Column field="diamond" header="Diamond" />
-                    
+
                     <Column body={transactionDateBody} field="transaction_date" header={transactionDateHeader} filterField="date" dataType="date" style={{ minWidth: '12rem' }} />
 
                     <Column field="status" header="Status" />
                     <Column field="type" header="Type" />
                 </DataTable>
                 {fetchingTransactions &&
-                    <div role="status" className="absolute z-50 top-[76px] left-0 right-0 bottom-0 bg-white w-full">
+                    <div role="status" className="absolute z-50 top-[52px] left-0 right-0 bottom-0 bg-white w-full">
                         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4 animate-pulse"></div>
                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5 animate-pulse"></div>
                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 animate-pulse"></div>
