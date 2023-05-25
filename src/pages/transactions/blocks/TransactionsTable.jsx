@@ -195,6 +195,14 @@ export default function TransactionsTable() {
 
     const [statusParam, setStatusParam] = useState("");
 
+    const limitParamDefaultVal = useRef(10);
+
+    const [limitParamDefault, setlimitParamDefault] = useState(10);
+
+    const currentPageVal = useRef(1);
+    
+    const [currentPage, setcurrentPage] = useState(1);
+
     const transactionsParamsHandler = () => {
         // e.preventDefault();
         if (transactionsTable !== null) {
@@ -207,7 +215,7 @@ export default function TransactionsTable() {
 
             let toDateRawInput = document.getElementById('to-date').value;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         }
     }
 
@@ -248,7 +256,7 @@ export default function TransactionsTable() {
 
             let toDateRawInput = document.getElementById('to-date').value;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         })
     }
 
@@ -262,7 +270,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const clearDateParamHandler = (e) => {
@@ -275,7 +283,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value = '';
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}`);
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const toggleStatusDropdownHandler = (e) => {
@@ -304,7 +312,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}`);
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const clearStatusParamHandler = (e) => {
@@ -326,13 +334,7 @@ export default function TransactionsTable() {
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
     }
     
-    // Actual Data
-    const currentPageVal = useRef(1);
-
-    // UI Data
-    const [currentPage, setcurrentPage] = useState(1);
-
-    const pageLimitHandler = (e, action) => {
+    const pageParamHandler = (e, action) => {
         e.preventDefault();
         if(action === "plus"){
             currentPageVal.current++;
@@ -348,7 +350,7 @@ export default function TransactionsTable() {
            // Page Param Input.
            let pageParamInput = currentPageVal.current;
 
-           setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}`);
+           setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
 
         if((action === "minus")&&(currentPageVal.current !== 1)){
@@ -365,10 +367,37 @@ export default function TransactionsTable() {
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
     }
+    
+    const limitParamHandler = (e, limitNum) => {
+        e.preventDefault();
+        
+        setlimitParamDefault(limitNum);
+        limitParamDefaultVal.current = limitNum;
 
+        // Search Param Input.
+        let searchInput = document.getElementById(`table-search`).value;
+            
+        // Date Param Input.
+        let fromDateRawInput = document.getElementById('from-date').value;
+        let toDateRawInput = document.getElementById('to-date').value;
+
+        let limitDropdown = document.getElementById('limit-dropdown');
+        
+        let dropDownValue = limitDropdown.getAttribute('value');
+        if(dropDownValue === "hidden"){
+            limitDropdown.setAttribute("value", "");
+            limitDropdown.classList.remove("hidden");
+        } else {
+            limitDropdown.setAttribute("value", "hidden");
+            limitDropdown.classList.add("hidden");
+        }
+        
+        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+    }    
+    
     // =========================
     // == End Of Fetch Search ==
     // =========================
@@ -480,18 +509,51 @@ export default function TransactionsTable() {
         return moment(rowData.transaction_date).format('DD MMMM YYYY')
     };
 
+    const toggleLimitDropdownHandler = (e) => {
+        e.preventDefault();
+
+        let limitDropdown = document.getElementById('limit-dropdown');
+        
+        let dropDownValue = limitDropdown.getAttribute('value');
+        if(dropDownValue === "hidden"){
+            limitDropdown.setAttribute("value", "");
+            limitDropdown.classList.remove("hidden");
+        } else {
+            limitDropdown.setAttribute("value", "hidden");
+            limitDropdown.classList.add("hidden");
+        }
+    }
+
+    const limitParamRows = [10, 20, 30, 40, 50];
+
     const footer = (
-        // == Page Param Input ==
         <div className="flex flex-wrap w-[30%] gap-2 mx-auto">
+            {/* // == Page Param Input == */}
             <div className="mx-auto flex flex-row justify-between gap-6 items-center">
-                <button onClick={(e) => pageLimitHandler(e, "minus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
+                <button onClick={(e) => pageParamHandler(e, "minus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
                 <span className='font-medium'>{currentPage}</span>
-                <button onClick={(e) => pageLimitHandler(e, "plus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
+                <button onClick={(e) => pageParamHandler(e, "plus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
-            </div>            
+            </div>
+            {/* == Limit Param Input == */}
+            <div className="relative mx-auto flex flex-row justify-between items-center rounded-t-lg bg-white border border-gray-200">
+                <span className="p-2 px-2.5 font-medium">{limitParamDefault}</span>
+                <button onClick={(e) => toggleLimitDropdownHandler(e)} className="p-2 px-2.5 border-l font-medium text-xs hover:bg-gray-100">
+                    <FontAwesomeIcon icon={faChevronDown} />
+                </button>
+                <div id="limit-dropdown" className="hidden absolute top-10 right-0 w-full" value="hidden">
+                    <ul className="flex flex-col justify-start items-center w-full h-[100px] overflow-y-scroll rounded-b-lg bg-white border border-gray-200">
+                        {limitParamRows.map((item, i) => (
+                            <li className="w-full" key={i}>
+                                <button onClick={(e) => limitParamHandler(e, item)} className="hover:bg-gray-100 py-1 border-b border-gray-100 font-medium w-full">{item}</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
         </div>
     )
 
