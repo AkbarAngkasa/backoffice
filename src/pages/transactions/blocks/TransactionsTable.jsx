@@ -334,7 +334,6 @@ export default function TransactionsTable() {
 
     const pageLimitHandler = (e, action) => {
         e.preventDefault();
-        console.log(action);
         if(action === "plus"){
             currentPageVal.current++;
             setcurrentPage(currentPageVal.current)
@@ -492,18 +491,10 @@ export default function TransactionsTable() {
                 <button onClick={(e) => pageLimitHandler(e, "plus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
-            </div>
-            {/* <div className="mx-auto flex flex-row justify-between gap-6 items-center">
-                <button className="p-1 px-2 text-sm text-white rounded-full bg-green-400">
-                    <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span>1</span>
-                <button className="p-1 px-2 text-sm text-white rounded-full bg-green-400">
-                    <FontAwesomeIcon icon={faPlus} />
-                </button>
-            </div> */}
+            </div>            
         </div>
     )
+
 
     return (
         <>
