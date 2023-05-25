@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -325,6 +325,50 @@ export default function TransactionsTable() {
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
     }
+    
+    // Actual Data
+    const currentPageVal = useRef(1);
+
+    // UI Data
+    const [currentPage, setcurrentPage] = useState(1);
+
+    const pageLimitHandler = (e, action) => {
+        e.preventDefault();
+        console.log(action);
+        if(action === "plus"){
+            currentPageVal.current++;
+            setcurrentPage(currentPageVal.current)
+
+             // Search Param Input.
+            let searchInput = document.getElementById(`table-search`).value;
+            
+            // Date Param Input.
+            let fromDateRawInput = document.getElementById('from-date').value;
+            let toDateRawInput = document.getElementById('to-date').value;
+
+           // Page Param Input.
+           let pageParamInput = currentPageVal.current;
+
+           setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}`);
+        }
+
+        if((action === "minus")&&(currentPageVal.current !== 1)){
+            currentPageVal.current--;
+            setcurrentPage(currentPageVal.current)
+
+             // Search Param Input.
+            let searchInput = document.getElementById(`table-search`).value;
+            
+            // Date Param Input.
+            let fromDateRawInput = document.getElementById('from-date').value;
+            let toDateRawInput = document.getElementById('to-date').value;
+
+            // Page Param Input.
+            let pageParamInput = currentPageVal.current;
+
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}`);
+        }
+    }
 
     // =========================
     // == End Of Fetch Search ==
@@ -437,15 +481,35 @@ export default function TransactionsTable() {
         return moment(rowData.transaction_date).format('DD MMMM YYYY')
     };
 
-    const rowArr = () => {
-        return [1, 2, 3, 4, 5]
-    }
+    const footer = (
+        // == Page Param Input ==
+        <div className="flex flex-wrap w-[30%] gap-2 mx-auto">
+            <div className="mx-auto flex flex-row justify-between gap-6 items-center">
+                <button onClick={(e) => pageLimitHandler(e, "minus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+                <span className='font-medium'>{currentPage}</span>
+                <button onClick={(e) => pageLimitHandler(e, "plus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
+                    <FontAwesomeIcon icon={faChevronRight} />
+                </button>
+            </div>
+            {/* <div className="mx-auto flex flex-row justify-between gap-6 items-center">
+                <button className="p-1 px-2 text-sm text-white rounded-full bg-green-400">
+                    <FontAwesomeIcon icon={faMinus} />
+                </button>
+                <span>1</span>
+                <button className="p-1 px-2 text-sm text-white rounded-full bg-green-400">
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
+            </div> */}
+        </div>
+    )
 
     return (
         <>
             {header}
             <div className="card relative w-full">
-                <DataTable ref={dt} value={transactionsTable} size='small' tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
+                <DataTable ref={dt} value={transactionsTable} footer={footer} size='small' tableStyle={{ minWidth: '50rem' }} className='h-screen'>
                     <Column field="id" header="Transaction ID" />
                     <Column field="phone_number" header="Phone Number User" />
                     <Column field="phone_number_destination" header="BIGO User ID" />
@@ -471,35 +535,6 @@ export default function TransactionsTable() {
                     </div>
                 }
             </div>
-            {/* {fetchingTransactions &&
-                <div role="status" className="max-w-sm animate-pulse">
-                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    <span className="sr-only">Loading...</span>
-                </div>
-            }
-            {!fetchingTransactions && transactionsTable &&
-                <div className="card">
-                    <DataTable ref={dt} value={transactionsTable} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={rowArr()} className='h-screen'>
-                        <Column field="id"/>
-                        <Column field="phone_number" header="Phone Number User" />
-                        <Column field="phone_number_destination" header="BIGO User ID" />
-
-                        <Column body={amount} header="Amount"/>
-
-                        <Column field="diamond" header="Diamond" />
-
-                        <Column field="transaction_date" header={() => transactionDateHeader()} sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={date} />
-
-                        <Column field="status" header="Status" />
-                        <Column field="type" header="Type" />
-                    </DataTable>
-                </div>
-            } */}
         </>
     );
 }
