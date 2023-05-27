@@ -24,3 +24,5 @@ yarn-error.log*
 
 .env
 TODOS.txt
+_redirects
+netlify.toml
