@@ -17,7 +17,7 @@ export default function SidenavBlock() {
     const [ user, setUser ] = useState(null);
 
     // Datas
-    const endpoint = process.env.REACT_APP_EMKOP_ENDPOINT_LIST_MENU;
+    const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/list-menu";
     const accessToken = cookies.get('accessToken');
     
     useEffect(() => {

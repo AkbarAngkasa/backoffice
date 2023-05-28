@@ -36,7 +36,7 @@ export default function TransactionsTable() {
     const [transactionsTable, settransactionsTable] = useState(null);
 
     // == Datas n States ==
-    const [endpoint, setEndpoint] = useState(process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS);
+    const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/transactions");
     const accessToken = cookies.get('accessToken');
 
     useEffect(() => {
@@ -89,7 +89,7 @@ export default function TransactionsTable() {
     // ===================================
 
     // == Datas & States ==
-    const endpointListStatus = process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS_LIST_STATUS;
+    const endpointListStatus = "https://core-webhook.emkop.co.id/api/v1/transactions/list-status";
 
     // == UI States ==
     const [fetchingListStatus, setFetchingListStatus] = useState(false);
@@ -215,7 +215,7 @@ export default function TransactionsTable() {
 
             let toDateRawInput = document.getElementById('to-date').value;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         }
     }
 
@@ -246,7 +246,7 @@ export default function TransactionsTable() {
                 sortParamInput.setAttribute("value", "transaction_date desc")
             }
             setSortParam(sortParamInput.value)
-            // setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${sortParamInput.value}`);
+            // setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?sort=${sortParamInput.value}`);
 
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
@@ -256,7 +256,7 @@ export default function TransactionsTable() {
 
             let toDateRawInput = document.getElementById('to-date').value;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         })
     }
 
@@ -270,7 +270,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const clearDateParamHandler = (e) => {
@@ -283,7 +283,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value = '';
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const toggleStatusDropdownHandler = (e) => {
@@ -312,7 +312,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
 
     const clearStatusParamHandler = (e) => {
@@ -331,7 +331,7 @@ export default function TransactionsTable() {
 
         let toDateRawInput = document.getElementById('to-date').value;
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
+        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
     }
     
     const pageParamHandler = (e, action) => {
@@ -350,7 +350,7 @@ export default function TransactionsTable() {
            // Page Param Input.
            let pageParamInput = currentPageVal.current;
 
-           setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+           setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
 
         if((action === "minus")&&(currentPageVal.current !== 1)){
@@ -367,7 +367,7 @@ export default function TransactionsTable() {
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
     }
     
@@ -395,7 +395,7 @@ export default function TransactionsTable() {
             limitDropdown.classList.add("hidden");
         }
         
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }    
     
     // =========================
