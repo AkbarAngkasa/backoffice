@@ -44,7 +44,6 @@ export default function LoginBlock() {
 
         // == Fetch Login ==
         const endpoint = "https://core-webhook.emkop.co.id/api/v1/login";
-        console.log(endpoint)
 
         let formData = new FormData();
         formData.append("email", userInput.email);

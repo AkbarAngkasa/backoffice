@@ -35,7 +35,6 @@ export default function NavbarBlock(props) {
             }).then(res => {
                 return res.json()
             }).then(response => {
-                console.log(response)
                 if (response.status === 200) {
                     // User Logged in.
                     setUser(response.data.user);
