@@ -2,8 +2,8 @@ import { initFlowbite } from 'flowbite';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 import { useEffect, useMemo, useState } from 'react';
-// import useDate from '../../costumHooks/useDate';
-// import useGenerateGreet from '../../costumHooks/useGenerateGreet';
+import useDate from '../../costumHooks/useDate';
+import useGenerateGreet from '../../costumHooks/useGenerateGreet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,8 +19,8 @@ export default function LoginBlock() {
     const { userAccessToken } = useCheckAccessToken();
     const navigate = useNavigate();
     const cookies = useMemo(() => new Cookies(), []);
-    // const greet = useGenerateGreet();
-    // const currentDate = useDate();
+    const greet = useGenerateGreet();
+    const currentDate = useDate();
     
     // === UI States ===
     const [ fetching, setFetching ] = useState(false);
@@ -43,7 +43,7 @@ export default function LoginBlock() {
         };
 
         // == Fetch Login ==
-        const endpoint = process.env.REACT_APP_EMKOP_ENDPOINT_LOGIN;
+        const endpoint = "https://core-webhook.emkop.co.id/api/v1/login";
         console.log(endpoint)
 
         let formData = new FormData();
@@ -111,12 +111,12 @@ export default function LoginBlock() {
                                 </div>
                                 <hr />
                                 <div className="flex flex-row justify-between">
-                                    {/* <h2 className="my-2 font-semibold text-sm w-[70%]">
+                                    <h2 className="my-2 font-semibold text-sm w-[70%]">
                                         {greet}
                                     </h2>
                                     <h2 className="my-2 font-semibold text-sm">
                                         <span className="ml-1">{currentDate}</span>
-                                    </h2> */}
+                                    </h2>
                                 </div>
                             </div>
 
