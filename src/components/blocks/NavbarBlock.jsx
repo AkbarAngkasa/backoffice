@@ -15,7 +15,7 @@ export default function NavbarBlock(props) {
     const [user, setUser] = useState(null);
 
     // Datas
-    const endpoint = process.env.REACT_APP_EMKOP_ENDPOINT_LIST_MENU;
+    const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/menu-permission?menu_name=";
     const accessToken = cookies.get('accessToken');
 
     useEffect(() => {
