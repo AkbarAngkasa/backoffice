@@ -133,24 +133,36 @@ export default function ChangePassword() {
                 <div className="grow flex flex-col justify-center gap-4">
                     <div>
                         <label htmlFor="old_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">your password</label>
-                        <input onChange={(e) => {
-                            handleOldPasswordInput(e)
-                            handleCheckPasswordMatch(e)
-                        }} type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handleOldPasswordInput(e)
+                                handleCheckPasswordMatch(e)
+                            }} type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                            :
+                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }    
                     </div>
                     <div>
                         <label htmlFor="new_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">new password</label>
-                        <input onChange={(e) => {
-                            handleNewPasswordInput(e)
-                            handleCheckPasswordMatch(e)
-                        }} type="password" id="new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handleNewPasswordInput(e)
+                                handleCheckPasswordMatch(e)
+                            }} type="password" id="new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        :
+                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                     </div>
                     <div>
                         <label htmlFor="confirm_new_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">confirm new password</label>
-                        <input onChange={(e) => {
-                            handleNewPasswordInputSecond(e)
-                            handleCheckPasswordMatch(e)
-                        }} type="password" id="confirm_new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handleNewPasswordInputSecond(e)
+                                handleCheckPasswordMatch(e)
+                            }} type="password" id="confirm_new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        :
+                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                     </div>
 
                     {/* == Button == */}
@@ -161,15 +173,15 @@ export default function ChangePassword() {
                         <button onClick={(e) => handleSubmit(e)} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Change</button>
                     }
                     {isSubmitting &&
-                        <button className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 block animate-pulse disabled" disabled>
-                            Please Wait..
+                        <button className="w-full text-white bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:focus:ring-primary-800 block animate-pulse cursor-wait disabled" disabled>
+                            Changing your password..
                         </button>
                     }
                     {/* == End Of Button == */}
 
                     {/* Alerts */}
                     {isAlert &&
-                        <div className="text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 cursor-not-allowed font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
+                        <div className="text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
                             <div>
                                 <FontAwesomeIcon icon={faWarning}/>
                                 <span className="ml-2">This is an alert</span>
