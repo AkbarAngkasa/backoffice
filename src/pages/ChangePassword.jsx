@@ -25,13 +25,16 @@ export default function ChangePassword() {
     // ========================
     // == Old Password Input ==
     // ========================
-    const oldPassword = useRef("");
+    const oldPassword = useRef(null);
     
     const handleOldPasswordInput = (e) => {
         e.preventDefault();
         const oldPasswordInput = e.target.value;
 
         oldPassword.current = oldPasswordInput;
+        if (oldPasswordInput.length === 0) {
+            oldPassword.current = null;
+        }
     }
 
     // ===============================
@@ -85,13 +88,13 @@ export default function ChangePassword() {
         e.preventDefault();
         setisAlert(false);
 
-        if (newPasswordFirst.current === newPasswordSecond.current) {
+        if ((oldPassword.current !== null) && (newPasswordFirst.current === newPasswordSecond.current)) {
             setisPasswordMatch(true);
         }
-        if (newPasswordFirst.current !== newPasswordSecond.current) {
+        if ((oldPassword.current === null) || (newPasswordFirst.current !== newPasswordSecond.current)) {
             setisPasswordMatch(false);
         }
-        if ((newPasswordFirst.current === null) && (newPasswordSecond.current === null)) {
+        if ((oldPassword.current === null) || (newPasswordFirst.current === null) || (newPasswordSecond.current === null)) {
             setisPasswordMatch(false);
         }
     }
@@ -132,6 +135,7 @@ export default function ChangePassword() {
                         <label htmlFor="old_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">your password</label>
                         <input onChange={(e) => {
                             handleOldPasswordInput(e)
+                            handleCheckPasswordMatch(e)
                         }} type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     </div>
                     <div>
@@ -163,11 +167,6 @@ export default function ChangePassword() {
                     }
                     {/* == End Of Button == */}
 
-                    {/* {isPasswordMatch ?
-                        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Change</button>
-                        :
-                        <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Change</button>
-                    } */}
                     {/* Alerts */}
                     {isAlert &&
                         <div className="text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 cursor-not-allowed font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
