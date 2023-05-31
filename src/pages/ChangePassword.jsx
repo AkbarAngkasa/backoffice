@@ -32,8 +32,6 @@ export default function ChangePassword() {
         const oldPasswordInput = e.target.value;
 
         oldPassword.current = oldPasswordInput;
-
-        console.log(oldPassword.current);
     }
 
     // ===============================
@@ -110,8 +108,8 @@ export default function ChangePassword() {
         setisSubmitting(true);
         console.log('Handle Submit');
 
-        console.log(newPasswordSecond.current)
-
+        console.log("Old Password ", oldPassword.current);
+        console.log("New Password", newPasswordSecond.current);
     }
 
     // ===============================
