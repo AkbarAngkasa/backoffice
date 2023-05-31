@@ -18,7 +18,7 @@ export default function ChangePassword() {
 
     const [isPasswordMatch, setisPasswordMatch] = useState(false);
 
-    const [isAlert, setisAlert] = useState(true);
+    const [isAlert, setisAlert] = useState(false);
 
     const [isSubmitting, setisSubmitting] = useState(false);
 
