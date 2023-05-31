@@ -18,7 +18,27 @@ export default function ChangePassword() {
 
     const [isPasswordMatch, setisPasswordMatch] = useState(false);
 
-    const [isAlert, setisAlert] = useState(false);
+    const [isAlert, setisAlert] = useState(true);
+
+    const [isSubmitting, setisSubmitting] = useState(false);
+
+    // ========================
+    // == Old Password Input ==
+    // ========================
+    const oldPassword = useRef("");
+    
+    const handleOldPasswordInput = (e) => {
+        e.preventDefault();
+        const oldPasswordInput = e.target.value;
+
+        oldPassword.current = oldPasswordInput;
+
+        console.log(oldPassword.current);
+    }
+
+    // ===============================
+    // == End Of Old Password Input ==
+    // ===============================
 
     // ============================
     // == New Password Validator ==
@@ -85,9 +105,14 @@ export default function ChangePassword() {
     // ========================
     // == Fetch New Password ==
     // ========================
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    // }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setisSubmitting(true);
+        console.log('Handle Submit');
+
+        console.log(newPasswordSecond.current)
+
+    }
 
     // ===============================
     // == End Of Fetch New Password ==
@@ -107,7 +132,9 @@ export default function ChangePassword() {
                 <div className="grow flex flex-col justify-center gap-4">
                     <div>
                         <label htmlFor="old_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">your password</label>
-                        <input type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        <input onChange={(e) => {
+                            handleOldPasswordInput(e)
+                        }} type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     </div>
                     <div>
                         <label htmlFor="new_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">new password</label>
@@ -123,12 +150,20 @@ export default function ChangePassword() {
                             handleCheckPasswordMatch(e)
                         }} type="password" id="confirm_new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     </div>
-                    {isPasswordMatch && !isAlert &&
-                        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Change</button>
-                    }
-                    {!isPasswordMatch &&
+
+                    {/* == Button == */}
+                    {!isPasswordMatch && !isAlert && !isSubmitting &&
                         <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Change</button>
                     }
+                    {isPasswordMatch && !isAlert && !isSubmitting &&
+                        <button onClick={(e) => handleSubmit(e)} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Change</button>
+                    }
+                    {isSubmitting &&
+                        <button className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 block animate-pulse disabled" disabled>
+                            Please Wait..
+                        </button>
+                    }
+                    {/* == End Of Button == */}
 
                     {/* {isPasswordMatch ?
                         <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Change</button>
