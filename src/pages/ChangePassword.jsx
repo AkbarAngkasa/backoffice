@@ -1,15 +1,15 @@
 // import { initFlowbite } from "flowbite";
-// import { useEffect, useMemo, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import Cookies from "universal-cookie";
+import { useRef, useState, useMemo } from "react";
 import { faCircleCheck, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
     // === Hooks ===
-    // const cookies = useMemo(() => new Cookies(), []);
-    // const navigate = useNavigate();
+    const cookies = useMemo(() => new Cookies(), []);
+    const accessToken = cookies.get('accessToken');
+    const navigate = useNavigate();
 
     // == UI States ==
     const [isUpperCase, setIsUpperCase] = useState(false);
@@ -106,13 +106,55 @@ export default function ChangePassword() {
     // ========================
     // == Fetch New Password ==
     // ========================
+    const [fetchResponse, setfetchResponse] = useState(false);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setisSubmitting(true);
-        console.log('Handle Submit');
 
-        console.log("Old Password ", oldPassword.current);
-        console.log("New Password", newPasswordSecond.current);
+        const oldPasswordFix = oldPassword.current;
+        const newPasswordFix = newPasswordSecond.current;
+        
+        // == data to submit ==
+        const data = {
+            old_pin: oldPasswordFix,
+            new_pin: newPasswordFix
+        }
+
+        const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/change-password";
+        
+        fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(data)
+        }).then( res => {
+            return res.json()
+        }).then(response => {
+            setisSubmitting(false);
+
+            // Clean Up
+            oldPassword.current = null;
+            newPasswordFirst.current = null;
+            newPasswordSecond.current = null;
+
+            setfetchResponse(response);
+
+            if(response.status === 200){
+                setisAlert(true);
+            }
+            if(response.status === 400){
+                setisAlert(true);
+            }
+            if(response.status === 401){
+                navigate("/login");
+            }
+
+            console.log(response)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     // ===============================
@@ -139,7 +181,7 @@ export default function ChangePassword() {
                                 handleCheckPasswordMatch(e)
                             }} type="password" id="old_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                             :
-                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
                         }    
                     </div>
                     <div>
@@ -150,7 +192,7 @@ export default function ChangePassword() {
                                 handleCheckPasswordMatch(e)
                             }} type="password" id="new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                         :
-                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
                         }
                     </div>
                     <div>
@@ -161,7 +203,7 @@ export default function ChangePassword() {
                                 handleCheckPasswordMatch(e)
                             }} type="password" id="confirm_new_password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                         :
-                            <div className="bg-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
                         }
                     </div>
 
@@ -180,16 +222,29 @@ export default function ChangePassword() {
                     {/* == End Of Button == */}
 
                     {/* Alerts */}
-                    {isAlert &&
-                        <div className="text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
+                    {isAlert && (fetchResponse.status === 200 &&
+                        <div className="text-green-800 border border-green-500 bg-green-50 dark:bg-gray-800 dark:text-green-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
                             <div>
                                 <FontAwesomeIcon icon={faWarning}/>
-                                <span className="ml-2">This is an alert</span>
+                                <span className="ml-2 font-medium">{fetchResponse.message}</span>
                             </div>
                             <button onClick={() => setisAlert(false)}>
                                 <FontAwesomeIcon icon={faXmark}/>
                             </button>
                         </div>
+                        )
+                    }
+                    {isAlert && (fetchResponse.status === 400 &&
+                        <div className="text-red-800 border border-red-500 bg-red-50 dark:bg-gray-800 dark:text-red-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
+                            <div>
+                                <FontAwesomeIcon icon={faWarning}/>
+                                <span className="ml-2 font-medium">{fetchResponse.message}</span>
+                            </div>
+                            <button onClick={() => setisAlert(false)}>
+                                <FontAwesomeIcon icon={faXmark}/>
+                            </button>
+                        </div>
+                        )
                     }
                 </div>
 
