@@ -10,6 +10,7 @@ import Transactions from "./transactions";
 
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
+import ChangePassword from "./ChangePassword";
 
 export default function DashboardLayout() {
     // Hooks 
@@ -37,9 +38,19 @@ export default function DashboardLayout() {
                             <img src={whyempty} width={400} alt={whyempty}/>
                         </div>
                     }
+                    {currentPath === "/change-password" &&
+                        <div>
+                            <ChangePassword />
+                        </div>
+                    }
                     {currentPath === "/transactions" &&
                         <div>
                             <Transactions />
+                        </div>
+                    }
+                    {currentPath === "/users" &&
+                        <div>
+                            Users
                         </div>
                     }
                 </div>

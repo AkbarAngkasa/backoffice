@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars, /*faBell, faGrip*/ } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function NavbarBlock(props) {
     // === Hooks ===
@@ -97,8 +98,11 @@ export default function NavbarBlock(props) {
                                     <span className="block text-sm font-light text-gray-500 truncate dark:text-gray-400">{user.email}</span>
                                 </div>
                                 <ul className="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
-                                    <li onClick={(e) => logoutHandler(e)}>
-                                        <button href="#" className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</button>
+                                    <li className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                        <Link to="/change-password">Change Password</Link>
+                                    </li>
+                                    <li onClick={(e) => logoutHandler(e)} className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                        <button>Sign out</button>
                                     </li>
                                 </ul>
                             </div>
