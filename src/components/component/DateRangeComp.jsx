@@ -91,6 +91,7 @@ const DateRangeComp = ({fromChild, listener}) => {
                         ""
                     }
                     readOnly
+                    type="text"
                     className="w-full px-4 inline-block py-2.5 text-sm font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Select Date"
                     onClick={() => {
