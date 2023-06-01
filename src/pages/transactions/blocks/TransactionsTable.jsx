@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router';
 // Costum Hooks
 import formatRupiah from '../../../methods/formatRupiah';
 import moment from 'moment';
+// import DateRangeComp from '../../../components/component/DateRangeComp';
 
 
 export default function TransactionsTable() {
@@ -104,25 +105,25 @@ export default function TransactionsTable() {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        .then(res => {
-            return res.json()
-        }).then(response => {
-            
-            // == Success ==
-            if(response.status === 200){
-                setListStatus(response.data)
+            .then(res => {
+                return res.json()
+            }).then(response => {
 
-                setFetchingListStatus(false);
-            } 
-            // == Failed ==
-            else if(response.status === 401){
-                navigate("/login");
-                setFetchingListStatus(false);
-            }
+                // == Success ==
+                if (response.status === 200) {
+                    setListStatus(response.data)
 
-        }).catch(err => {
-            console.log(err)
-        })
+                    setFetchingListStatus(false);
+                }
+                // == Failed ==
+                else if (response.status === 401) {
+                    navigate("/login");
+                    setFetchingListStatus(false);
+                }
+
+            }).catch(err => {
+                console.log(err)
+            })
     }, [endpointListStatus, accessToken, navigate]);
 
     // ===========================================
@@ -200,7 +201,7 @@ export default function TransactionsTable() {
     const [limitParamDefault, setlimitParamDefault] = useState(10);
 
     const currentPageVal = useRef(1);
-    
+
     const [currentPage, setcurrentPage] = useState(1);
 
     const transactionsParamsHandler = () => {
@@ -211,9 +212,9 @@ export default function TransactionsTable() {
             let searchInput = document.getElementById(`table-search`).value;
 
             // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date').value;
+            let fromDateRawInput = document.getElementById('from-date-param').value;
 
-            let toDateRawInput = document.getElementById('to-date').value;
+            let toDateRawInput = document.getElementById('to-date-param').value;
 
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         }
@@ -252,9 +253,9 @@ export default function TransactionsTable() {
             let searchInput = document.getElementById(`table-search`).value;
 
             // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date').value;
+            let fromDateRawInput = document.getElementById('from-date-param').value;
 
-            let toDateRawInput = document.getElementById('to-date').value;
+            let toDateRawInput = document.getElementById('to-date-param').value;
 
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         })
@@ -266,9 +267,9 @@ export default function TransactionsTable() {
         let searchInput = document.getElementById(`table-search`).value = '';
 
         // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value;
+        let fromDateRawInput = document.getElementById('from-date-param').value;
 
-        let toDateRawInput = document.getElementById('to-date').value;
+        let toDateRawInput = document.getElementById('to-date-param').value;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
@@ -279,9 +280,9 @@ export default function TransactionsTable() {
         let searchInput = document.getElementById(`table-search`).value;
 
         // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value = '';
+        let fromDateRawInput = document.getElementById('from-date-param').value = '';
 
-        let toDateRawInput = document.getElementById('to-date').value = '';
+        let toDateRawInput = document.getElementById('to-date-param').value = '';
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
@@ -289,9 +290,9 @@ export default function TransactionsTable() {
     const toggleStatusDropdownHandler = (e) => {
         e.preventDefault();
         let statusDropdown = document.getElementById('status-dropdown');
-        
+
         let dropDownValue = statusDropdown.getAttribute('value');
-        if(dropDownValue === "hidden"){
+        if (dropDownValue === "hidden") {
             statusDropdown.setAttribute("value", "");
             statusDropdown.classList.remove("hidden");
         } else {
@@ -299,7 +300,7 @@ export default function TransactionsTable() {
             statusDropdown.classList.add("hidden");
         }
     }
-    
+
     const statusParamHandler = (e, statusParam) => {
         e.preventDefault();
         setStatusParam(statusParam)
@@ -308,9 +309,9 @@ export default function TransactionsTable() {
         let searchInput = document.getElementById(`table-search`).value;
 
         // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value;
+        let fromDateRawInput = document.getElementById('from-date-param').value;
 
-        let toDateRawInput = document.getElementById('to-date').value;
+        let toDateRawInput = document.getElementById('to-date-param').value;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
@@ -318,7 +319,7 @@ export default function TransactionsTable() {
     const clearStatusParamHandler = (e) => {
         e.preventDefault();
         setStatusParam("");
-        
+
         let statusDropdown = document.getElementById('status-dropdown');
         statusDropdown.setAttribute("value", "hidden");
         statusDropdown.classList.add("hidden");
@@ -327,42 +328,42 @@ export default function TransactionsTable() {
         let searchInput = document.getElementById(`table-search`).value;
 
         // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value;
+        let fromDateRawInput = document.getElementById('from-date-param').value;
 
-        let toDateRawInput = document.getElementById('to-date').value;
+        let toDateRawInput = document.getElementById('to-date-param').value;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
     }
-    
+
     const pageParamHandler = (e, action) => {
         e.preventDefault();
-        if(action === "plus"){
+        if (action === "plus") {
             currentPageVal.current++;
             setcurrentPage(currentPageVal.current)
 
-             // Search Param Input.
+            // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
-            
+
             // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date').value;
-            let toDateRawInput = document.getElementById('to-date').value;
+            let fromDateRawInput = document.getElementById('from-date-param').value;
+            let toDateRawInput = document.getElementById('to-date-param').value;
 
-           // Page Param Input.
-           let pageParamInput = currentPageVal.current;
+            // Page Param Input.
+            let pageParamInput = currentPageVal.current;
 
-           setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
 
-        if((action === "minus")&&(currentPageVal.current !== 1)){
+        if ((action === "minus") && (currentPageVal.current !== 1)) {
             currentPageVal.current--;
             setcurrentPage(currentPageVal.current)
 
-             // Search Param Input.
+            // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
-            
+
             // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date').value;
-            let toDateRawInput = document.getElementById('to-date').value;
+            let fromDateRawInput = document.getElementById('from-date-param').value;
+            let toDateRawInput = document.getElementById('to-date-param').value;
 
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
@@ -370,41 +371,41 @@ export default function TransactionsTable() {
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
         }
     }
-    
+
     const limitParamHandler = (e, limitNum) => {
         e.preventDefault();
-        
+
         setlimitParamDefault(limitNum);
         limitParamDefaultVal.current = limitNum;
 
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
-            
+
         // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date').value;
-        let toDateRawInput = document.getElementById('to-date').value;
+        let fromDateRawInput = document.getElementById('from-date-param').value;
+        let toDateRawInput = document.getElementById('to-date-param').value;
 
         let limitDropdown = document.getElementById('limit-dropdown');
-        
+
         let dropDownValue = limitDropdown.getAttribute('value');
-        if(dropDownValue === "hidden"){
+        if (dropDownValue === "hidden") {
             limitDropdown.setAttribute("value", "");
             limitDropdown.classList.remove("hidden");
         } else {
             limitDropdown.setAttribute("value", "hidden");
             limitDropdown.classList.add("hidden");
         }
-        
+
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
-    }    
-    
+    }
+
     // =========================
     // == End Of Fetch Search ==
     // =========================
 
     // Components
     const header = (
-        <div className="flex flex-wrap sm:flex-col justify-end sm:justify-end gap-2 p-4 rounded-t-lg w-full h-fit bg-gray-50">
+        <div className="w-full flex flex-wrap sm:flex-col justify-end gap-2 p-4 rounded-t-lg h-fit bg-gray-50">
             {/* Export Buttons */}
             <div className='flex flex-wrap justify-end gap-2'>
                 <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
@@ -418,67 +419,79 @@ export default function TransactionsTable() {
                 </button>
             </div>
 
-            <div className='flex flex-wrap gap-2 justify-end' id='dateRangePickerId'>
-                {/* Search */}
-                <div className='relative block grow'>
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
-                    </div>
-                    <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block pr-4 pl-10 py-2.5 px-[1.30rem] text-sm font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearSearchParamHandler(e)} />
-                    </div>
-                </div>
-                {/* Date */}
-                <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
-                    <div className="relative">
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
+            {/* Filter */}
+            <div className="w-full">
+                <div className='flex flex-wrap gap-2 justify-end' id='dateRangePickerId'>
+                    {/* Search */}
+                    <div className='relative grow-[10]'>
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
-                    <span className="mx-1 text-gray-500 font-medium">to</span>
-                    <div className="relative">
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
+                        <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block px-4 py-2.5 pl-10 text-sm text-left font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-40' onClick={(e) => clearSearchParamHandler(e)} />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
-                    <button className='sm:mr-3'>
-                        <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
-                    </button>
-                </div>
-                {/* Status */}
-                <div className="relative flex flex-wrap justify-end gap-2 items-center">
-                    {fetchingListStatus &&
-                        <button type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-10 py-5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 animate-pulse cursor-progress"></button>
-                    }
-                    {!fetchingListStatus && listStatus &&
-                        <>
-                            <div>
-                                <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tl-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2'/></button>
-                                <button onClick={(e) => clearStatusParamHandler(e)} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tr-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                                    <FontAwesomeIcon icon={faDeleteLeft} />
-                                </button>
+                    {/* Date */}
+                    <div className="relative grow">
+                        {/* <DateRangeComp
+                            inputClass={"w-full inline-block px-10 py-2.5 text-sm text-center font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}
+                        /> */}
+                        <input id="from-date-param" className="hidden" />
+                        <input id="to-date-param" className="hidden" />
+                    </div>
+
+                    {/* <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
+                        <div className="relative">
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                             </div>
-                            
-                            <div id="status-dropdown" className='hidden absolute top-10 z-10 w-full rounded-b-lg bg-white border border-gray-300' value="hidden">
-                                <ul>
-                                    {listStatus.map((item, i) => (
-                                        <li key={i}>
-                                            <button id="status" value={item} onClick={(e) => {
-                                                statusParamHandler(e, item)
-                                                toggleStatusDropdownHandler(e)    
-                                            }} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
-                                            {item}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
+                            <input onChange={() => transactionsParamsHandler('fromDate-param')} name="start" type="date" id="from-date-param" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
+                        <span className="mx-1 text-gray-500 font-medium">to</span>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
                             </div>
-                        </>
-                    }
+                            <input onChange={() => transactionsParamsHandler('toDate-param')} name="end" type="date" id="to-date-param" className="font-medium sm:border-none border border-slate-400 bg-gray-50 border-transparent text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-gray-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
+                        <button className='sm:mr-3'>
+                            <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
+                        </button>
+                    </div> */}
+                    {/* Status */}
+                    <div className="relative flex flex-wrap justify-end gap-2 items-center">
+                        {fetchingListStatus &&
+                            <button type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-10 py-5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 animate-pulse cursor-progress"></button>
+                        }
+                        {!fetchingListStatus && listStatus &&
+                            <>
+                                <div>
+                                    <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tl-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2' /></button>
+                                    <button onClick={(e) => clearStatusParamHandler(e)} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tr-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                                        <FontAwesomeIcon icon={faDeleteLeft} />
+                                    </button>
+                                </div>
+
+                                <div id="status-dropdown" className='hidden absolute top-10 z-10 w-full rounded-b-lg bg-white border border-gray-300' value="hidden">
+                                    <ul>
+                                        {listStatus.map((item, i) => (
+                                            <li key={i}>
+                                                <button id="status" value={item} onClick={(e) => {
+                                                    statusParamHandler(e, item)
+                                                    toggleStatusDropdownHandler(e)
+                                                }} className='text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left'>
+                                                    {item}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </>
+                        }
+                    </div>
                 </div>
+
             </div>
         </div>
     );
@@ -513,9 +526,9 @@ export default function TransactionsTable() {
         e.preventDefault();
 
         let limitDropdown = document.getElementById('limit-dropdown');
-        
+
         let dropDownValue = limitDropdown.getAttribute('value');
-        if(dropDownValue === "hidden"){
+        if (dropDownValue === "hidden") {
             limitDropdown.setAttribute("value", "");
             limitDropdown.classList.remove("hidden");
         } else {
@@ -529,7 +542,7 @@ export default function TransactionsTable() {
     const footer = (
         <div className="flex flex-wrap w-[30%] gap-2 mx-auto">
             {/* // == Page Param Input == */}
-            <div className="mx-auto flex flex-row justify-between gap-6 items-center">
+            <div id="page-param-pagination" className="mx-auto flex flex-row justify-between gap-6 items-center">
                 <button onClick={(e) => pageParamHandler(e, "minus")} className="p-1 px-2.5 text-xs font-medium text-gray-600 rounded-full">
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
@@ -577,7 +590,7 @@ export default function TransactionsTable() {
                     <Column field="type" header="Type" />
                 </DataTable>
                 {fetchingTransactions &&
-                    <div role="status" className="absolute z-50 top-[52px] left-0 right-0 bottom-0 bg-white w-full">
+                    <div role="status" className="absolute z-40 top-[52px] left-0 right-0 bottom-0 bg-white w-full">
                         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4 animate-pulse"></div>
                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5 animate-pulse"></div>
                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 animate-pulse"></div>
