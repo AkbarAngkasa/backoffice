@@ -24,7 +24,6 @@ import formatRupiah from '../../../methods/formatRupiah';
 import moment from 'moment';
 // import DateRangeComp from '../../../components/component/DateRangeComp';
 
-
 export default function TransactionsTable() {
     PrimeReact.appendTo = 'self';
 
@@ -433,15 +432,15 @@ export default function TransactionsTable() {
                         </div>
                     </div>
                     {/* Date */}
-                    <div className="relative grow">
-                        {/* <DateRangeComp
+                    {/* <div className="relative grow">
+                        <DateRangeComp
                             inputClass={"w-full inline-block px-10 py-2.5 text-sm text-center font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}
-                        /> */}
+                        />
                         <input id="from-date-param" className="hidden" />
                         <input id="to-date-param" className="hidden" />
-                    </div>
+                    </div> */}
 
-                    {/* <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
+                    <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
                         <div className="relative">
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
@@ -458,7 +457,7 @@ export default function TransactionsTable() {
                         <button className='sm:mr-3'>
                             <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
                         </button>
-                    </div> */}
+                    </div>
                     {/* Status */}
                     <div className="relative flex flex-wrap justify-end gap-2 items-center">
                         {fetchingListStatus &&
