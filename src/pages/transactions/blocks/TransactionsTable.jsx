@@ -508,13 +508,13 @@ export default function TransactionsTable() {
                     {/* Status */}
                     <div className="relative flex flex-wrap justify-end gap-2 items-center">
                         {fetchingListStatus &&
-                            <button type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-t-lg rounded-b-md text-sm px-10 py-5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 animate-pulse cursor-progress"></button>
+                            <button type="button" className="text-gray-500 bg-gray-50 border border-gray-400 font-medium rounded-tl-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-progress"></button>
                         }
                         {!fetchingListStatus && listStatus &&
                             <>
                                 <div>
-                                    <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tl-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2' /></button>
-                                    <button onClick={(e) => clearStatusParamHandler(e)} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-tr-lg text-sm px-5 py-2.5 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                                    <button id="status-dropdown-btn" onClick={(e) => toggleStatusDropdownHandler(e)} type="button" className="text-gray-500 bg-gray-50 border border-gray-400 font-medium rounded-tl-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">{statusParam === "" ? "Choose Status" : statusParam}<FontAwesomeIcon icon={faChevronDown} className='ml-2' /></button>
+                                    <button onClick={(e) => clearStatusParamHandler(e)} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-tr-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <FontAwesomeIcon icon={faDeleteLeft} />
                                     </button>
                                 </div>
