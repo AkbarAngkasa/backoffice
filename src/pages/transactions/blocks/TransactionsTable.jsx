@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faCalendarDays, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router';
 // Costum Hooks
 import formatRupiah from '../../../methods/formatRupiah';
 import moment from 'moment';
-// import DateRangeComp from '../../../components/component/DateRangeComp';
+import DateRangeComp from '../../../components/component/DateRangeComp';
 
 export default function TransactionsTable() {
     PrimeReact.appendTo = 'self';
@@ -203,17 +203,35 @@ export default function TransactionsTable() {
 
     const [currentPage, setcurrentPage] = useState(1);
 
+    // Dates Param Input.
+    const startDateInput = useRef("");
+    const endDateInput = useRef("");
+
+    // Retrieve data from child component (DateRangeComp.jsx)
+    const dateRangeParamHandler = (childData) => {
+        // Database date format:
+        if((childData.startDateInput !== "") && (childData.endDateInput !== "")){
+            startDateInput.current = moment(childData.startDateInput).format('YYYY-MM-DD');
+            endDateInput.current = moment(childData.endDateInput).format('YYYY-MM-DD');
+        } else {
+            startDateInput.current = childData.startDateInput;
+            endDateInput.current = childData.endDateInput;
+        }
+    }
+
     const transactionsParamsHandler = () => {
-        // e.preventDefault();
         if (transactionsTable !== null) {
 
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
 
-            // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date-param').value;
-
-            let toDateRawInput = document.getElementById('to-date-param').value;
+            // Date Param Input v1.
+            // let fromDateRawInput = document.getElementById('from-date-param').value;
+            // let toDateRawInput = document.getElementById('to-date-param').value;
+            
+            // Date Param Input v2.
+            let fromDateRawInput = startDateInput.current;
+            let toDateRawInput = endDateInput.current;
 
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         }
@@ -246,15 +264,17 @@ export default function TransactionsTable() {
                 sortParamInput.setAttribute("value", "transaction_date desc")
             }
             setSortParam(sortParamInput.value)
-            // setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?sort=${sortParamInput.value}`);
 
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
 
-            // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date-param').value;
-
-            let toDateRawInput = document.getElementById('to-date-param').value;
+            // Date Param Input v1.
+            // let fromDateRawInput = document.getElementById('from-date-param').value;
+            // let toDateRawInput = document.getElementById('to-date-param').value;
+            
+            // Date Param Input v2.
+            let fromDateRawInput = startDateInput.current;
+            let toDateRawInput = endDateInput.current;
 
             setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
         })
@@ -265,26 +285,30 @@ export default function TransactionsTable() {
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value = '';
 
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date-param').value;
-
-        let toDateRawInput = document.getElementById('to-date-param').value;
-
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
-    }
-
-    const clearDateParamHandler = (e) => {
-        e.preventDefault();
-        // Search Param Input.
-        let searchInput = document.getElementById(`table-search`).value;
-
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date-param').value = '';
-
-        let toDateRawInput = document.getElementById('to-date-param').value = '';
+        // Date Param Input v1.
+        // let fromDateRawInput = document.getElementById('from-date-param').value;
+        // let toDateRawInput = document.getElementById('to-date-param').value;
+        
+        // Date Param Input v2.
+        let fromDateRawInput = startDateInput.current;
+        let toDateRawInput = endDateInput.current;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
+
+    // Date Param v1.
+    // const clearDateParamHandler = (e) => {
+    //     e.preventDefault();
+    //     // Search Param Input.
+    //     let searchInput = document.getElementById(`table-search`).value;
+
+    //     // Date Param Input.
+    //     let fromDateRawInput = document.getElementById('from-date-param').value = '';
+
+    //     let toDateRawInput = document.getElementById('to-date-param').value = '';
+
+    //     setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+    // }
 
     const toggleStatusDropdownHandler = (e) => {
         e.preventDefault();
@@ -307,10 +331,13 @@ export default function TransactionsTable() {
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
 
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date-param').value;
-
-        let toDateRawInput = document.getElementById('to-date-param').value;
+        // Date Param Input v1.
+        // let fromDateRawInput = document.getElementById('from-date-param').value;
+        // let toDateRawInput = document.getElementById('to-date-param').value;
+        
+        // Date Param Input v2.
+        let fromDateRawInput = startDateInput.current;
+        let toDateRawInput = endDateInput.current;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     }
@@ -326,10 +353,13 @@ export default function TransactionsTable() {
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
 
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date-param').value;
-
-        let toDateRawInput = document.getElementById('to-date-param').value;
+        // Date Param Input v1.
+        // let fromDateRawInput = document.getElementById('from-date-param').value;
+        // let toDateRawInput = document.getElementById('to-date-param').value;
+        
+        // Date Param Input v2.
+        let fromDateRawInput = startDateInput.current;
+        let toDateRawInput = endDateInput.current;
 
         setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
     }
@@ -343,9 +373,13 @@ export default function TransactionsTable() {
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
 
-            // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date-param').value;
-            let toDateRawInput = document.getElementById('to-date-param').value;
+            // Date Param Input v1.
+            // let fromDateRawInput = document.getElementById('from-date-param').value;
+            // let toDateRawInput = document.getElementById('to-date-param').value;
+            
+            // Date Param Input v2.
+            let fromDateRawInput = startDateInput.current;
+            let toDateRawInput = endDateInput.current;
 
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
@@ -360,9 +394,13 @@ export default function TransactionsTable() {
             // Search Param Input.
             let searchInput = document.getElementById(`table-search`).value;
 
-            // Date Param Input.
-            let fromDateRawInput = document.getElementById('from-date-param').value;
-            let toDateRawInput = document.getElementById('to-date-param').value;
+            // Date Param Input v1.
+            // let fromDateRawInput = document.getElementById('from-date-param').value;
+            // let toDateRawInput = document.getElementById('to-date-param').value;
+            
+            // Date Param Input v2.
+            let fromDateRawInput = startDateInput.current;
+            let toDateRawInput = endDateInput.current;
 
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
@@ -380,9 +418,13 @@ export default function TransactionsTable() {
         // Search Param Input.
         let searchInput = document.getElementById(`table-search`).value;
 
-        // Date Param Input.
-        let fromDateRawInput = document.getElementById('from-date-param').value;
-        let toDateRawInput = document.getElementById('to-date-param').value;
+        // Date Param Input v1.
+        // let fromDateRawInput = document.getElementById('from-date-param').value;
+        // let toDateRawInput = document.getElementById('to-date-param').value;
+        
+        // Date Param Input v2.
+        let fromDateRawInput = startDateInput.current;
+        let toDateRawInput = endDateInput.current;
 
         let limitDropdown = document.getElementById('limit-dropdown');
 
@@ -432,15 +474,9 @@ export default function TransactionsTable() {
                         </div>
                     </div>
                     {/* Date */}
-                    {/* <div className="relative grow">
-                        <DateRangeComp
-                            inputClass={"w-full inline-block px-10 py-2.5 text-sm text-center font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}
-                        />
-                        <input id="from-date-param" className="hidden" />
-                        <input id="to-date-param" className="hidden" />
-                    </div> */}
-
-                    <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
+                    
+                    {/* Date v1 */}
+                    {/* <div className="flex flex-wrap justify-end gap-2 items-center sm:border sm:border-slate-400 sm:rounded-lg">
                         <div className="relative">
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <FontAwesomeIcon icon={faCalendarDays} className='bg-gray-50 text-gray-500' />
@@ -457,7 +493,18 @@ export default function TransactionsTable() {
                         <button className='sm:mr-3'>
                             <FontAwesomeIcon icon={faDeleteLeft} className='text-slate-500 cursor-pointer z-50' onClick={(e) => clearDateParamHandler(e)} />
                         </button>
+                    </div> */}
+
+                    {/* Date v2 */}
+                    <div className="relative grow">
+                        <DateRangeComp
+                            listener={transactionsParamsHandler}
+                            fromChild={dateRangeParamHandler}
+                        />
+                        <input id="from-date-param" className="hidden" />
+                        <input id="to-date-param" className="hidden" />
                     </div>
+
                     {/* Status */}
                     <div className="relative flex flex-wrap justify-end gap-2 items-center">
                         {fetchingListStatus &&
