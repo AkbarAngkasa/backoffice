@@ -413,11 +413,9 @@ export default function TransactionsTable() {
         if(toDateRawInput !== ""){
             // with fromDate & toDate Params
             setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
-            console.log('line 416')
         }
         else {
             setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
-            console.log('line 420')
         }
     }
 
