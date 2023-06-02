@@ -8,12 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const DateRangeComp = ({fromChild, listener}) => {
+    // listener: transactionsParamsHandler
+    // fromChild: dateRangeParamHandler
 
     // date state
     const [range, setRange] = useState([
         {
             startDate: new Date(),
-            endDate: moment().add(7, 'd')._d,
+            endDate: new Date(),
             key: 'selection'
         }
     ])
@@ -49,32 +51,52 @@ const DateRangeComp = ({fromChild, listener}) => {
     const startDate = useRef("");
     const endDate = useRef("");
 
+    const isFirstTime = useRef(false);
+
     const dateValueHandler = (item) => {
-        const startDateInput = startDate.current = item.selection.startDate;
-        const endDateInput = endDate.current = item.selection.endDate;
+        // Data Purpose
+        let startDateInput = startDate.current = item.selection.startDate;
+        let endDateInput = endDate.current = item.selection.endDate;
 
-        let date = {
-            startDateInput,
-            endDateInput
+        // console.log("isFirstTime: ",isFirstTime && (endDateInput === startDateInput))
+
+        if(isFirstTime && (endDateInput === startDateInput)){
+            // Wait for user to select the end date.
+            isFirstTime.current = false;
+        } else {
+            // Data Purpose.
+            let date = {
+                startDateInput,
+                endDateInput
+            }
+            // Send data from child component (this component) to parent component.
+            fromChild(date)
         }
-
-        // Send data from child component (this component) to parent component.
-        fromChild(date)
     }
 
     const clearDateHandler = (e) => {
         e.preventDefault();
         // UI
         setIsDate(false);
-        // Data
+
+        // UI purpose
+        setRange([
+            {
+                startDate: new Date(),
+                endDate: new Date(),
+                key: 'selection'
+            }
+        ])
+
+        // Data Purpose
         const startDateInput = startDate.current = "";
         const endDateInput = endDate.current = "";
+        isFirstTime.current = true;
 
         let date = {
             startDateInput,
             endDateInput
         }
-
         // Send data from child component (this component) to parent component.
         fromChild(date)
     }
