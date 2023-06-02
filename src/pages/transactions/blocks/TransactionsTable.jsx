@@ -225,7 +225,6 @@ export default function TransactionsTable() {
         // console.log(childData);
 
         // Todos: Apa yang harus dilakukan ketika data endDateInput bernilai ""
-        console.log(childData)
 
         if(childData.endDateInput !== ""){
             startDateInput.current = moment(childData.startDateInput).format('YYYY-MM-DD');

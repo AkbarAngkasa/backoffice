@@ -58,8 +58,6 @@ const DateRangeComp = ({fromChild, listener}) => {
         let startDateInput = startDate.current = item.selection.startDate;
         let endDateInput = endDate.current = item.selection.endDate;
 
-        // console.log("isFirstTime: ",isFirstTime && (endDateInput === startDateInput))
-
         if(isFirstTime && (endDateInput === startDateInput)){
             // Wait for user to select the end date.
             isFirstTime.current = false;
