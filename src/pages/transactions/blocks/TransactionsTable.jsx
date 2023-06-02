@@ -13,7 +13,7 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faFileCsv, faFileExcel, faFilePdf, faSearch, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft, faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
@@ -515,6 +515,13 @@ export default function TransactionsTable() {
         }
     }
 
+    const refreshDataHandler = (e) => {
+        e.preventDefault();
+        let searchInput = document.getElementById(`table-search`).value;
+
+        setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${startDateInput.current}&transactionDateTo=${endDateInput.current}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+    }
+
     // =========================
     // == End Of Fetch Search ==
     // =========================
@@ -524,6 +531,9 @@ export default function TransactionsTable() {
         <div className="w-full flex flex-wrap sm:flex-col justify-end gap-2 p-4 rounded-t-lg h-fit bg-gray-50">
             {/* Export Buttons */}
             <div className='flex flex-wrap justify-end gap-2'>
+                <button type="button" className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-700" onClick={(e) => refreshDataHandler(e)}>
+                    <FontAwesomeIcon icon={faRefresh} />
+                </button>
                 <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
                     <FontAwesomeIcon icon={faFileCsv} />
                 </button>
