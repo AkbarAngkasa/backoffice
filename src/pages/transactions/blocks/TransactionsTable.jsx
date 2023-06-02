@@ -203,14 +203,30 @@ export default function TransactionsTable() {
 
     const [currentPage, setcurrentPage] = useState(1);
 
+    // ======================================
+    // === Daterange Picker Param Handler ===
+    // ======================================
+
     // Dates Param Input.
     const startDateInput = useRef("");
     const endDateInput = useRef("");
 
     // Retrieve data from child component (DateRangeComp.jsx)
     const dateRangeParamHandler = (childData) => {
+        // == Before Gmeet 2 June 2023 ==
         // Database date format:
-        if((childData.startDateInput !== "") && (childData.endDateInput !== "")){
+        // if((childData.startDateInput !== "") && (childData.endDateInput !== "")){
+        //     startDateInput.current = moment(childData.startDateInput).format('YYYY-MM-DD');
+        //     endDateInput.current = moment(childData.endDateInput).format('YYYY-MM-DD');
+        // } else {
+        //     startDateInput.current = childData.startDateInput;
+        //     endDateInput.current = childData.endDateInput;
+        // }
+        // console.log(childData);
+
+        // Todos: Apa yang harus dilakukan ketika data endDateInput bernilai ""
+
+        if(childData.endDateInput !== ""){
             startDateInput.current = moment(childData.startDateInput).format('YYYY-MM-DD');
             endDateInput.current = moment(childData.endDateInput).format('YYYY-MM-DD');
         } else {
@@ -229,13 +245,28 @@ export default function TransactionsTable() {
             // let fromDateRawInput = document.getElementById('from-date-param').value;
             // let toDateRawInput = document.getElementById('to-date-param').value;
             
+            // == Before Gmeet 2 June 2023 ==
+            // Date Param Input v2.
+            // let fromDateRawInput = startDateInput.current;
+            // let toDateRawInput = endDateInput.current;
+
             // Date Param Input v2.
             let fromDateRawInput = startDateInput.current;
             let toDateRawInput = endDateInput.current;
 
-            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            if(toDateRawInput !== ""){
+                // with fromDate & toDate Params
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            } 
+            else {
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            }
         }
     }
+
+    // =============================================
+    // === End Of Daterange Picker Param Handler ===
+    // =============================================
 
     const transactionSortParamHandler = () => {
         // Sort Param Input.
@@ -276,7 +307,13 @@ export default function TransactionsTable() {
             let fromDateRawInput = startDateInput.current;
             let toDateRawInput = endDateInput.current;
 
-            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            if(toDateRawInput !== ""){
+                // with fromDate & toDate Params
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            } 
+            else {
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParamInput.value}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            }
         })
     }
 
@@ -293,7 +330,13 @@ export default function TransactionsTable() {
         let fromDateRawInput = startDateInput.current;
         let toDateRawInput = endDateInput.current;
 
-        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        if(toDateRawInput !== ""){
+            // with fromDate & toDate Params
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        } 
+        else {
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
     }
 
     // Date Param v1.
@@ -307,7 +350,7 @@ export default function TransactionsTable() {
 
     //     let toDateRawInput = document.getElementById('to-date-param').value = '';
 
-    //     setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+    //     setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
     // }
 
     const toggleStatusDropdownHandler = (e) => {
@@ -338,8 +381,14 @@ export default function TransactionsTable() {
         // Date Param Input v2.
         let fromDateRawInput = startDateInput.current;
         let toDateRawInput = endDateInput.current;
-
-        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        
+        if(toDateRawInput !== ""){
+            // with fromDate & toDate Params
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
+        else {
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
     }
 
     const clearStatusParamHandler = (e) => {
@@ -360,8 +409,14 @@ export default function TransactionsTable() {
         // Date Param Input v2.
         let fromDateRawInput = startDateInput.current;
         let toDateRawInput = endDateInput.current;
-
-        setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
+        
+        if(toDateRawInput !== ""){
+            // with fromDate & toDate Params
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&status=`);
+        }
+        else {
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
     }
 
     const pageParamHandler = (e, action) => {
@@ -384,7 +439,13 @@ export default function TransactionsTable() {
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
 
-            setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+            if(toDateRawInput !== ""){
+                // with fromDate & toDate Params
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+            }
+            else {
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            }
         }
 
         if ((action === "minus") && (currentPageVal.current !== 1)) {
@@ -404,8 +465,16 @@ export default function TransactionsTable() {
 
             // Page Param Input.
             let pageParamInput = currentPageVal.current;
+            
 
-            setEndpoint(`${"https://core-webhook.emkop.co.id/api/v1/transactions"}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+
+            if(toDateRawInput !== ""){
+                // with fromDate & toDate Params
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${pageParamInput}&limit=${limitParamDefaultVal.current}`);
+            }
+            else {
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+            }
         }
     }
 
@@ -437,7 +506,13 @@ export default function TransactionsTable() {
             limitDropdown.classList.add("hidden");
         }
 
-        setEndpoint(`${process.env.REACT_APP_EMKOP_ENDPOINT_TRANSACTIONS}?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        if(toDateRawInput !== ""){
+            // with fromDate & toDate Params
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
+        else {
+            setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+        }
     }
 
     // =========================
