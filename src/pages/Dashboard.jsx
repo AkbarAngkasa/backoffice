@@ -7,6 +7,7 @@ import useGetFullPath from "../costumHooks/useGetFullPath";
 
 // Pages
 import Transactions from "./transactions";
+import Users from "./users";
 
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
@@ -50,7 +51,7 @@ export default function DashboardLayout() {
                     }
                     {currentPath === "/users" &&
                         <div>
-                            Users
+                            <Users />
                         </div>
                     }
                 </div>
