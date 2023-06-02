@@ -313,7 +313,7 @@ export default function TransactionsTable() {
                 setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&transactionDateFrom=${fromDateRawInput}&transactionDateTo=${toDateRawInput}&sort=${sortParamInput.value}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
             } 
             else {
-                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParam}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
+                setEndpoint(`https://core-webhook.emkop.co.id/api/v1/transactions?search=${searchInput}&sort=${sortParamInput.value}&status=${statusParam}&page=${currentPageVal.current}&limit=${limitParamDefaultVal.current}`);
             }
         })
     }
