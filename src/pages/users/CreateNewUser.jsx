@@ -1,11 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router";
+import Cookies from "universal-cookie";
 
 export default function CreateNewUser() {
+    // === Hooks ===
+    const cookies = useMemo(() => new Cookies(), []);
+    const accessToken = cookies.get('accessToken');
+    const navigate = useNavigate();
+
     // == UI States ==
     const [isAllFilled, setisAllFilled] = useState(false);
-    
+    const [isAlert, setIsAlert] = useState(false);
+
     // == Datas ==
     const userEmail = useRef(null);
     const password = useRef(null);
@@ -107,45 +115,74 @@ export default function CreateNewUser() {
         e.preventDefault();
         setUserRole(null);
         role.current = null;
-
-        console.log(userEmail.current)
-        console.log(password.current)
-        console.log(fullName.current)
-        console.log(role.current)
     }
 
+    // =============
     // == Methods ==
-    const [isAlert, setIsAlert] = useState(false);
+    // =============
 
     const handleIsAllInputFilled = (e) => {
         e.preventDefault();
-
         setIsAlert(false);
 
-        console.log(userEmail.current)
-        console.log(password.current)
-        console.log(fullName.current)
-        console.log(role.current)
-        console.log(userRole)
-
-        if((role.current !== null)&&(userEmail.current !== null)&&(password.current !== null)&&(fullName.current !== null)){
+        if((userEmail.current !== null)&&(password.current !== null)&&(fullName.current !== null)&&(role.current !== null)){
             setisAllFilled(true);
         }
-        if((role.current === null)||(userEmail.current === null)||(password.current === null)||(fullName.current === null)){
+        if((userEmail.current === null)||(password.current === null)||(fullName.current === null)||(role.current === null)){
             setisAllFilled(false);
         }
-        if(role.current === null){
-            setisAllFilled(false);
+    }
+
+    // == Handle Submit ==
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [fetchResponse, setFetchResponse] = useState(null);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const data = {
+            email: userEmail.current,
+            password: password.current,
+            full_name: fullName.current,
+            role_id: parseInt(role.current)
         }
-        // if ((oldPassword.current !== null) && (newPasswordFirst.current === newPasswordSecond.current)) {
-        //     setisPasswordMatch(true);
-        // }
-        // if ((oldPassword.current === null) || (newPasswordFirst.current !== newPasswordSecond.current)) {
-        //     setisPasswordMatch(false);
-        // }
-        // if ((oldPassword.current === null) || (newPasswordFirst.current === null) || (newPasswordSecond.current === null)) {
-        //     setisPasswordMatch(false);
-        // }
+
+        const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/create";
+
+        fetch(endpoint, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(data)
+        }).then(res => {
+            return res.json();
+        }).then(response => {
+            setIsSubmitting(false);
+
+            // Clean Up
+            userEmail.current = null;
+            password.current = null;
+            fullName.current = null;
+            role.current = null;
+            setUserRole(null);
+            setisAllFilled(false);
+
+            setFetchResponse(response);
+
+            if(response.status === 200){
+                setIsAlert(true);
+            }
+            if(response.status === 400){
+                setIsAlert(true);
+            }
+            if(response.status === 401){
+                navigate("/login");
+            }
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     return (
@@ -159,57 +196,65 @@ export default function CreateNewUser() {
                 <div className="grow flex flex-col justify-center gap-4">
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Email</label>
-                        <input onChange={(e) => {
-                            handleEmailInput(e);
-                            handleIsAllInputFilled(e);
-                        }} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="user@gmail.com" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handleEmailInput(e);
+                                handleIsAllInputFilled(e);
+                            }} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="user@gmail.com" required />
+                        :
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                     </div>
                     <div>
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Password</label>
-                        <input onChange={(e) => {
-                            handlePasswordInput(e);
-                            handleIsAllInputFilled(e);
-                        }} type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handlePasswordInput(e);
+                                handleIsAllInputFilled(e);
+                            }} type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                        :
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                     </div>
                     <div>
                         <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Full Name</label>
-                        <input onChange={(e) => {
-                            handleFullNameInput(e)
-                            handleIsAllInputFilled(e);
-                        }} type="text" id="full_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John Doe" required />
+                        {!isSubmitting ?
+                            <input onChange={(e) => {
+                                handleFullNameInput(e)
+                                handleIsAllInputFilled(e);
+                            }} type="text" id="full_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John Doe" required />
+                        :
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                     </div>
 
                     <div className="relative">
                         <label htmlFor="user_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Choose Role</label>
-                        <div className="flex flex-row justify-between">
-                            <button onClick={(e) => {
-                                toggleRoleDropdownHandler(e);
-                            }}
-                            className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                {userRole === null ? "Choose Role" : userRole}  <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
-                            </button>
-                            <button onClick={(e) => {
-                                handleClearRoleInput(e);
-                                handleIsAllInputFilled(e);
-                                }} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <FontAwesomeIcon icon={faDeleteLeft} />
-                            </button>
-                        </div>
+                        {!isSubmitting ?
+                            <div className="flex flex-row justify-between">
+                                <button onClick={(e) => {
+                                    toggleRoleDropdownHandler(e);
+                                }}
+                                className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {userRole === null ? "Choose Role" : userRole}  <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
+                                </button>
+                                <button onClick={(e) => {
+                                    handleClearRoleInput(e);
+                                    handleIsAllInputFilled(e);
+                                    }} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <FontAwesomeIcon icon={faDeleteLeft} />
+                                </button>
+                            </div>
+                        :
+                            <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
+                        }
                         <div id="status-dropdown" className="hidden absolute top-[68px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
                             <ul>
                                 <li>
                                     <button onClick={(e) => {
                                         handleUserRoleInput(e);
                                         handleIsAllInputFilled(e);
-                                    }} value="ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
-                                        ADMIN
-                                    </button>
-                                </li>
-                                <li>
-                                    <button onClick={(e) => {
-                                        handleUserRoleInput(e);
-                                        handleIsAllInputFilled(e);
-                                    }} value="SUPER_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    }} value={1} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         SUPER_ADMIN
                                     </button>
                                 </li>
@@ -217,7 +262,15 @@ export default function CreateNewUser() {
                                     <button onClick={(e) => {
                                         handleUserRoleInput(e);
                                         handleIsAllInputFilled(e);
-                                    }} value="USER" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    }} value={2} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                        ADMIN
+                                    </button>
+                                </li>
+                                <li>
+                                    <button onClick={(e) => {
+                                        handleUserRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                    }} value={3} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         USER
                                     </button>
                                 </li>
@@ -225,37 +278,50 @@ export default function CreateNewUser() {
                                     <button onClick={(e) => {
                                         handleUserRoleInput(e);
                                         handleIsAllInputFilled(e);
-                                    }} value="BIGO_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    }} value={4} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         BIGO_ADMIN
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    {isAllFilled ?
-                        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create</button>
-                        :
+
+                    {/* Submit Buttons */}
+                    {!isAlert && !isSubmitting && isAllFilled &&
+                        <button onClick={(e) => handleSubmit(e)} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create</button>
+                    }
+                    {!isAlert && isSubmitting &&
+                        <button className="w-full text-white bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:focus:ring-primary-800 block animate-pulse cursor-wait disabled" disabled>
+                            Creating New User..
+                        </button>
+                    }
+                    {!isAlert && !isAllFilled &&
                         <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Fill in the Form to Create</button>
                     }
-                    <div className="text-green-800 border border-green-500 bg-green-50 dark:bg-gray-800 dark:text-green-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
-                        <div>
-                            <FontAwesomeIcon icon={faWarning} />
-                            <span className="ml-2 font-medium">Message</span>
+                    
+                    {/* Alerts */}
+                    {isAlert && (fetchResponse.status === 200) &&
+                        <div className="text-green-800 border border-green-500 bg-green-50 dark:bg-gray-800 dark:text-green-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
+                            <div>
+                                <FontAwesomeIcon icon={faWarning} />
+                                <span className="ml-2 font-medium">{fetchResponse.message}</span>
+                            </div>
+                            <button onClick={() => setIsAlert(false)}>
+                                <FontAwesomeIcon icon={faXmark} />
+                            </button>
                         </div>
-                        <button>
-                            <FontAwesomeIcon icon={faXmark} />
-                        </button>
-                    </div>
-
-                    <div className="text-red-800 border border-red-500 bg-red-50 dark:bg-gray-800 dark:text-red-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
-                        <div>
-                            <FontAwesomeIcon icon={faWarning} />
-                            <span className="ml-2 font-medium">Message</span>
+                    }
+                    {isAlert && (fetchResponse.status === 400) &&
+                        <div className="text-red-800 border border-red-500 bg-red-50 dark:bg-gray-800 dark:text-red-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
+                            <div>
+                                <FontAwesomeIcon icon={faWarning} />
+                                <span className="ml-2 font-medium">{fetchResponse.message}</span>
+                            </div>
+                            <button onClick={() => setIsAlert(false)}>
+                                <FontAwesomeIcon icon={faXmark} />
+                            </button>
                         </div>
-                        <button>
-                            <FontAwesomeIcon icon={faXmark} />
-                        </button>
-                    </div>
+                    }
                 </div>
 
                 {/* Tips */}
