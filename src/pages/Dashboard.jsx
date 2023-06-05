@@ -2,6 +2,7 @@ import { initFlowbite } from "flowbite";
 import { useEffect } from "react";
 import SidenavBlock from "../components/blocks/SidenavBlock";
 import NavbarBlock from "../components/blocks/NavbarBlock";
+
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
 
@@ -11,6 +12,7 @@ import Transactions from "./transactions";
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
 import ChangePassword from "./ChangePassword";
+
 
 export default function DashboardLayout() {
     // Hooks 

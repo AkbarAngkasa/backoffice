@@ -18,7 +18,7 @@ export default function NavbarBlock(props) {
     // Datas
     const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/list-menu";
     const accessToken = cookies.get('accessToken');
-
+  
     useEffect(() => {
         initFlowbite();
     })
