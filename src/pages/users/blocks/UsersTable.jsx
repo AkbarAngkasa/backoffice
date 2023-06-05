@@ -13,11 +13,12 @@ import { initFlowbite } from 'flowbite';
 
 // FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel, faFilePdf, faSearch, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faXmark, faSort, faDeleteLeft, faChevronDown, faChevronRight, faChevronLeft, faRefresh, faAdd } from '@fortawesome/free-solid-svg-icons';
 
 // Miscellaneous
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 // Costum Hooks
 import moment from 'moment';
@@ -129,57 +130,57 @@ export default function UsersTable() {
 
     // == File Exports Handlers ==
     const dt = useRef(null);
-    const cols = [
-        { field: 'id', header: 'Id' },
-        { field: 'email', header: 'Email' },
-        { field: 'role_name', header: 'Role Name' },
-        { field: 'full_name', header: 'Full Name' },
-        { field: 'created_date', header: 'Created Date' }
-    ];
+    // const cols = [
+    //     { field: 'id', header: 'Id' },
+    //     { field: 'email', header: 'Email' },
+    //     { field: 'role_name', header: 'Role Name' },
+    //     { field: 'full_name', header: 'Full Name' },
+    //     { field: 'created_date', header: 'Created Date' }
+    // ];
 
-    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+    // const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
-    const exportCSV = (selectionOnly) => {
-        dt.current.exportCSV({ selectionOnly });
-    };
+    // const exportCSV = (selectionOnly) => {
+    //     dt.current.exportCSV({ selectionOnly });
+    // };
 
-    const exportPdf = () => {
-        import('jspdf').then((jsPDF) => {
-            import('jspdf-autotable').then(() => {
-                const doc = new jsPDF.default(0, 0);
+    // const exportPdf = () => {
+    //     import('jspdf').then((jsPDF) => {
+    //         import('jspdf-autotable').then(() => {
+    //             const doc = new jsPDF.default(0, 0);
 
-                doc.autoTable(exportColumns, usersTable);
-                doc.save('usersTable.pdf');
-            });
-        });
-    };
+    //             doc.autoTable(exportColumns, usersTable);
+    //             doc.save('usersTable.pdf');
+    //         });
+    //     });
+    // };
 
-    const exportExcel = () => {
-        import('xlsx').then((xlsx) => {
-            const worksheet = xlsx.utils.json_to_sheet(usersTable);
-            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-            const excelBuffer = xlsx.write(workbook, {
-                bookType: 'xlsx',
-                type: 'array'
-            });
+    // const exportExcel = () => {
+    //     import('xlsx').then((xlsx) => {
+    //         const worksheet = xlsx.utils.json_to_sheet(usersTable);
+    //         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    //         const excelBuffer = xlsx.write(workbook, {
+    //             bookType: 'xlsx',
+    //             type: 'array'
+    //         });
 
-            saveAsExcelFile(excelBuffer, 'usersTable');
-        });
-    };
+    //         saveAsExcelFile(excelBuffer, 'usersTable');
+    //     });
+    // };
 
-    const saveAsExcelFile = (buffer, fileName) => {
-        import('file-saver').then((module) => {
-            if (module && module.default) {
-                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-                let EXCEL_EXTENSION = '.xlsx';
-                const data = new Blob([buffer], {
-                    type: EXCEL_TYPE
-                });
+    // const saveAsExcelFile = (buffer, fileName) => {
+    //     import('file-saver').then((module) => {
+    //         if (module && module.default) {
+    //             let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    //             let EXCEL_EXTENSION = '.xlsx';
+    //             const data = new Blob([buffer], {
+    //                 type: EXCEL_TYPE
+    //             });
 
-                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-            }
-        });
-    };
+    //             module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    //         }
+    //     });
+    // };
     // == End Of Files Exports Handlers ==
 
     // ===========================
@@ -534,7 +535,10 @@ export default function UsersTable() {
                 <button type="button" className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-700" onClick={(e) => refreshDataHandler(e)}>
                     <FontAwesomeIcon icon={faRefresh} />
                 </button>
-                <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
+                <Link to={"/users/create-new-user"} className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700" onClick={(e) => refreshDataHandler(e)}>
+                    <FontAwesomeIcon icon={faAdd} />
+                </Link>
+                {/* <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
                     <FontAwesomeIcon icon={faFileCsv} />
                 </button>
                 <button type="button" className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.40rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700" onClick={exportExcel}>
@@ -542,7 +546,7 @@ export default function UsersTable() {
                 </button>
                 <button type="button" className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-red-600 dark:hover:bg-red-600 focus:outline-none dark:focus:ring-red-700" onClick={exportPdf}>
                     <FontAwesomeIcon icon={faFilePdf} />
-                </button>
+                </button> */}
             </div>
 
             {/* Filter */}
