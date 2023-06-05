@@ -3,13 +3,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreateNewUser() {
+    // == UI States ==
 
+    // == Datas ==
+    const userEmail = useRef(null);
+    const password = useRef(null);
+    const fullName = useRef(null);
+
+    // =================
+    // == Email Input ==
+    // =================
+
+    const handleEmailInput = (e) => {
+        e.preventDefault();
+        const userEmailInput = e.target.value;
+
+        userEmail.current = userEmailInput;
+        if (userEmailInput.length === 0) {
+            userEmail.current = null;
+        }
+    }
+
+    // ====================
+    // == Password Input ==
+    // ====================
     // == UI States ==
     const [isUpperCase, setIsUpperCase] = useState(false);
     const [isLowerCase, setIsLowerCase] = useState(false);
     const [isMinLength, setIsMinLength] = useState(false);
 
-    // Methods
     function hasUppercase(str) {
         return str !== str.toLowerCase();
     }
@@ -22,20 +44,68 @@ export default function CreateNewUser() {
         return str.length >= min;
     }
 
-    let newPasswordFirst = useRef(null);
-
-    const handleNewPasswordInput = (e) => {
+    const handlePasswordInput = (e) => {
         e.preventDefault();
-        const newPassInput = e.target.value;
+        const passwordInput = e.target.value;
 
-        setIsUpperCase(hasUppercase(newPassInput));
-        setIsLowerCase(hasLowercase(newPassInput));
-        setIsMinLength(hasMinLength(newPassInput, 10));
+        setIsUpperCase(hasUppercase(passwordInput));
+        setIsLowerCase(hasLowercase(passwordInput));
+        setIsMinLength(hasMinLength(passwordInput, 10));
 
-        newPasswordFirst.current = newPassInput
-        if (newPassInput.length === 0) {
-            newPasswordFirst.current = null;
+        password.current = passwordInput
+        if (passwordInput.length === 0) {
+            password.current = null;
         }
+    }
+
+    // =====================
+    // == Full Name Input ==
+    // =====================
+
+    const handleFullNameInput = (e) => {
+        e.preventDefault();
+        const fullNameInput = e.target.value;
+
+        fullName.current = fullNameInput;
+        if (fullNameInput.length === 0) {
+            fullName.current = null;
+        }
+    }
+
+    // =====================
+    // == User Role Input ==
+    // =====================
+    const toggleRoleDropdownHandler = (e) => {
+        e.preventDefault();
+
+        let statusDropdown = document.getElementById('status-dropdown');
+
+        let dropDownValue = statusDropdown.getAttribute('value');
+        if (dropDownValue === "hidden") {
+            statusDropdown.setAttribute("value", "");
+            statusDropdown.classList.remove("hidden");
+        } else {
+            statusDropdown.setAttribute("value", "hidden");
+            statusDropdown.classList.add("hidden");
+        }
+    }
+
+    // == UI States ==
+    const [userRole, setUserRole] = useState(null);
+
+    const handleUserRoleInput = (e) => {
+        e.preventDefault();
+
+        console.log('Handle User Role Input');
+        console.log(e.target.value);
+    }
+
+
+    // == Methods ==
+
+    const handleIsAllInputFilled = (e) => {
+        e.preventDefault();
+        console.log('handleIsAllInputFilled ', e.target.value);
     }
 
     return (
@@ -49,19 +119,61 @@ export default function CreateNewUser() {
                 <div className="grow flex flex-col justify-center gap-4">
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Email</label>
-                        <input type="password" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="user@gmail.com" required />
+                        <input onChange={(e) => {
+                            handleEmailInput(e);
+                            handleIsAllInputFilled(e);
+                        }} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="user@gmail.com" required />
                     </div>
                     <div>
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Password</label>
                         <input onChange={(e) => {
-                            handleNewPasswordInput(e);
+                            handlePasswordInput(e);
+                            handleIsAllInputFilled(e);
                         }} type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     </div>
                     <div>
                         <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Full Name</label>
-                        <input type="text" id="full_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John Doe" required />
+                        <input onChange={(e) => {
+                            handleFullNameInput(e)
+                            handleIsAllInputFilled(e);
+                        }} type="text" id="full_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John Doe" required />
                     </div>
-                    <div>
+
+                    <div className="relative">
+                        <label htmlFor="user_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Choose Role</label>
+                        <button onClick={(e) => {
+                            toggleRoleDropdownHandler(e);
+                        }}
+                        className="text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            Choose Role
+                        </button>
+                        <div id="status-dropdown" className="hidden absolute top-[65px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
+                            <ul>
+                                <li>
+                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                        ADMIN
+                                    </button>
+                                </li>
+                                <li>
+                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                        SUPER_ADMIN
+                                    </button>
+                                </li>
+                                <li>
+                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                        USER
+                                    </button>
+                                </li>
+                                <li>
+                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                        BIGO_ADMIN
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* <div>
                         <label htmlFor="choose_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose Role</label>
                         <select id="choose_role" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option>SUPER_ADMIN</option>
@@ -69,7 +181,7 @@ export default function CreateNewUser() {
                             <option>USER</option>
                             <option>BIGO_ADMIN</option>
                         </select>
-                    </div>
+                    </div> */}
 
                     <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Fill in the Form to Create</button>
 
