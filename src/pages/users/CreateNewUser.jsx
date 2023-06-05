@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreateNewUser() {
     // == UI States ==
@@ -100,6 +100,10 @@ export default function CreateNewUser() {
         console.log(e.target.value);
     }
 
+    const handleClearRoleInput = (e) => {
+        e.preventDefault();
+        console.log("Clear Role Input")
+    }
 
     // == Methods ==
 
@@ -141,31 +145,36 @@ export default function CreateNewUser() {
 
                     <div className="relative">
                         <label htmlFor="user_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Choose Role</label>
-                        <button onClick={(e) => {
-                            toggleRoleDropdownHandler(e);
-                        }}
-                        className="text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            Choose Role
-                        </button>
-                        <div id="status-dropdown" className="hidden absolute top-[65px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
+                        <div className="flex flex-row justify-between">
+                            <button onClick={(e) => {
+                                toggleRoleDropdownHandler(e);
+                            }}
+                            className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                Choose Role <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
+                            </button>
+                            <button onClick={(e) => handleClearRoleInput(e)} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <FontAwesomeIcon icon={faDeleteLeft} />
+                            </button>
+                        </div>
+                        <div id="status-dropdown" className="hidden absolute top-[68px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
                             <ul>
                                 <li>
-                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => handleUserRoleInput(e)} value="ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         ADMIN
                                     </button>
                                 </li>
                                 <li>
-                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => handleUserRoleInput(e)} value="SUPER_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         SUPER_ADMIN
                                     </button>
                                 </li>
                                 <li>
-                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => handleUserRoleInput(e)} value="USER" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         USER
                                     </button>
                                 </li>
                                 <li>
-                                    <button id="status" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => handleUserRoleInput(e)} value="BIGO_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         BIGO_ADMIN
                                     </button>
                                 </li>
