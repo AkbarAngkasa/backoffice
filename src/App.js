@@ -14,6 +14,7 @@ function App() {
           <Route path="/change-password" element={<Dashboard />}/>
           <Route path="/transactions" element={<Dashboard />}/>
           <Route path="/users" element={<Dashboard />}/>
+          <Route path="/users/create-new-user" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>
