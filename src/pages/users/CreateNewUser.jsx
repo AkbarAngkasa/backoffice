@@ -4,11 +4,13 @@ import { faChevronDown, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmark
 
 export default function CreateNewUser() {
     // == UI States ==
-
+    const [isAllFilled, setisAllFilled] = useState(false);
+    
     // == Datas ==
     const userEmail = useRef(null);
     const password = useRef(null);
     const fullName = useRef(null);
+    const role = useRef(null);
 
     // =================
     // == Email Input ==
@@ -95,21 +97,55 @@ export default function CreateNewUser() {
 
     const handleUserRoleInput = (e) => {
         e.preventDefault();
+        const userRoleInput = e.target.value;
 
-        console.log('Handle User Role Input');
-        console.log(e.target.value);
+        setUserRole(userRoleInput);
+        role.current = userRoleInput;
     }
 
     const handleClearRoleInput = (e) => {
         e.preventDefault();
-        console.log("Clear Role Input")
+        setUserRole(null);
+        role.current = null;
+
+        console.log(userEmail.current)
+        console.log(password.current)
+        console.log(fullName.current)
+        console.log(role.current)
     }
 
     // == Methods ==
+    const [isAlert, setIsAlert] = useState(false);
 
     const handleIsAllInputFilled = (e) => {
         e.preventDefault();
-        console.log('handleIsAllInputFilled ', e.target.value);
+
+        setIsAlert(false);
+
+        console.log(userEmail.current)
+        console.log(password.current)
+        console.log(fullName.current)
+        console.log(role.current)
+        console.log(userRole)
+
+        if((role.current !== null)&&(userEmail.current !== null)&&(password.current !== null)&&(fullName.current !== null)){
+            setisAllFilled(true);
+        }
+        if((role.current === null)||(userEmail.current === null)||(password.current === null)||(fullName.current === null)){
+            setisAllFilled(false);
+        }
+        if(role.current === null){
+            setisAllFilled(false);
+        }
+        // if ((oldPassword.current !== null) && (newPasswordFirst.current === newPasswordSecond.current)) {
+        //     setisPasswordMatch(true);
+        // }
+        // if ((oldPassword.current === null) || (newPasswordFirst.current !== newPasswordSecond.current)) {
+        //     setisPasswordMatch(false);
+        // }
+        // if ((oldPassword.current === null) || (newPasswordFirst.current === null) || (newPasswordSecond.current === null)) {
+        //     setisPasswordMatch(false);
+        // }
     }
 
     return (
@@ -150,52 +186,57 @@ export default function CreateNewUser() {
                                 toggleRoleDropdownHandler(e);
                             }}
                             className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                Choose Role <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
+                                {userRole === null ? "Choose Role" : userRole}  <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
                             </button>
-                            <button onClick={(e) => handleClearRoleInput(e)} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <button onClick={(e) => {
+                                handleClearRoleInput(e);
+                                handleIsAllInputFilled(e);
+                                }} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <FontAwesomeIcon icon={faDeleteLeft} />
                             </button>
                         </div>
                         <div id="status-dropdown" className="hidden absolute top-[68px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
                             <ul>
                                 <li>
-                                    <button onClick={(e) => handleUserRoleInput(e)} value="ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => {
+                                        handleUserRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                    }} value="ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         ADMIN
                                     </button>
                                 </li>
                                 <li>
-                                    <button onClick={(e) => handleUserRoleInput(e)} value="SUPER_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => {
+                                        handleUserRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                    }} value="SUPER_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         SUPER_ADMIN
                                     </button>
                                 </li>
                                 <li>
-                                    <button onClick={(e) => handleUserRoleInput(e)} value="USER" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => {
+                                        handleUserRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                    }} value="USER" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         USER
                                     </button>
                                 </li>
                                 <li>
-                                    <button onClick={(e) => handleUserRoleInput(e)} value="BIGO_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                    <button onClick={(e) => {
+                                        handleUserRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                    }} value="BIGO_ADMIN" className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                         BIGO_ADMIN
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
-                    {/* <div>
-                        <label htmlFor="choose_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose Role</label>
-                        <select id="choose_role" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>SUPER_ADMIN</option>
-                            <option>ADMIN</option>
-                            <option>USER</option>
-                            <option>BIGO_ADMIN</option>
-                        </select>
-                    </div> */}
-
-                    <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Fill in the Form to Create</button>
-
-                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create</button>
-
+                    {isAllFilled ?
+                        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create</button>
+                        :
+                        <button type="button" className="text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled>Fill in the Form to Create</button>
+                    }
                     <div className="text-green-800 border border-green-500 bg-green-50 dark:bg-gray-800 dark:text-green-400 font-base rounded-lg text-sm px-5 py-2.5 text-start flex flex-row justify-between" disabled>
                         <div>
                             <FontAwesomeIcon icon={faWarning} />
