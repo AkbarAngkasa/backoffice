@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
@@ -103,12 +103,11 @@ export default function CreateNewUser() {
     // == UI States ==
     const [userRole, setUserRole] = useState(null);
 
-    const handleUserRoleInput = (e) => {
+    const handleUserRoleInput = (e, roleId, roleName) => {
         e.preventDefault();
-        const userRoleInput = e.target.value;
 
-        setUserRole(userRoleInput);
-        role.current = userRoleInput;
+        setUserRole(roleName);
+        role.current = roleId;
     }
 
     const handleClearRoleInput = (e) => {
@@ -133,7 +132,40 @@ export default function CreateNewUser() {
         }
     }
 
+    // =====================
+    // == Fetch User Role ==
+    // =====================
+    const endpointUserListRole = "https://core-webhook.emkop.co.id/api/v1/user/list-role"; 
+    const [userListRole, setUserListRole] = useState(false);
+    const [fetchingUserListRole, setfetchingUserListRole] = useState(false);
+
+    useEffect(() => {
+        setfetchingUserListRole(true);
+
+        fetch(endpointUserListRole, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        .then(res => {
+            return res.json();
+        }).then(response => {
+            if(response.status === 200){
+                setUserListRole(response.data);
+                setfetchingUserListRole(false);
+            }
+            if(response.status === 401){
+                setfetchingUserListRole(false);
+                navigate("/login");
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }, [accessToken, navigate]);
+
+    // ===================
     // == Handle Submit ==
+    // ===================
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [fetchResponse, setFetchResponse] = useState(null);
 
@@ -230,60 +262,40 @@ export default function CreateNewUser() {
 
                     <div className="relative">
                         <label htmlFor="user_role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize">Choose Role</label>
-                        {!isSubmitting ?
-                            <div className="flex flex-row justify-between">
-                                <button onClick={(e) => {
-                                    toggleRoleDropdownHandler(e);
-                                }}
-                                className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    {userRole === null ? "Choose Role" : userRole}  <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
-                                </button>
-                                <button onClick={(e) => {
-                                    handleClearRoleInput(e);
-                                    handleIsAllInputFilled(e);
-                                    }} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <FontAwesomeIcon icon={faDeleteLeft} />
-                                </button>
-                            </div>
-                        :
+                        {!fetchingUserListRole && userListRole ?
+                            <>
+                                <div className="flex flex-row justify-between">
+                                    <button onClick={(e) => {
+                                        toggleRoleDropdownHandler(e);
+                                    }}
+                                    className="flex justify-between text-left bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        {userRole === null ? "Choose Role" : userRole}  <FontAwesomeIcon icon={faChevronDown} className="mt-1" />
+                                    </button>
+                                    <button onClick={(e) => {
+                                        handleClearRoleInput(e);
+                                        handleIsAllInputFilled(e);
+                                        }} className="text-white bg-gray-700 border border-l-0 border-gray-400 hover:bg-gray-800 font-medium rounded-r-lg text-sm px-5 py-2.5 focus:ring-primary-500 focus:border-primary-500 focus:border-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <FontAwesomeIcon icon={faDeleteLeft} />
+                                    </button>
+                                </div>
+                                <div id="status-dropdown" className="hidden absolute top-[68px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
+                                    <ul>
+                                        {userListRole.map((item) => (
+                                            <li key={item.id}>
+                                                <button onClick={(e) => {
+                                                    handleUserRoleInput(e, item.id, item.name);
+                                                    handleIsAllInputFilled(e);
+                                                }} value={item.name} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
+                                                    {item.name}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </>
+                            :
                             <div className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed disabled animate-pulse" disabled ></div>
                         }
-                        <div id="status-dropdown" className="hidden absolute top-[68px] z-10 w-full rounded-b-lg bg-white border border-gray-300" value="hidden">
-                            <ul>
-                                <li>
-                                    <button onClick={(e) => {
-                                        handleUserRoleInput(e);
-                                        handleIsAllInputFilled(e);
-                                    }} value={1} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
-                                        SUPER_ADMIN
-                                    </button>
-                                </li>
-                                <li>
-                                    <button onClick={(e) => {
-                                        handleUserRoleInput(e);
-                                        handleIsAllInputFilled(e);
-                                    }} value={2} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
-                                        ADMIN
-                                    </button>
-                                </li>
-                                <li>
-                                    <button onClick={(e) => {
-                                        handleUserRoleInput(e);
-                                        handleIsAllInputFilled(e);
-                                    }} value={3} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
-                                        USER
-                                    </button>
-                                </li>
-                                <li>
-                                    <button onClick={(e) => {
-                                        handleUserRoleInput(e);
-                                        handleIsAllInputFilled(e);
-                                    }} value={4} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
-                                        BIGO_ADMIN
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
                     {/* Submit Buttons */}
