@@ -14,11 +14,11 @@ import CreateNewUser from "./users/CreateNewUser";
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
 import ChangePassword from "./ChangePassword";
-
+import useFetchListMenu from "../costumHooks/useFetchListMenu";
 
 export default function DashboardLayout() {
     // Hooks 
-    // useCheckAccessToken();
+    const { fetchingListMenu, listMenu, user } = useFetchListMenu();
 
     useEffect(() => {
         initFlowbite();
@@ -31,11 +31,18 @@ export default function DashboardLayout() {
         <div className="w-full flex h-screen overflow-y-scroll">
             {/* Sidenav */}
             <div className="w-0 sm:w-[20%] bg-transparent">
-                <SidenavBlock />
+                <SidenavBlock 
+                    fetchingListMenu={fetchingListMenu}
+                    listMenu={listMenu}
+                    user={user}
+                />
             </div>
             {/* Content */}
             <div className="w-full sm:w-[80%] sm:z-50 bg-transparent">
-                <NavbarBlock navTitle={currentPage} />
+                <NavbarBlock 
+                    navTitle={currentPage} 
+                    user={user}
+                />
                 <div className="p-5">
                     {currentPath === "/dashboard" &&
                         <div>

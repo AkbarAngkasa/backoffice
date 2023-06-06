@@ -1,62 +1,19 @@
 import { initFlowbite } from "flowbite";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/images/emkop-logo-transparent-landscape.png';
 
 import Cookies from 'universal-cookie';
 import SkeletonLayout from "../layouts/SkeletonLayout";
 
-export default function SidenavBlock() {
+export default function SidenavBlock({fetchingListMenu, listMenu, user}) {
     // === Hooks ===
     const cookies = useMemo(() => new Cookies(), []);
     const navigate = useNavigate();
 
-    // === UI States ===
-    const [ fetchingListMenu, setFetchingListMenu ] = useState(false);
-    const [ listMenu, setListMenu ] = useState(null);
-    const [ user, setUser ] = useState(null);
-
-    // Datas
-    const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/list-menu";
-    const accessToken = cookies.get('accessToken');
-    
     useEffect(() => {
         initFlowbite();
     })
-    
-    // =====================
-    // == Fetch List Menu ==
-    // =====================
-    useEffect(() => {
-        setFetchingListMenu(true);
-        if(accessToken !== null){
-            fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            }).then(res => {
-                return res.json()
-            }).then(response => {
-                if(response.status === 200){
-                    setFetchingListMenu(false);
-                    // User Logged in.
-                    setListMenu(response.data.menu);
-                    setUser(response.data.user);
-                    // Stop loading animation
-                } else if (response.status === 401){
-                    // User is Not Logged in.
-                    setFetchingListMenu(false);
-                    navigate("/login");
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-        } else {
-            navigate("/login");
-        }
-        // == End Of List Menu Fetch
-    }, [accessToken, endpoint, navigate]);
 
     // === Handlers ===
     function logoutHandler(e){
@@ -121,6 +78,13 @@ export default function SidenavBlock() {
                                 </li>
                             ))
                         }
+
+                        {/* <li>
+                            <button onClick={(e) =>  addCacheData("testCache", "/", "SampleData")}>Add Cache Data</button>
+                        </li>
+                        <li>
+                            <button onClick={(e) =>  clearCacheData("testCache", "/", "SampleData")}>Clear Cache Data</button>
+                        </li> */}
                     </ul>
                 </div>
                 {/* Sidenav Close Btn Mobile */}

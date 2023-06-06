@@ -1,57 +1,20 @@
 import { initFlowbite } from 'flowbite';
-import { useEffect, useMemo, useState } from 'react';
-// import user1 from '../../assets/images/people/user-1.png';
+import { useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars, /*faBell, faGrip*/ } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
-export default function NavbarBlock(props) {
+export default function NavbarBlock({navTitle, user}) {
     // === Hooks ===
     const cookies = useMemo(() => new Cookies(), []);
     const navigate = useNavigate();
 
     // === UI States ===
-    const [user, setUser] = useState(null);
-
-    // Datas
-    const endpoint = "https://core-webhook.emkop.co.id/api/v1/user/list-menu";
-    const accessToken = cookies.get('accessToken');
-  
     useEffect(() => {
         initFlowbite();
     })
-
-    // =====================
-    // == Fetch List Menu ==
-    // =====================
-    useEffect(() => {
-        if (accessToken !== null) {
-            fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            }).then(res => {
-                return res.json()
-            }).then(response => {
-                if (response.status === 200) {
-                    // User Logged in.
-                    setUser(response.data.user);
-                    // Stop loading animation
-                } else if (response.status === 401) {
-                    // User is Not Logged in.
-                    navigate("/login");
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-        } else {
-            navigate("/login");
-        }
-        // == End Of List Menu Fetch
-    }, [accessToken, endpoint, navigate]);
     
     // === Handlers ===
     function logoutHandler(e){
@@ -62,7 +25,7 @@ export default function NavbarBlock(props) {
     return (
         <header>
             {/* Wrapper */}
-            <nav className="py-5 px-5 flex flex-row justify-between align-middle bg-white border-gray-200 dark:bg-gray-800">
+            <nav className="py-5 px-5 flex flex-row justify-between align-middle bg-white border-gray-200 dark:bg-gray-800" style={{ margin: 0 }}>
 
                 {/* Wrapper */}
                 <div className="flex flex-wrap justify-start">
@@ -73,7 +36,7 @@ export default function NavbarBlock(props) {
 
                     <div className='flex flex-col'>
                         <span className="text-sm font-medium mb-2 text-slate-600 dark:text-white hidden sm:inline-block">Backoffice</span>
-                        <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block capitalize">{props.navTitle}</span>
+                        <span className="text-2xl font-semibold text-slate-600 dark:text-white inline-block capitalize">{navTitle}</span>
                     </div>
                 </div>
 
