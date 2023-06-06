@@ -27,7 +27,6 @@ export default function useFetchListMenu() {
             }).then(res => {
                 return res.json()
             }).then(response => {
-
                 if(response.status === 200){
                     setFetchingListMenu(false);
                     // User Logged in.
