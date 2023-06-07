@@ -7,6 +7,7 @@ import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
 import useFetchListMenu from "../costumHooks/useFetchListMenu";
 import useFetchMenuPermission from "../costumHooks/useFetchMenuPermission";
+import CheckMenuPermission from "../costumHooks/CheckMenuPermission";
 
 // Pages
 import Transactions from "./transactions";
@@ -16,13 +17,14 @@ import CreateNewUser from "./users/CreateNewUser";
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
 import ChangePassword from "./ChangePassword";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 export default function DashboardLayout() {
     // Hooks 
     let currentPage = useGetLastPath();
     let currentPath = useGetFullPath();
-    const navigate = useNavigate();
+    
+    // const navigate = useNavigate();
 
     useFetchMenuPermission(currentPage);
 
@@ -32,21 +34,20 @@ export default function DashboardLayout() {
         initFlowbite();
     });
 
-    // == Check User menu-permission via cache. ==
-    let currentPagePermission = JSON.parse(localStorage.getItem(currentPage));
+    // // == Check User menu-permission via cache. ==
+    // let currentPagePermission = JSON.parse(localStorage.getItem(currentPage));
     
-    useEffect(() => {
-        if(currentPagePermission !== null){
-            if((currentPagePermission.status === 400)&&(currentPage !== "dashboard")){
-                navigate("/dashboard");
-            } else {
-                // User have access in current page.
-                // console.log(currentPagePermission.data);
-            }
-        }
-    }, [currentPage, currentPagePermission, navigate]);
-
-    // == Check User menu-permission via cache. ==
+    // useEffect(() => {
+    //     if(currentPagePermission !== null){
+    //         if((currentPagePermission.status === 400)&&(currentPage !== "dashboard")){
+    //             navigate("/dashboard");
+    //         } else {
+    //             // User have access in current page.
+    //             // console.log(currentPagePermission.data);
+    //         }
+    //     }
+    // }, [currentPage, currentPagePermission, navigate]);
+    // // == Check User menu-permission via cache. ==
 
     return (
         <div className="w-full flex h-screen overflow-y-scroll">
@@ -67,26 +68,31 @@ export default function DashboardLayout() {
                 <div className="p-5">
                     {currentPath === "/dashboard" &&
                         <div>
+                            {CheckMenuPermission(currentPage)}    
                             <img src={whyempty} width={400} alt={whyempty}/>
                         </div>
                     }
                     {currentPath === "/change-password" &&
                         <div>
+                            {CheckMenuPermission("change password")}
                             <ChangePassword />
                         </div>
                     }
                     {currentPath === "/transactions" &&
                         <div>
+                            {CheckMenuPermission(currentPage)}
                             <Transactions />
                         </div>
                     }
                     {currentPath === "/users" &&
                         <div>
+                            {CheckMenuPermission(currentPage)}
                             <Users />
                         </div>
                     }
                     {currentPath === "/users/create-new-user" &&
                         <div>
+                            {CheckMenuPermission("users")}
                             <CreateNewUser />
                         </div>
                     }
