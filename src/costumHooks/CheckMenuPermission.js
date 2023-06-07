@@ -17,7 +17,6 @@ export default function CheckMenuPermission(currentPage) {
                 // User have access in current page.
             }
         }
-    }, [currentPage, currentPagePermission, navigate, whiteList]);
-
+    }, [currentPage, currentPagePermission, navigate, whiteList]);    
     // == Check User menu-permission via cache. ==
 }

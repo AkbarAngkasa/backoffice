@@ -24,12 +24,17 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import DateRangeComp from '../../../components/component/DateRangeComp';
 
-export default function UsersTable() {
+export default function UsersTable({userMenuPermission}) {
     PrimeReact.appendTo = 'self';
 
     // == Hooks ==
     const cookies = new Cookies();
     const navigate = useNavigate();
+    let currentPagePermission = JSON.parse(localStorage.getItem(userMenuPermission));
+
+    useEffect(() => {
+        initFlowbite();
+    })
 
     // == UI States ==
     const [fetchingUsers, setfetchingUsers] = useState(false);
@@ -38,10 +43,6 @@ export default function UsersTable() {
     // == Datas n States ==
     const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/user");
     const accessToken = cookies.get('accessToken');
-
-    useEffect(() => {
-        initFlowbite();
-    });
 
     // ========================
     // == Fetch Transactions ==
@@ -535,9 +536,11 @@ export default function UsersTable() {
                 <button type="button" className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-blue-600 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-700" onClick={(e) => refreshDataHandler(e)}>
                     <FontAwesomeIcon icon={faRefresh} />
                 </button>
-                <Link to={"/users/create-new-user"} className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700">
-                    <FontAwesomeIcon icon={faAdd} />
-                </Link>
+                {(currentPagePermission !== null) && currentPagePermission.data.can_create &&
+                    <Link to={"/users/create-new-user"} className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700">
+                        <FontAwesomeIcon icon={faAdd} />
+                    </Link>
+                }
                 {/* <button type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-yellow-600 dark:hover:bg-yellow-600 focus:outline-none dark:focus:ring-yellow-700" onClick={() => exportCSV(false)}>
                     <FontAwesomeIcon icon={faFileCsv} />
                 </button>
@@ -557,7 +560,7 @@ export default function UsersTable() {
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <FontAwesomeIcon icon={faSearch} className='text-slate-500' />
                         </div>
-                        <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block px-4 py-2.5 pl-10 text-sm text-left font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Transaction Id, BIGO User ID" />
+                        <input onChange={() => transactionsParamsHandler('search-param')} type="text" id="table-search" className="w-full inline-block px-4 py-2.5 pl-10 text-sm text-left font-medium text-gray-900 border border-slate-400 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by Email or Full Name" />
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                             <FontAwesomeIcon icon={faXmark} className='text-slate-500 cursor-pointer z-40' onClick={(e) => clearSearchParamHandler(e)} />
                         </div>
@@ -648,7 +651,7 @@ export default function UsersTable() {
     }
 
     const createdDateBody = (rowData) => {
-        return moment(rowData.created_date).format('DD MMMM YYYY')
+        return moment(rowData.created_date).format('DD MMMM YYYY llll')
     };
 
     const toggleLimitDropdownHandler = (e) => {
@@ -667,6 +670,32 @@ export default function UsersTable() {
     }
 
     const limitParamRows = [10, 20, 30, 40, 50];
+
+    // == actionsBody buttons handlers ==
+    const updateRowHandler = (e, rowId) => {
+        e.preventDefault();
+        console.log(rowId);
+        console.log("Update Row Handler");
+    };
+
+    const deleteRowHandler = (e, rowId) => {
+        e.preventDefault();
+        console.log(rowId);
+        console.log("Delete Row Handler");
+    };
+
+    const actionsBody = (data) => {
+        return (
+            <div className="flex flex-row gap-2">
+                {(currentPagePermission !== null) && currentPagePermission.data.can_update &&
+                    <button onClick={(e) => updateRowHandler(e, data.id)} type="button" className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                }
+                {(currentPagePermission !== null) && currentPagePermission.data.can_delete &&
+                    <button onClick={(e) => deleteRowHandler(e, data.id)} type="button" className="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
+                }
+            </div>
+        )
+    }
 
     const footer = (
         <div className="flex flex-wrap w-[30%] gap-2 mx-auto">
@@ -699,18 +728,26 @@ export default function UsersTable() {
         </div>
     )
 
-
     return (
         <>
             {header}
             <div className="card relative w-full">
-                <DataTable ref={dt} value={usersTable} footer={footer} size='small' tableStyle={{ minWidth: '50rem' }} className='h-screen'>
-                    <Column field="id" header="Id" />
-                    <Column field="email" header="Email" />
-                    <Column field="role_name" header="Role Name" />
-                    <Column field="full_name" header="Full Name" />
-                    <Column body={createdDateBody} field="created_date" header={transactionDateHeader} filterField="date" dataType="date" style={{ minWidth: '12rem' }} />
-                </DataTable>
+                {(currentPagePermission !== null) && currentPagePermission.data.can_read ?
+                    <DataTable ref={dt} value={usersTable} footer={footer} size='small' tableStyle={{ minWidth: '50rem' }} className='h-screen'>
+                        <Column field="id" header="Id" />
+                        <Column field="email" header="Email" />
+                        <Column field="role_name" header="Role Name" />
+                        <Column field="full_name" header="Full Name" />
+                        <Column body={createdDateBody} field="created_date" header={transactionDateHeader} filterField="date" dataType="date" style={{ minWidth: '12rem' }} />
+                        {(currentPagePermission !== null) && (currentPagePermission.data.can_update || currentPagePermission.data.can_delete) &&
+                            <Column body={actionsBody} header="Actions" />
+                        }
+                    </DataTable>
+                    :
+                    <p>
+                        You don't have access to Read this page, please contact your SUPER_ADMIN
+                    </p>
+                }
                 {fetchingUsers &&
                     <div role="status" className="absolute z-40 top-[52px] left-0 right-0 bottom-0 bg-white w-full">
                         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4 animate-pulse"></div>

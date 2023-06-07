@@ -3,7 +3,9 @@ import UsersTable from "./blocks/UsersTable"
 export default function Users() {
   return (
     <div>
-      <UsersTable />
+      <UsersTable 
+        userMenuPermission={"users"}
+      />
     </div>
   )
 }
