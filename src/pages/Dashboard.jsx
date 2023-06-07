@@ -48,7 +48,7 @@ export default function DashboardLayout() {
         console.log(currentPath);
     })
 
-    if(currentPath === "/users/new"){
+    if(currentPath === "/users/create"){
         FetchMenuPermission("users");
     } else if((currentPath === "/change-password")||(currentPath === "/dashboard")) {
         FetchMenuPermission("*");
@@ -97,7 +97,7 @@ export default function DashboardLayout() {
                             <Users />
                         </div>
                     }
-                    {currentPath === "/users/new" &&
+                    {currentPath === "/users/create" &&
                         <div>
                             {CheckMenuPermission("users")}
                             <CreateNewUser />

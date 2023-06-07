@@ -537,7 +537,7 @@ export default function UsersTable({userMenuPermission}) {
                     <FontAwesomeIcon icon={faRefresh} />
                 </button>
                 {(currentPagePermission !== null) && currentPagePermission.data.can_create &&
-                    <Link to={"/users/new"} className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700">
+                    <Link to={"/users/create"} className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-base w-14 h-14 text-center flex justify-center items-center py-4 px-[1.30rem] dark:bg-green-600 dark:hover:bg-green-600 focus:outline-none dark:focus:ring-green-700">
                         <FontAwesomeIcon icon={faAdd} />
                     </Link>
                 }

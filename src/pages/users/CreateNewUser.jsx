@@ -299,6 +299,7 @@ export default function CreateNewUser() {
                                                 <button onClick={(e) => {
                                                     handleUserRoleInput(e, item.id, item.name);
                                                     handleIsAllInputFilled(e);
+                                                    toggleRoleDropdownHandler(e);
                                                 }} value={item.name} className="text-sm text-gray-600 hover:bg-gray-100 p-2.5 font-medium w-full text-left">
                                                     {item.name}
                                                 </button>
