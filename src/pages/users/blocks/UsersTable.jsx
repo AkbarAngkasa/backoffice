@@ -41,7 +41,7 @@ export default function UsersTable({userMenuPermission}) {
     const [usersTable, setusersTable] = useState(null);
 
     // == Datas n States ==
-    const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/user");
+    const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/user?page=1&limit=10&sort=created_date desc");
     const accessToken = cookies.get('accessToken');
 
     // ========================

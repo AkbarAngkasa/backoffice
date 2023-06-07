@@ -37,7 +37,7 @@ export default function TransactionsTable() {
     const [transactionsTable, settransactionsTable] = useState(null);
 
     // == Datas n States ==
-    const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/transactions");
+    const [endpoint, setEndpoint] = useState("https://core-webhook.emkop.co.id/api/v1/transactions?page=1&limit=10&sort=transaction_date desc");
     const accessToken = cookies.get('accessToken');
 
     useEffect(() => {
