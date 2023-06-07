@@ -732,7 +732,7 @@ export default function UsersTable({userMenuPermission}) {
         <>
             {header}
             <div className="card relative w-full">
-                {(currentPagePermission !== null) && currentPagePermission.data.can_read ?
+                {(currentPagePermission !== null) && currentPagePermission.data.can_read &&
                     <DataTable ref={dt} value={usersTable} footer={footer} size='small' tableStyle={{ minWidth: '50rem' }} className='h-screen'>
                         <Column field="id" header="Id" />
                         <Column field="email" header="Email" />
@@ -743,10 +743,6 @@ export default function UsersTable({userMenuPermission}) {
                             <Column body={actionsBody} header="Actions" />
                         }
                     </DataTable>
-                    :
-                    <p>
-                        You don't have access to Read this page, please contact your SUPER_ADMIN
-                    </p>
                 }
                 {fetchingUsers &&
                     <div role="status" className="absolute z-40 top-[52px] left-0 right-0 bottom-0 bg-white w-full">
