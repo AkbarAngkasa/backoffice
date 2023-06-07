@@ -7,7 +7,7 @@ export default function CheckMenuPermission(currentPage) {
     // == Check User menu-permission via cache. ==
     let currentPagePermission = JSON.parse(localStorage.getItem(currentPage));
 
-    let whiteList = useMemo(() => ["dashboard", "change password"], []);
+    let whiteList = useMemo(() => ["dashboard", "*"], []);
 
     useEffect(() => {
         if (currentPagePermission !== null) {

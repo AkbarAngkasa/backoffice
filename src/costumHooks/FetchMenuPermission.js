@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import Cookies from 'universal-cookie';
 
-export default function useFetchMenuPermission(currentPage) {
+export default function FetchMenuPermission(currentPage) {
     // === Hooks ===
     const cookies = useMemo(() => new Cookies(), []);
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function useFetchMenuPermission(currentPage) {
         if (accessToken !== null) {
             // 1. Check Is currentPage already stored in cache?
             if(localStorage.getItem(currentPage)){
-                // console.log("Cache key: ", currentPage ," already exist")
+                // console.log("Cache key: ", currentPage ," already exist");
             } else {
                 // Value is not exist in cache.
                 // 1. Fetch.
@@ -37,6 +37,7 @@ export default function useFetchMenuPermission(currentPage) {
                     setFetchingMenuPermission(false);
                     if(response.status !== 401){
                         setMenuPermission(response);
+                        console.log(response);
                         // console.log("Storing cache.. key: ", currentPage);
                         localStorage.setItem(currentPage, JSON.stringify(response));
                     }

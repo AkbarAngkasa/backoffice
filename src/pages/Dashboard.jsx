@@ -6,7 +6,7 @@ import NavbarBlock from "../components/blocks/NavbarBlock";
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
 import useFetchListMenu from "../costumHooks/useFetchListMenu";
-import useFetchMenuPermission from "../costumHooks/useFetchMenuPermission";
+import FetchMenuPermission from "../costumHooks/FetchMenuPermission";
 import CheckMenuPermission from "../costumHooks/CheckMenuPermission";
 
 // Pages
@@ -17,17 +17,12 @@ import CreateNewUser from "./users/CreateNewUser";
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
 import ChangePassword from "./ChangePassword";
-// import { useNavigate } from "react-router";
 
 export default function DashboardLayout() {
     // Hooks 
     let currentPage = useGetLastPath();
     let currentPath = useGetFullPath();
     
-    // const navigate = useNavigate();
-
-    useFetchMenuPermission(currentPage);
-
     const { fetchingListMenu, listMenu, user } = useFetchListMenu();
     
     useEffect(() => {
@@ -48,6 +43,12 @@ export default function DashboardLayout() {
     //     }
     // }, [currentPage, currentPagePermission, navigate]);
     // // == Check User menu-permission via cache. ==
+
+    if(currentPage === "create new user"){
+        FetchMenuPermission("users");
+    } else {
+        FetchMenuPermission(currentPage);
+    }
 
     return (
         <div className="w-full flex h-screen overflow-y-scroll">
@@ -74,7 +75,7 @@ export default function DashboardLayout() {
                     }
                     {currentPath === "/change-password" &&
                         <div>
-                            {CheckMenuPermission("change password")}
+                            {CheckMenuPermission("*")}
                             <ChangePassword />
                         </div>
                     }
