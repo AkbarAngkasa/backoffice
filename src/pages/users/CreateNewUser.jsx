@@ -214,6 +214,7 @@ export default function CreateNewUser() {
 
             if(response.status === 200){
                 setIsAlert(true);
+                navigate("/users");
             }
             if(response.status === 400){
                 setIsAlert(true);
