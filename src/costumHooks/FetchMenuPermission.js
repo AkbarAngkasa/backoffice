@@ -22,6 +22,8 @@ export default function FetchMenuPermission(currentPage) {
             // 1. Check Is currentPage already stored in cache?
             if(localStorage.getItem(currentPage)){
                 // console.log("Cache key: ", currentPage ," already exist");
+            } else if(currentPage === "*") {
+                // console.log("This page is allowed for all user role");
             } else {
                 // Value is not exist in cache.
                 // 1. Fetch.
@@ -37,7 +39,6 @@ export default function FetchMenuPermission(currentPage) {
                     setFetchingMenuPermission(false);
                     if(response.status !== 401){
                         setMenuPermission(response);
-                        console.log(response);
                         // console.log("Storing cache.. key: ", currentPage);
                         localStorage.setItem(currentPage, JSON.stringify(response));
                     }

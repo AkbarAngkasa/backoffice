@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 
+// Function ini hanya mengecek apakah User setidaknya Mempunyai Akses atau dengan kata lain apakah user !== 400.
 export default function CheckMenuPermission(currentPage) {
     let navigate = useNavigate();
 

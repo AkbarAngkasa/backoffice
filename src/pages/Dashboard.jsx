@@ -46,6 +46,8 @@ export default function DashboardLayout() {
 
     if(currentPage === "create new user"){
         FetchMenuPermission("users");
+    } else if((currentPage === "change password")||(currentPage === "dashboard")) {
+        FetchMenuPermission("*");
     } else {
         FetchMenuPermission(currentPage);
     }
@@ -69,7 +71,7 @@ export default function DashboardLayout() {
                 <div className="p-5">
                     {currentPath === "/dashboard" &&
                         <div>
-                            {CheckMenuPermission(currentPage)}    
+                            {CheckMenuPermission("*")}
                             <img src={whyempty} width={400} alt={whyempty}/>
                         </div>
                     }

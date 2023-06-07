@@ -9,6 +9,15 @@ export default function CreateNewUser() {
     const cookies = useMemo(() => new Cookies(), []);
     const accessToken = cookies.get('accessToken');
     const navigate = useNavigate();
+    
+    // Cross Check User Permission In This Page.
+    let currentPagePermission = JSON.parse(localStorage.getItem("users"));
+    
+    useEffect(() => {
+        if(!currentPagePermission.data.can_create){
+            navigate("/dashboard");
+        }
+    });
 
     // == UI States ==
     const [isAllFilled, setisAllFilled] = useState(false);
