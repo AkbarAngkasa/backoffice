@@ -18,6 +18,9 @@ export default function SidenavBlock({fetchingListMenu, listMenu, user}) {
     // === Handlers ===
     function logoutHandler(e){
         e.preventDefault();
+        // Clear Cache.
+        localStorage.clear();
+        // Clear Cookies.
         cookies.remove('accessToken', { path: '/' });
         navigate('/login');
     }

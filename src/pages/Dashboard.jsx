@@ -5,6 +5,8 @@ import NavbarBlock from "../components/blocks/NavbarBlock";
 
 import useGetLastPath from "../costumHooks/useGetLastPath";
 import useGetFullPath from "../costumHooks/useGetFullPath";
+import useFetchListMenu from "../costumHooks/useFetchListMenu";
+import useFetchMenuPermission from "../costumHooks/useFetchMenuPermission";
 
 // Pages
 import Transactions from "./transactions";
@@ -14,18 +16,37 @@ import CreateNewUser from "./users/CreateNewUser";
 // Assets
 import whyempty from "../assets/images/miscellaneous/emptypage.jpg";
 import ChangePassword from "./ChangePassword";
-import useFetchListMenu from "../costumHooks/useFetchListMenu";
+import { useNavigate } from "react-router";
 
 export default function DashboardLayout() {
     // Hooks 
-    const { fetchingListMenu, listMenu, user } = useFetchListMenu();
+    let currentPage = useGetLastPath();
+    let currentPath = useGetFullPath();
+    const navigate = useNavigate();
 
+    useFetchMenuPermission(currentPage);
+
+    const { fetchingListMenu, listMenu, user } = useFetchListMenu();
+    
     useEffect(() => {
         initFlowbite();
     });
 
-    let currentPage = useGetLastPath();
-    let currentPath = useGetFullPath();
+    // == Check User menu-permission via cache. ==
+    let currentPagePermission = JSON.parse(localStorage.getItem(currentPage));
+    
+    useEffect(() => {
+        if(currentPagePermission !== null){
+            if((currentPagePermission.status === 400)&&(currentPage !== "dashboard")){
+                navigate("/dashboard");
+            } else {
+                // User have access in current page.
+                // console.log(currentPagePermission.data);
+            }
+        }
+    }, [currentPage, currentPagePermission, navigate]);
+
+    // == Check User menu-permission via cache. ==
 
     return (
         <div className="w-full flex h-screen overflow-y-scroll">

@@ -15,6 +15,8 @@ export default function useCheckAccessToken() {
         if(accessToken === undefined){
             // User Is Not Logged In.
             setUserAccessToken(undefined);
+            // Clear Cache.
+            localStorage.clear();
             navigate("/login");
         } else {
             // User Already Logged In.
