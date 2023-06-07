@@ -1,6 +1,6 @@
 // import { initFlowbite } from "flowbite";
 import { useRef, useState, useMemo } from "react";
-import { faCircleCheck, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faCircleCheck, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
@@ -166,7 +166,10 @@ export default function ChangePassword() {
     return (
         <div className="flex flex-col justify-center gap-4 select-none">
             {/* Title */}
-            <h1 className="font-semibold text-3xl lg:text-4xl pb-2 w-fit">Change Account Password</h1>
+            <div className="flex flex-row gap-2 items-center">
+                <button type="button" className="text-white bg-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-1 text-center text-xs dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" onClick={() => navigate("/dashboard")}><FontAwesomeIcon icon={faChevronLeft}/></button>
+                <h1 className="font-semibold text-3xl lg:text-4xl pb-2 w-fit">Change Account Password</h1>
+            </div>
             <hr />
 
             {/* Change & Tips */}

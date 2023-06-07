@@ -1,6 +1,6 @@
 import { useRef, useState, useMemo, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronLeft, faCircleCheck, faDeleteLeft, faWarning, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Cookies from "universal-cookie";
 
@@ -229,7 +229,11 @@ export default function CreateNewUser() {
     return (
         <div className="flex flex-col justify-center gap-4 select-none">
             {/* Title */}
-            <h1 className="font-semibold text-3xl lg:text-4xl pb-2 w-fit">Create New User</h1>
+            {/* Title */}
+            <div className="flex flex-row gap-2 items-center">
+                <button type="button" className="text-white bg-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-1 text-center text-xs dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" onClick={() => navigate("/users")}><FontAwesomeIcon icon={faChevronLeft}/></button>
+                <h1 className="font-semibold text-3xl lg:text-4xl pb-2 w-fit">Create New User</h1>
+            </div>
             <hr />
             {/* Create & Tips */}
             <div className="flex flex-col lg:flex-row justify-center gap-4 bg-gray-100 w-full p-8 rounded-lg">

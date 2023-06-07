@@ -651,7 +651,7 @@ export default function UsersTable({userMenuPermission}) {
     }
 
     const createdDateBody = (rowData) => {
-        return moment(rowData.created_date).format('DD MMMM YYYY llll')
+        return moment(rowData.created_date).format('LLL');
     };
 
     const toggleLimitDropdownHandler = (e) => {
