@@ -44,9 +44,13 @@ export default function DashboardLayout() {
     // }, [currentPage, currentPagePermission, navigate]);
     // // == Check User menu-permission via cache. ==
 
-    if(currentPage === "create new user"){
+    useEffect(() => {
+        console.log(currentPath);
+    })
+
+    if(currentPath === "/users/new"){
         FetchMenuPermission("users");
-    } else if((currentPage === "change password")||(currentPage === "dashboard")) {
+    } else if((currentPath === "/change-password")||(currentPath === "/dashboard")) {
         FetchMenuPermission("*");
     } else {
         FetchMenuPermission(currentPage);
@@ -93,7 +97,7 @@ export default function DashboardLayout() {
                             <Users />
                         </div>
                     }
-                    {currentPath === "/users/create-new-user" &&
+                    {currentPath === "/users/new" &&
                         <div>
                             {CheckMenuPermission("users")}
                             <CreateNewUser />
