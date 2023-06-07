@@ -12,13 +12,9 @@ export default function CheckMenuPermission(currentPage) {
     useEffect(() => {
         if (currentPagePermission !== null) {
             if ((currentPagePermission.status === 400) && (!whiteList.includes(currentPage))) {
-                console.log("User dont have permission on this page ", currentPage)
                 navigate("/dashboard");
-
             } else {
                 // User have access in current page.
-                console.log("User have access on this page: ", currentPage)
-                console.log(currentPagePermission.data);
             }
         }
     }, [currentPage, currentPagePermission, navigate, whiteList]);
